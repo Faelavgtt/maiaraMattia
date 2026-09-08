@@ -87,7 +87,7 @@ export function AdminOrderDrawer({
   const whatsappTemplates = [
     {
       label: "Confirmar Orçamento",
-      msg: `Olá ${order.customer_name}! Aqui é do Ateliê Maiara Matthia. Recebemos seu pedido #${order.code} e estamos à disposição para tirar dúvidas e combinar o pagamento. Como podemos ajudar?`,
+      msg: `Olá ${order.customer_name}! Aqui é do Ateliê Maiara Mattia. Recebemos seu pedido #${order.code} e estamos à disposição para tirar dúvidas e combinar o pagamento. Como podemos ajudar?`,
     },
     {
       label: "Entrou em Produção",

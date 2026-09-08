@@ -65,7 +65,7 @@ export function HeroSection({ phrase }: HeroSectionProps) {
       <div className="relative z-10 mx-auto grid min-h-[92svh] max-w-7xl gap-5 px-5 pb-8 pt-20 sm:gap-7 sm:px-8 sm:pb-10 sm:pt-20 md:pb-12 xl:grid-cols-[0.98fr_1.02fr] xl:items-center xl:gap-8 xl:px-5 xl:py-20">
         <motion.div className="relative z-10 max-w-[42rem] md:max-w-3xl xl:max-w-[42rem]" variants={textParent} initial="hidden" animate="show">
           <motion.p variants={textItem} className="eyebrow text-white">
-            Maiara Matthia · artista visual
+            Maiara Mattia · artista visual
           </motion.p>
           <motion.h1 variants={textItem} className="mt-3 max-w-2xl font-poppins text-[2.15rem] font-thin leading-[1.08] text-[#8b4114] sm:mt-5 sm:text-[2.8rem] sm:leading-[1.04] lg:text-[3.45rem] xl:text-6xl">
             Beleza nas pequenas delicadezas do cotidiano.
@@ -117,7 +117,7 @@ export function HeroSection({ phrase }: HeroSectionProps) {
             <div className="relative z-10 overflow-hidden rounded-[1.5rem] border border-white/45 bg-white/35 p-2.5 shadow-[0_24px_60px_rgba(93,51,29,0.18)] backdrop-blur-sm sm:rounded-[2rem] sm:p-3">
               <img
                 src="/image/maiara.jpeg"
-                alt="Retrato de Maiara Matthia cercada por ilustrações florais"
+                alt="Retrato de Maiara Mattia cercada por ilustrações florais"
                 className="aspect-[4/5] w-full rounded-[1.05rem] object-cover object-center sm:rounded-[1.45rem]"
               />
             </div>

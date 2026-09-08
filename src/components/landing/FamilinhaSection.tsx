@@ -4,7 +4,7 @@ import { Heart, MessageCircle, Star } from "lucide-react";
 const familyFrames = [
   {
     src: "/image/desenhos/quadroFamilinha.jpeg",
-    alt: "Arte Familinha feita a mão por Maiara Matthia",
+    alt: "Arte Familinha feita a mão por Maiara Mattia",
     label: "familinha clássica",
     positionClass: "sm:col-span-1 sm:translate-y-4",
     rotate: -4,

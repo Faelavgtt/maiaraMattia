@@ -3,7 +3,7 @@ import { Baby, Brush, Gift, MessageCircle, Palette, Sparkles } from "lucide-reac
 import { buildWhatsappUrl } from "@/lib/whatsapp";
 
 const budgetMessage = [
-  "Olá! Quero pedir um orçamento com a Maiara Matthia.",
+  "Olá! Quero pedir um orçamento com a Maiara Mattia.",
   "Tenho interesse em um projeto, desenho personalizado ou arte de aniversário.",
   "Podemos conversar sobre ideias, valores e prazos?",
 ].join("\n");
