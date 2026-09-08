@@ -1,9 +1,9 @@
-name = "maiaramatthia"
+name = "maiaramattia"
 main = "worker/src/index.ts"
 compatibility_date = "2026-07-16"
 
 [vars]
-APP_ORIGIN = "https://maiaramatthia.rafavergottii.workers.dev"
+APP_ORIGIN = "https://maiaramattia.rafavergottii.workers.dev"
 ADMIN_OWNER_USERNAME = "admin"
 ADMIN_OWNER_EMAIL = ""
 ADMIN_OWNER_PASSWORD = ""
