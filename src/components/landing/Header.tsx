@@ -67,7 +67,7 @@ export function Header() {
       <nav className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-5">
         <a
           href="#inicio"
-          aria-label="Maiara Matthia - início"
+          aria-label="Maiara Mattia - início"
           className="flex items-center gap-3 transition-colors duration-500"
           style={{ color: headerAccentColor }}
         >
