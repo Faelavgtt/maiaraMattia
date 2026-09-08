@@ -6,7 +6,6 @@ import {
   Frame, 
   Image as ImageIcon, 
   MessageCircle, 
-  Sparkles, 
   Heart, 
   Star 
 } from "lucide-react";
@@ -23,137 +22,13 @@ import { useCart } from "@/lib/cart";
 import { buildWhatsappUrl } from "@/lib/whatsapp";
 
 const customGalleryMessage = [
-  "Olá! Quero orçar uma galeria personalizada com a Maiara Mattia.",
-  "Tenho interesse em 3 quadros que se conversam + 1 Familinha.",
-  "Podemos conversar sobre tema, cores e medidas?",
-].join("\n");
-
-const readyGalleryMessage = [
-  "Olá! Quero saber mais sobre as galerias prontas da Maiara Mattia.",
-  "Tenho interesse em escolher uma arte pronta e customizar as cores.",
+  "Orçar personalizado",
+  "Três quadros que se conversam, mais uma Familinha para fechar a história.",
 ].join("\n");
 
 const customGalleryUrl = buildWhatsappUrl(customGalleryMessage);
-const readyGalleryUrl = buildWhatsappUrl(readyGalleryMessage);
 const galleryStaticImage = "/image/fotoExemplo.jpeg";
 const galleryHoverImage = "/image/fotoExemplo1.jpeg";
-
-const galleryProjects: readonly GalleryProject[] = [
-  {
-    id: "galeria-01",
-    number: "01",
-    title: "Jardim de Casa",
-    category: "Galeria Pronta",
-    price: "R$ 380,00",
-    originalPrice: "R$ 440,00",
-    dimensions: "Composição 120x60cm",
-    includedItems: [
-      "3 Quadros ilustrados (30x40cm cada)",
-      "1 Quadro Familinha Central (20x30cm)",
-      "Molduras em madeira natural inclusas",
-      "Certificado de autenticidade assinado"
-    ],
-    description: "Três quadros florais que conversam entre si, com uma Familinha para deixar a parede com memória e afeto.",
-    placeholder: "Galeria Pronta",
-    src: galleryStaticImage,
-    hoverSrc: galleryHoverImage,
-    surface: "#ead4c6",
-    width: 350,
-    aspectRatio: "16 / 9",
-    offset: 78,
-    rotate: -0.4,
-  },
-  {
-    id: "galeria-02",
-    number: "02",
-    title: "Brincadeira Suave",
-    category: "Cores Customizáveis",
-    price: "R$ 320,00",
-    dimensions: "Composição 90x50cm",
-    includedItems: [
-      "2 Quadros decorativos lúdicos",
-      "1 Quadro Familinha em destaque",
-      "Paleta de cores customizável"
-    ],
-    description: "Uma base pronta que pode ganhar outra paleta de cores para combinar com o quarto, sala ou brinquedoteca.",
-    placeholder: "Galeria Customizável",
-    src: galleryStaticImage,
-    hoverSrc: galleryHoverImage,
-    surface: "#e4e7d9",
-    width: 270,
-    aspectRatio: "4 / 5",
-    offset: 44,
-    rotate: -1.2,
-  },
-  {
-    id: "galeria-03",
-    number: "03",
-    title: "Pequeno Universo",
-    category: "Kit Decorativo",
-    price: "R$ 410,00",
-    originalPrice: "R$ 460,00",
-    dimensions: "Composição 110x70cm",
-    includedItems: [
-      "3 Quadros temáticos infantis",
-      "1 Arte Familinha sob medida",
-      "Acabamento em vidro anti-reflexo"
-    ],
-    description: "Artes prontas com clima infantil, pensadas como conjunto para criar ritmo e harmonia na parede.",
-    placeholder: "Kit de Quadros",
-    src: galleryStaticImage,
-    hoverSrc: galleryHoverImage,
-    surface: "#f0dfd4",
-    width: 310,
-    aspectRatio: "5 / 4",
-    offset: 92,
-    rotate: -1.5,
-  },
-  {
-    id: "galeria-04",
-    number: "04",
-    title: "Familinha Central",
-    category: "Retrato Afetivo",
-    price: "R$ 290,00",
-    dimensions: "Composição 80x40cm",
-    includedItems: [
-      "1 Quadro Familinha Ilustrado à mão",
-      "2 Minis ilustrações complementares",
-      "Moldura pastel à escolha"
-    ],
-    description: "A Familinha entra como o ponto focal da composição, trazendo os personagens reais da sua casa.",
-    placeholder: "Familinha Central",
-    src: galleryStaticImage,
-    hoverSrc: galleryHoverImage,
-    surface: "#e1d7c8",
-    width: 250,
-    aspectRatio: "3 / 4",
-    offset: 28,
-    rotate: 1.6,
-  },
-  {
-    id: "galeria-05",
-    number: "05",
-    title: "Galeria Personalizada",
-    category: "Projeto Sob Medida",
-    price: "A partir de R$ 480,00",
-    dimensions: "Tamanho sob consulta",
-    includedItems: [
-      "Projeto conceitual criado do zero",
-      "Escolha de temas, cores, nomes e pets",
-      "Acompanhamento e aprovação do esboço",
-      "Consultoria de disposição na parede"
-    ],
-    description: "Para quem quer uma composição criada totalmente do zero: tema, cores, nomes e símbolos afetivos.",
-    placeholder: "Orçar do Zero",
-    src: galleryStaticImage,
-    hoverSrc: galleryHoverImage,
-    surface: "#e6d8cf",
-    width: 230,
-    aspectRatio: "1 / 1",
-    offset: 4,
-    rotate: 1.3,
-  },
-];
 
 export function GallerySection() {
   const wallRef = useRef<HTMLDivElement>(null);
@@ -292,7 +167,7 @@ export function GallerySection() {
   }, []);
 
   return (
-    <section id="galeria" className="relative isolate overflow-hidden bg-[#faf4ed] px-5 pb-12 pt-3 sm:px-8 md:pb-16 md:pt-5 xl:pb-20">
+    <section id="galeria" className="relative isolate overflow-hidden bg-[#faf4ed] px-5 pb-9 pt-2 sm:px-8 md:pb-11 md:pt-3 xl:pb-12">
       
       {/* Background Decorativo */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
@@ -307,7 +182,7 @@ export function GallerySection() {
       </div>
 
       <div className="relative mx-auto max-w-7xl">
-        <div className="grid gap-5 border-b border-[#8b4114]/12 pb-6 md:gap-6 md:pb-8 lg:grid-cols-[1fr_0.78fr] lg:items-end">
+        <div className="grid gap-4 border-b border-[#8b4114]/12 pb-4 md:gap-5 md:pb-5 lg:grid-cols-[1fr_0.78fr] lg:items-end">
           
           <motion.div
             initial={{ opacity: 0, y: 18 }}
@@ -316,20 +191,27 @@ export function GallerySection() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="max-w-3xl"
           >
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#e8efda] px-3.5 py-1 font-sans text-xs font-semibold tracking-wider text-[#5f6850] shadow-xs">
-              <Frame className="h-3.5 w-3.5" aria-hidden="true" />
-              GALERIAS PRONTAS & KITS
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#e8efda] px-3.5 py-1 font-sans text-xs font-semibold tracking-wider text-[#5f6850] shadow-xs uppercase">
+              <Frame className="h-3.5 w-3.5 " aria-hidden="true" />
+              Ilustrações
             </div>
 
             <h2 className="mt-3 font-sans text-[1.85rem] font-light leading-tight text-[#8b4114] sm:text-3xl md:text-[2.35rem] xl:text-[2.5rem]">
-              Três quadros que se conversam, mais uma Familinha para fechar a história.
+              Em formato de pôsteres, disponíveis de forma individual ou coleção completa
+
             </h2>
             <p className="mt-3 max-w-2xl font-sans text-sm font-light leading-6 text-[#8b4114]/80 sm:text-base sm:leading-relaxed">
-              Explore nossos conjuntos prontos para parede. Clique em qualquer opção para ver os detalhes do kit, dimensões e encomendar o seu conjunto.
+              Explores clicando em uma das opções para ver os detalhes de cada desenho, dimensões e como comprar.
             </p>
           </motion.div>
 
-          <div className="relative rounded-xl border-2 border-dashed border-[#e6c29c] bg-[#fff9f2] p-4 shadow-sm transition-all duration-300 hover:rotate-0 sm:-rotate-1 sm:rounded-2xl sm:p-5">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.55, delay: 0.08, ease: "easeOut" }}
+            className="relative rounded-xl border-2 border-dashed border-[#e6c29c] bg-[#fff9f2] p-4 shadow-sm transition-all duration-300 hover:rotate-0 sm:-rotate-1 sm:rounded-2xl sm:p-5"
+          >
             <span className="inline-flex items-center gap-1.5 font-sans text-[0.68rem] font-semibold uppercase tracking-wider text-[#7d876d]">
               <Heart className="h-3 w-3 fill-[#7d876d]" />
               Pronta ou sob medida?
@@ -338,18 +220,9 @@ export function GallerySection() {
               Escolha uma galeria pronta ou peça um projeto exclusivo.
             </h3>
             <p className="mt-2 font-sans text-xs font-light leading-relaxed text-[#8b4114]/75">
-              As galerias prontas podem ter cores e quadros ajustados. Se quiser outro tema, criamos do zero.
+              Escolha o pôster ou galeria. Se quiser mudar a paleta de cores e enviar o nome da criança personalizado:
             </p>
             <div className="mt-4 flex flex-col gap-2.5 sm:flex-row">
-              <a
-                href={readyGalleryUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex h-9 items-center justify-center gap-2 rounded-full bg-[#7d876d] px-4 font-sans text-xs font-medium text-white shadow-xs transition-transform hover:-translate-y-0.5"
-              >
-                <Sparkles className="h-4 w-4" aria-hidden="true" />
-                Ver prontas
-              </a>
               <a
                 href={customGalleryUrl}
                 target="_blank"
@@ -357,15 +230,15 @@ export function GallerySection() {
                 className="inline-flex h-9 items-center justify-center gap-2 rounded-full bg-white border border-[#8b4114]/15 px-4 font-sans text-xs font-medium text-[#8b4114] shadow-xs transition-transform hover:-translate-y-0.5"
               >
                 <MessageCircle className="h-4 w-4" aria-hidden="true" />
-                Orçar personalizada
+                Orçar personalizado
               </a>
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        <div className="mt-5 flex items-center justify-between gap-3 sm:mt-6">
+        <div className="mt-4 flex items-center justify-between gap-3 sm:mt-5">
           <p className="font-sans text-[0.7rem] font-medium uppercase tracking-wider text-[#8b4114]/60">
-            ↔ Arraste a parede para explorar os kits
+            Arraste a parede para explorar os kits
           </p>
 
           <div className="flex items-center gap-2.5" aria-label="Controles do carrossel">
@@ -398,7 +271,7 @@ export function GallerySection() {
             onPointerCancel={stopWallDrag}
             onPointerLeave={stopWallDrag}
             onScroll={syncLoopPosition}
-            className="flex min-h-[22rem] cursor-grab select-none items-start gap-5 overflow-x-auto px-5 pb-6 pt-8 active:cursor-grabbing sm:min-h-[25rem] sm:gap-7 sm:px-8 sm:pb-8 sm:pt-10 md:min-h-[28rem] md:gap-8 md:px-10 xl:min-h-[31rem] xl:gap-9 xl:px-10 xl:pb-9 xl:pt-12 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="flex min-h-[20rem] cursor-grab select-none items-start gap-5 overflow-x-auto px-5 pb-5 pt-7 active:cursor-grabbing sm:min-h-[23rem] sm:gap-6 sm:px-8 sm:pb-7 sm:pt-8 md:min-h-[26rem] md:gap-7 md:px-10 xl:min-h-[28rem] xl:gap-8 xl:px-10 xl:pb-8 xl:pt-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {carouselProjects.map((project, index) => (
               <GalleryFrame 
@@ -413,9 +286,15 @@ export function GallerySection() {
         </div>
 
         {/* Rodapé da Seção */}
-        <div className="mt-5 flex flex-col gap-3 border-t border-[#8b4114]/12 pt-4 sm:flex-row sm:items-center sm:justify-between md:mt-6 md:pt-5">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.48, ease: "easeOut" }}
+          className="mt-4 flex flex-col gap-3 border-t border-[#8b4114]/12 pt-3 sm:flex-row sm:items-center sm:justify-between md:mt-5 md:pt-4"
+        >
           <p className="max-w-xl font-sans text-xs font-light leading-5 text-[#8b4114]/65">
-            Quer adaptar tema, cores ou medidas? O orçamento começa com uma mensagem rápida no WhatsApp para entendermos a parede e o estilo desejado.
+            Em formato de pôsteres, disponíveis de forma individual ou coleção completa.
           </p>
           <a
             href={customGalleryUrl}
@@ -424,9 +303,9 @@ export function GallerySection() {
             className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#c68043] px-5 font-sans text-xs font-medium text-white shadow-xs transition-transform hover:-translate-y-0.5"
           >
             <MessageCircle className="h-4 w-4" aria-hidden="true" />
-            Quero uma galeria personalizada
+            Orçar personalizado
           </a>
-        </div>
+        </motion.div>
       </div>
 
       {/* Componente Modal / Pop-up Isolado */}

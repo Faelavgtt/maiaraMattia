@@ -45,6 +45,8 @@ const groupLabels: Record<BucketFileAsset["group"], string> = {
   other: "Outros",
 };
 
+const emptyFiles: BucketFileAsset[] = [];
+
 const AdminBucket = () => {
   const [scope, setScope] = useState<BucketScope>("site");
   const [search, setSearch] = useState("");
@@ -74,7 +76,7 @@ const AdminBucket = () => {
     },
   });
 
-  const files = data?.files ?? [];
+  const files = data?.files ?? emptyFiles;
   const filteredFiles = useMemo(() => {
     const term = search.trim().toLowerCase();
     if (!term) return files;

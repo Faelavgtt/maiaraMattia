@@ -62,6 +62,8 @@ const quickLinks = [
   },
 ];
 
+const emptyOrders: AdminOrderRow[] = [];
+
 const Admin = () => {
   const [selectedOrder, setSelectedOrder] = useState<AdminOrderRow | null>(null);
   const queryClient = useQueryClient();
@@ -107,7 +109,7 @@ const Admin = () => {
     },
   });
 
-  const orders = data?.orders ?? [];
+  const orders = data?.orders ?? emptyOrders;
   const latestOrders = orders;
   const galleryCount = galleryData?.products.length ?? 0;
   const otherProjectsCount = otherProjectsData?.products.length ?? 0;

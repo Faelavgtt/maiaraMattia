@@ -1,37 +1,10 @@
 import { motion } from "framer-motion";
-import { Heart, Home, MessageCircle, Palette, Sparkles, Star } from "lucide-react";
-
-const familyCards = [
-  {
-    title: "Todo mundo entra",
-    text: "Pais, filhos, avós, pets e aqueles detalhes que só a família entende.",
-    icon: Home,
-    bgStyle: "bg-[#fff9f2] border-2 border-dashed border-[#e6c29c]",
-    rotate: "-rotate-2",
-    badgeColor: "bg-[#f6c9b8]",
-  },
-  {
-    title: "Traços de afeto",
-    text: "A Maiara desenha à mão, mantendo um jeitinho doce, leve e cheio de personalidade.",
-    icon: Heart,
-    bgStyle: "bg-[#f2f6eb] border-2 border-[#c3d1ab]",
-    rotate: "rotate-3",
-    badgeColor: "bg-[#dbe3c9]",
-  },
-  {
-    title: "Cores do seu lar",
-    text: "A paleta pode conversar com o quarto, a sala ou a memória que você quer guardar.",
-    icon: Palette,
-    bgStyle: "bg-[#fdf8ec] border-2 border-dashed border-[#edd39d]",
-    rotate: "-rotate-1",
-    badgeColor: "bg-[#f5dfb8]",
-  },
-];
+import { Heart, MessageCircle, Star } from "lucide-react";
 
 const familyFrames = [
   {
     src: "/image/desenhos/quadroFamilinha.jpeg",
-    alt: "Arte Familinha feita a mão por Maiara Mattia",
+    alt: "Arte Familinha feita a mão por Maiara Matthia",
     label: "familinha clássica",
     positionClass: "sm:col-span-1 sm:translate-y-4",
     rotate: -4,
@@ -70,7 +43,7 @@ const familyProductDetails = [
 
 export function FamilinhaSection() {
   return (
-    <section id="familinha" className="relative isolate overflow-hidden bg-[#faf4ed] px-5 pb-14 pt-12 sm:px-8 md:pb-20 md:pt-16 xl:pb-28">
+    <section id="familinha" className="relative isolate overflow-hidden bg-[#faf4ed] px-5 pb-10 pt-10 sm:px-8 md:pb-14 md:pt-12 xl:pb-16">
       
       {/* Background Ilustrado Estilo Infância */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
@@ -87,7 +60,7 @@ export function FamilinhaSection() {
         <Star className="absolute bottom-16 right-[6%] h-9 w-9 -rotate-12 fill-[#7d876d] text-[#7d876d]/80" />
       </div>
 
-      <div className="mx-auto grid max-w-[94rem] gap-8 md:gap-10 lg:grid-cols-[minmax(26rem,0.8fr)_minmax(34rem,1.2fr)] lg:items-center xl:gap-12">
+      <div className="mx-auto grid max-w-[94rem] gap-6 md:gap-8 lg:grid-cols-[minmax(34rem,1.15fr)_minmax(24rem,0.85fr)] lg:items-center xl:gap-9">
         
         {/* Coluna de Texto e Cards Informativos */}
         <motion.div
@@ -95,65 +68,27 @@ export function FamilinhaSection() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="max-w-[35rem]"
+          className="max-w-[52rem]"
         >
           <div className="inline-flex items-center gap-2 rounded-full bg-[#e8efda] px-3.5 py-1 font-sans text-xs font-semibold tracking-wider text-[#5f6850] shadow-sm">
             <Heart className="h-3.5 w-3.5 fill-[#7d876d]" aria-hidden="true" />
-            A FAMILINHA
+            PERSONALIZADOS
           </div>
 
-          <h2 className="mt-5 max-w-2xl font-sans text-[1.85rem] font-light leading-tight text-[#8b4114] sm:mt-6 sm:text-4xl md:text-[2.35rem] xl:text-[2.5rem]">
+          <h2 className="mt-4 max-w-2xl font-sans text-[1.85rem] font-light leading-tight text-[#8b4114] sm:mt-5 sm:text-4xl md:text-[2.35rem] xl:text-[2.5rem]">
             Uma arte feita à mão para apresentar quem mora no seu coração.
           </h2>
 
-          <p className="mt-3 max-w-xl font-sans text-sm font-light leading-6 text-[#8b4114]/80 sm:text-base sm:leading-relaxed">
-            A Familinha é uma ilustração autoral da Maiara com os membros da família em clima de desenho infantil: simples, afetuosa e cheia de pequenas pistas sobre cada pessoa.
-          </p>
-
-          <div className="mt-5 rounded-2xl border border-[#8b4114]/12 bg-white/78 p-4 shadow-[0_14px_34px_rgba(139,65,20,0.06)] backdrop-blur-sm sm:mt-6 sm:p-5">
-            <div className="border-b border-[#8b4114]/10 pb-3">
-              <p className="font-sans text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[#76877e]">
-                Produto sob encomenda
-              </p>
-              <h3 className="mt-1 font-sans text-lg font-medium text-[#8b4114]">
-                Quadro Familinha
-              </h3>
-            </div>
-
-            <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
-              {familyProductDetails.map((detail) => (
-                <div key={detail.label} className="rounded-xl border border-[#8b4114]/10 bg-[#fff9f2] px-3.5 py-2.5">
-                  <span className="block font-sans text-[0.62rem] font-semibold uppercase tracking-[0.15em] text-[#76877e]">
-                    {detail.label}
-                  </span>
-                  <span className="mt-1 block font-sans text-xs font-medium leading-5 text-[#8b4114]">
-                    {detail.value}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <p className="mt-4 font-sans text-sm font-light leading-6 text-[#8b4114]/78">
-              A criação é feita a partir das características combinadas com o cliente, como cor e corte de cabelo, composição da família e paleta de cores. A arte não é uma cópia literal de foto; as imagens de referência ajudam a representar detalhes importantes, como proporção, tom e tamanho do cabelo. O valor base contempla até 4 pessoas + 1 pet. Para composições maiores, há acréscimo de R$ 50,00 por pessoa ou pet adicional.
+          <div className="mt-3 space-y-3 max-w-xl font-sans text-sm font-light leading-6 text-[#8b4114]/80 sm:text-base sm:leading-relaxed">
+            <p>
+              A Familinha é uma ilustração autoral que reúne num abraço os membros da sua família.
             </p>
-
-            <a
-              href="#pedido"
-              className="mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-full bg-[#7d876d] px-5 font-sans text-sm font-medium text-white shadow-sm transition hover:bg-[#69725b] sm:w-auto"
-            >
-              Solicitar orçamento
-              <MessageCircle className="h-4 w-4" />
-            </a>
+            <p>
+              Cada ilustração é entregue em um quadro de madeira, pronto para pendurar e fazer parte da sua casa.
+            </p>
           </div>
 
-        </motion.div>
-
-        {/* Galeria de Fotos Assimétrica (Varal / Scrapbook) */}
-        <div className="relative justify-self-end pt-6 sm:pt-0 lg:w-full">
-          
-          
-
-          <div className="ml-auto grid max-w-[48rem] grid-cols-3 gap-3 sm:gap-4 lg:gap-5 xl:max-w-[52rem] xl:gap-7">
+          <div className="mt-6 grid max-w-[48rem] grid-cols-3 gap-3 sm:gap-4 lg:gap-5 xl:gap-6">
             {familyFrames.map((frame, index) => (
               <motion.figure
                 key={frame.src}
@@ -170,13 +105,9 @@ export function FamilinhaSection() {
                 transition={{ duration: 0.6, delay: index * 0.15 }}
                 className={`relative group mobile-soften-tilt ${frame.positionClass}`}
               >
-                {/* Pregador / Fita Adesiva decorativa no topo */}
                 <div className={`absolute -top-3 left-1/2 z-20 h-5 w-16 -translate-x-1/2 rounded-sm ${frame.tapeColor} shadow-xs backdrop-blur-xs border border-white/40`} aria-hidden="true" />
 
-                {/* Card Moldura Estilo Foto Polaroid Infantil */}
                 <div className={`rounded-[1rem] border-2 ${frame.frameBorder} bg-white p-1.5 pb-2.5 shadow-[0_10px_25px_rgba(139,65,20,0.07)] transition-all duration-300 group-hover:shadow-[0_18px_36px_rgba(139,65,20,0.14)] sm:rounded-[1.8rem_1rem_1.6rem_1.2rem] sm:border-4 sm:p-2 sm:pb-3.5`}>
-                  
-                  {/* Container da Imagem */}
                   <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[0.75rem] bg-[#fdfaf6] ring-1 ring-[#8b4114]/5 sm:rounded-[1.2rem_0.8rem_1rem_0.8rem]">
                     <motion.img
                       src={frame.src}
@@ -185,40 +116,62 @@ export function FamilinhaSection() {
                       draggable="false"
                     />
                   </div>
-
-                  
                 </div>
               </motion.figure>
             ))}
           </div>
 
-          <div className="ml-auto mt-7 grid max-w-[48rem] gap-3 sm:grid-cols-3 sm:gap-4 xl:max-w-[52rem] xl:gap-5">
-            {familyCards.map((card, idx) => {
-              const Icon = card.icon;
-              return (
-                <motion.article
-                  key={card.title}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: idx * 0.1 }}
-                  whileHover={{ y: -6, rotate: 0, scale: 1.02 }}
-                  className={`relative rounded-xl p-3.5 shadow-sm transition-all duration-300 sm:min-h-[8.75rem] sm:rounded-2xl sm:p-4 ${card.bgStyle} ${card.rotate}`}
-                >
-                  <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${card.badgeColor} text-[#8b4114] shadow-xs`}>
-                    <Icon className="h-4 w-4" />
-                  </div>
-                  <h3 className="mt-3 font-sans text-sm font-medium text-[#8b4114]">
-                    {card.title}
-                  </h3>
-                  <p className="mt-1.5 font-sans text-[0.72rem] font-light leading-5 text-[#8b4114]/75">
-                    {card.text}
-                  </p>
-                </motion.article>
-              );
-            })}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="rounded-2xl border border-[#8b4114]/12 bg-white/78 p-4 shadow-[0_14px_34px_rgba(139,65,20,0.06)] backdrop-blur-sm sm:p-5 lg:justify-self-end xl:p-6"
+        >
+          <div className="border-b border-[#8b4114]/10 pb-3">
+            <p className="font-sans text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[#76877e]">
+              Produto sob encomenda
+            </p>
+            <h3 className="mt-1 font-sans text-lg font-medium text-[#8b4114]">
+              Quadro Familinha
+            </h3>
           </div>
-        </div>
+
+          <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
+            {familyProductDetails.map((detail) => (
+              <div key={detail.label} className="rounded-xl border border-[#8b4114]/10 bg-[#fff9f2] px-3.5 py-2.5">
+                <span className="block font-sans text-[0.62rem] font-semibold uppercase tracking-[0.15em] text-[#76877e]">
+                  {detail.label}
+                </span>
+                <span className="mt-1 block font-sans text-xs font-medium leading-5 text-[#8b4114]">
+                  {detail.value}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-4 space-y-3 font-sans text-sm font-light leading-6 text-[#8b4114]/78">
+            <p>
+              Criamos a partir das características de cada membro, tom de cabelo, pele e paleta de cores escolhida pelo cliente.
+            </p>
+            <p>
+              As fotos de referência ajudam a traduzir detalhes e proporções, mas o resultado preserva o encanto e a liberdade do traço, sem ser uma cópia literal da fotografia.
+            </p>
+            <p>
+              O valor base contempla até 4 pessoas + 1 animal de estimação. Para cada pessoa ou animal adicional, acrescenta-se R$ 50,00.
+            </p>
+          </div>
+
+          <a
+            href="#pedido"
+            className="mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-full bg-[#7d876d] px-5 font-sans text-sm font-medium text-white shadow-sm transition hover:bg-[#69725b] sm:w-auto"
+          >
+            Quero encomendar
+            <MessageCircle className="h-4 w-4" />
+          </a>
+        </motion.div>
 
       </div>
     </section>

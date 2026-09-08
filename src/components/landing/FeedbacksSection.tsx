@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Heart, MessageCircleHeart, Sparkles, Star } from "lucide-react";
 import { useState } from "react";
 
@@ -46,7 +47,7 @@ const feedbacks = [
 
 export function FeedbacksSection() {
   return (
-    <section id="feedbacks" className="relative isolate overflow-hidden bg-[#d19c88] px-5 py-12 text-[#8b4114] sm:px-8 md:py-16 xl:py-20">
+    <section id="feedbacks" className="relative isolate overflow-hidden bg-[#d19c88] px-5 py-9 text-[#8b4114] sm:px-8 md:py-11 xl:py-12">
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
         <img
           src="/image/elementosFloral/floral1.png"
@@ -66,23 +67,29 @@ export function FeedbacksSection() {
       </div>
 
       <div className="mx-auto max-w-7xl">
-        <div className="grid gap-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+          className="grid gap-5 lg:grid-cols-[0.82fr_1.18fr] lg:items-end"
+        >
           <div>
             <p className="inline-flex items-center gap-2 font-sans text-[0.68rem] font-normal uppercase tracking-[0.2em] text-white">
               <MessageCircleHeart className="h-3.5 w-3.5" aria-hidden="true" />
-              Feedbacks
+              Clientes
             </p>
-            <h2 className="mt-3 max-w-3xl font-sans text-[1.85rem] font-extralight leading-tight text-[#8b4114] sm:text-4xl md:text-[2.55rem] xl:text-[2.8rem]">
-              Recadinhos que chegam com sorriso, cor e memória boa.
+            <h2 className="mt-3 max-w-4xl font-sans text-[1.85rem] font-extralight leading-tight text-[#8b4114] sm:text-5xl md:text-[2.0rem] xl:text-[2.0rem]">
+              Recados que chegam e despertam um sorriso a certeza que a missão foi cumprida.
             </h2>
           </div>
 
           <p className="max-w-2xl font-sans text-sm font-light leading-6 text-[#8b4114]/78 sm:text-base sm:leading-7 lg:justify-self-end">
             Um pedacinho da história depois que a arte chega: a surpresa, o carinho da família e aquele detalhe pequeno que fez tudo fazer sentido.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="mt-7 grid grid-cols-2 gap-4 sm:mt-9 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-5">
+        <div className="mt-5 grid grid-cols-2 gap-3 sm:mt-6 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-5">
           {feedbacks.map((feedback, index) => (
             <FeedbackCard key={feedback.name} feedback={feedback} index={index} />
           ))}
@@ -97,7 +104,11 @@ function FeedbackCard({ feedback, index }: { feedback: (typeof feedbacks)[number
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
-    <article
+    <motion.article
+      initial={{ opacity: 0, y: 18, rotate: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.48, delay: index * 0.05, ease: "easeOut" }}
       className={`group relative rounded-[1.2rem] shadow-[0_18px_38px_rgba(93,51,29,0.15)] transition-transform duration-300 hover:-translate-y-1 hover:rotate-0 sm:rounded-[1.7rem_1rem_2rem_1.1rem] ${feedback.rotate}`}
     >
       <span className={`absolute left-1/2 -top-3 z-20 h-5 w-16 -translate-x-1/2 ${feedback.tape} opacity-90 shadow-sm sm:-top-5 sm:h-7 sm:w-24 ${index % 2 === 0 ? "rotate-2" : "-rotate-2"}`} aria-hidden="true" />
@@ -123,6 +134,6 @@ function FeedbackCard({ feedback, index }: { feedback: (typeof feedbacks)[number
           )}
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }

@@ -27,20 +27,15 @@ export const useScrollAnimation = <T extends HTMLElement = HTMLDivElement>(thres
 
 export const useParallax = (speed = 0.5) => {
   const [offsetY, setOffsetY] = useState(0);
-  
+
   useEffect(() => {
-    let lastScrollY = 0;
-    
     const handleScroll = () => {
-      const currentScrollY = window.pageYOffset;
-      const direction = currentScrollY > lastScrollY ? 1 : -1;
-      lastScrollY = currentScrollY;
-      setOffsetY(currentScrollY * speed * direction);
+      setOffsetY(window.scrollY * speed);
     };
-    
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [speed]);
-  
+
   return offsetY;
 };

@@ -168,7 +168,6 @@ const Index = () => {
     <main className="min-h-screen bg-[#ddb8a6] text-[#8b4114]">
       <Header />
       <HeroSection phrase={title} />
-      <WorkShowcaseSection />
       <FamilinhaSection />
       <GallerySection />
       <OtherProjectsSection />

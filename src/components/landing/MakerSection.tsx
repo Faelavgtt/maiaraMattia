@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, ReactNode, useState } from "react";
+import { motion } from "framer-motion";
 import { ArrowRight, Check, MessageCircle, Paintbrush, Send, Upload, WandSparkles } from "lucide-react";
 
 const backgroundOptions = [
@@ -51,24 +52,20 @@ const svgExamples: Record<string, { src: string; label: string; sizeClass: strin
 const makerProcessSteps = [
   {
     title: "Envie o desenho",
-    text: "A mãe manda uma foto do desenho da criança e conta a história por trás dele.",
+    text: "Nós manteremos todas as características, mas faremos de forma minimalista, em formato de linhas e num tom só, escolhido por você.",
     icon: Send,
   },
   {
-    title: "Escolha a composição",
-    text: "Cores, frase, nome e estilo são escolhidos no maker antes de ir para o WhatsApp.",
+    title: "Cores e tamanho",
+    text: "Escolha a cor e tamanho que mais combina com seu ambiente.",
     icon: Paintbrush,
   },
   {
-    title: "Receba a prévia",
-    text: "A ilustradora organiza o traço, mantém a alma infantil e envia a prévia para aprovação.",
+    title: "Nome da obra de arte e do artista",
+    text: "Escreva o nome do pequeno artista e de sua obra de arte. Essa parte vai estar no projeto impresso como o exemplo abaixo.",
     icon: WandSparkles,
   },
-  {
-    title: "Finalize pelo WhatsApp",
-    text: "Pagamento, ajustes e entrega ficam em uma conversa simples e acolhedora.",
-    icon: MessageCircle,
-  },
+
 ] as const;
 
 const makerAcceptedFileTypes = new Set(["image/png", "image/jpeg", "application/pdf"]);
@@ -165,24 +162,79 @@ export function MakerSection({
           maskSize: "cover",
         }}
       />
-      <div className="relative z-10 mx-auto max-w-screen-2xl px-5 py-5 sm:px-8 xl:px-5">
-        <div className="mb-5 max-w-5xl md:mb-6">
-          <p className="font-sans text-xs font-normal uppercase tracking-[0.22em] text-white">Maker de pedido</p>
+      <div className="relative z-10 mx-auto max-w-screen-2xl px-5 py-4 sm:px-8 xl:px-5">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+          className="mb-4 max-w-5xl pt-4 md:mb-5"
+        >
+          <p className="font-sans text-xs font-normal uppercase tracking-[0.22em] text-white">Pequeno Artista</p>
           <h2 className="mt-1 font-sans text-[1.85rem] font-extralight leading-tight text-white sm:text-3xl md:text-[2.2rem] xl:text-4xl">
-            Monte a ideia do quadro em poucos cliques.
+            Do rabisco espontâneo ao quadro pronto para guardar
           </h2>
-          <p className="mt-2 max-w-4xl font-sans text-sm font-light leading-6 text-white sm:text-base md:text-lg md:leading-7">
-            Escolha o fundo, a cor do traço, o formato, o tamanho e envie o desenho da criança. A finalização continua pelo WhatsApp.
-          </p>
-        </div>
+          
+        </motion.div>
 
-        <div className="grid items-start gap-4 md:gap-5 xl:grid-cols-[0.72fr_1.28fr]">
-          <div>
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.55, delay: 0.06, ease: "easeOut" }}
+          className="mb-4"
+        >
+          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4">
+            <motion.article
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+              className="rounded-xl border border-white/35 bg-white p-3 text-[#8b4114] shadow-[0_12px_30px_rgba(0,0,0,0.07)] sm:p-3.5"
+            >
+              <span className="font-sans text-xs font-light text-[#7d876d]">Como funciona</span>
+              <div className="mt-3 flex h-9 w-9 items-center justify-center rounded-full border border-[#ddb8a6] bg-[#ddb8a6]/45 text-[#8b4114] sm:mt-4 sm:h-10 sm:w-10">
+                <MessageCircle className="h-4 w-4" />
+              </div>
+              <p className="mt-3 font-sans text-xs font-light leading-5 text-[#8b4114] sm:mt-4 sm:text-sm sm:leading-6">
+                Nos envie um desenho do seu pequeno artista e nós transformaremos numa obra de arte para ser pendurada na parede.
+              </p>
+            </motion.article>
+            {makerProcessSteps.map((step, index) => {
+              const Icon = step.icon;
+              return (
+                <motion.article
+                  key={step.title}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.45, delay: (index + 1) * 0.05, ease: "easeOut" }}
+                  className="rounded-xl border border-white/35 bg-white p-3 text-[#8b4114] shadow-[0_12px_30px_rgba(0,0,0,0.07)] sm:p-3.5"
+                >
+                  <span className="font-sans text-xs font-light text-[#7d876d]">0{index + 1}</span>
+                  <div className="mt-3 flex h-9 w-9 items-center justify-center rounded-full border border-[#ddb8a6] bg-[#ddb8a6]/45 text-[#8b4114] sm:mt-4 sm:h-10 sm:w-10">
+                    <Icon className="h-4 w-4" />
+                  </div>
+                  <h3 className="mt-3 font-sans text-base font-light leading-tight text-[#8b4114] sm:mt-4 sm:text-lg xl:text-xl">{step.title}</h3>
+                  <p className="mt-2 font-sans text-xs font-light leading-5 text-[#8b4114] sm:text-sm sm:leading-6">{step.text}</p>
+                </motion.article>
+              );
+            })}
+          </div>
+        </motion.div>
+
+        <div className="grid items-start gap-4 xl:grid-cols-[0.72fr_1.28fr]">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.55, ease: "easeOut" }}
+          >
             <div className="rounded-xl border border-white/35 bg-white p-3 shadow-[0_18px_48px_rgba(0,0,0,0.12)] sm:p-4">
               <p className="mb-2 text-center font-sans text-[10px] font-light uppercase tracking-[0.14em] text-[#8b4114]/70 sm:mb-3 sm:text-[11px]">
                 Exemplo de como irá ficar
               </p>
-              <div className="flex min-h-[300px] items-center justify-center rounded-lg bg-[#ddb8a6]/35 p-3 sm:min-h-[350px] sm:p-4 md:min-h-[390px] xl:min-h-[430px]">
+              <div className="flex min-h-[280px] items-center justify-center rounded-lg bg-[#ddb8a6]/35 p-3 sm:min-h-[320px] sm:p-4 md:min-h-[360px] xl:min-h-[390px]">
                 <div className={`rounded-md bg-white shadow-[0_12px_32px_rgba(0,0,0,0.08)] ${orientation === "portrait" ? "w-full max-w-[240px] sm:max-w-[285px] xl:max-w-[330px]" : "w-full max-w-[330px] sm:max-w-[390px] xl:max-w-[470px]"}`}>
                   <div className={`bg-white p-3 sm:p-4 xl:p-5 ${orientation === "portrait" ? "aspect-[3/4]" : "aspect-[4/3]"}`}>
                     <div className="flex h-full flex-col">
@@ -206,7 +258,7 @@ export function MakerSection({
               </div>
             </div>
 
-            <div className="mt-3 flex flex-wrap justify-center gap-2 sm:mt-4">
+            <div className="mt-3 flex flex-wrap justify-center gap-2">
               {exampleOptions.map((example) => (
                 <button
                   key={example.id}
@@ -223,9 +275,16 @@ export function MakerSection({
                 </button>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          <form onSubmit={onSubmit} className="rounded-xl border border-white/35 bg-white p-3.5 shadow-[0_18px_48px_rgba(0,0,0,0.10)] sm:p-4 md:p-5">
+          <motion.form
+            onSubmit={onSubmit}
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.55, delay: 0.08, ease: "easeOut" }}
+            className="rounded-xl border border-white/35 bg-white p-3.5 shadow-[0_18px_48px_rgba(0,0,0,0.10)] sm:p-4 md:p-5"
+          >
             <div className="grid gap-x-5 gap-y-0 lg:grid-cols-2 2xl:grid-cols-3">
             <ConfigBlock title="Contato" className="lg:col-span-2 2xl:col-span-3">
               <div className="grid gap-3 sm:grid-cols-3">
@@ -354,39 +413,9 @@ export function MakerSection({
               </button>
             </div>
             </div>
-          </form>
+          </motion.form>
         </div>
 
-        <div className="mt-7 border-t border-white/25 pt-6 md:mt-8 md:pt-7">
-          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-            <div>
-              <p className="font-sans text-xs font-normal uppercase tracking-[0.22em] text-white">Como funciona</p>
-              <h2 className="mt-2 max-w-2xl font-sans text-[1.6rem] font-extralight leading-tight text-white sm:text-2xl md:text-3xl">
-                Do rabisco espontâneo ao quadro pronto para guardar.
-              </h2>
-            </div>
-            <a href="#maker" className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#c68043] px-5 font-sans text-sm font-medium text-white shadow-[0_12px_24px_rgba(0,0,0,0.12)]">
-              Ajustar no maker
-              <ArrowRight className="h-4 w-4" />
-            </a>
-          </div>
-
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 md:mt-5 md:grid-cols-4">
-            {makerProcessSteps.map((step, index) => {
-              const Icon = step.icon;
-              return (
-                <article key={step.title} className="rounded-xl border border-white/35 bg-white p-3.5 text-[#8b4114] shadow-[0_12px_30px_rgba(0,0,0,0.07)] sm:p-4">
-                  <span className="font-sans text-xs font-light text-[#7d876d]">0{index + 1}</span>
-                  <div className="mt-3 flex h-9 w-9 items-center justify-center rounded-full border border-[#ddb8a6] bg-[#ddb8a6]/45 text-[#8b4114] sm:mt-4 sm:h-10 sm:w-10">
-                    <Icon className="h-4 w-4" />
-                  </div>
-                  <h3 className="mt-3 font-sans text-base font-light leading-tight text-[#8b4114] sm:mt-4 sm:text-lg xl:text-xl">{step.title}</h3>
-                  <p className="mt-2 font-sans text-xs font-light leading-5 text-[#8b4114] sm:text-sm sm:leading-6">{step.text}</p>
-                </article>
-              );
-            })}
-          </div>
-        </div>
       </div>
     </section>
   );
@@ -394,8 +423,8 @@ export function MakerSection({
 
 function ConfigBlock({ title, children, className = "" }: { title: string; children: ReactNode; className?: string }) {
   return (
-    <div className={`border-b border-[#ddb8a6]/80 py-3.5 ${className}`}>
-      <h3 className="mb-2.5 font-sans text-[10px] font-normal uppercase leading-none tracking-[0.16em] text-[#8b4114]">{title}</h3>
+    <div className={`border-b border-[#ddb8a6]/80 py-3 ${className}`}>
+      <h3 className="mb-2 font-sans text-[10px] font-normal uppercase leading-none tracking-[0.16em] text-[#8b4114]">{title}</h3>
       {children}
     </div>
   );

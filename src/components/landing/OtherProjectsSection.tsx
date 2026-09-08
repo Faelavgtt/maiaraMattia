@@ -7,6 +7,7 @@ import {
   Sparkles,
   ShoppingBag,
   Star,
+  Smile,
 } from "lucide-react";
 import { GalleryModal, type GalleryProject } from "./GalleryModal";
 import { listOtherProjects } from "@/lib/api";
@@ -21,9 +22,9 @@ import {
 import { buildWhatsappUrl } from "@/lib/whatsapp";
 
 const otherProjectsMessage = [
-  "Olá! Quero conversar sobre um projeto artístico com a Maiara Mattia.",
-  "Vi os outros trabalhos do ateliê e tenho uma ideia fora da galeria principal.",
-  "Podemos falar sobre formato, prazo e possibilidades?",
+  "Quer encomendar alguma peça que não está disponível no site?",
+  "Veja disponibilidade clicando aqui:",
+  "Conversar",
 ].join("\n");
 
 const otherProjectsWhatsappUrl = buildWhatsappUrl(otherProjectsMessage);
@@ -158,7 +159,7 @@ export function OtherProjectsSection() {
   }, []);
 
   return (
-    <section id="outros-projetos" className="relative isolate overflow-hidden bg-[#faf4ed] px-5 py-12 sm:px-8 md:py-14 xl:py-16">
+    <section id="outros-projetos" className="relative isolate overflow-hidden bg-[#faf4ed] px-5 py-9 sm:px-8 md:py-11 xl:py-12">
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
         <div className="absolute inset-0 bg-[radial-gradient(#8b4114_0.75px,transparent_0.75px)] [background-size:24px_24px] opacity-[0.07]" />
 
@@ -174,7 +175,7 @@ export function OtherProjectsSection() {
       </div>
 
       <div className="mx-auto max-w-7xl">
-        <div className="grid gap-5 border-b border-[#8b4114]/12 pb-6 md:gap-6 md:pb-7 lg:grid-cols-[0.9fr_0.7fr] lg:items-end">
+        <div className="grid gap-4 border-b border-[#8b4114]/12 pb-4 md:gap-5 md:pb-5 lg:grid-cols-[0.9fr_0.7fr] lg:items-end">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -187,22 +188,26 @@ export function OtherProjectsSection() {
               Outros trabalhos do ateliê
             </p>
             <h2 className="mt-2 font-sans text-[1.75rem] font-extralight leading-tight text-[#8b4114] sm:text-3xl md:text-[2.15rem] xl:text-[2.25rem]">
-              Peças artísticas menores, prontas para vender e presentear.
+              Peças artísticas desenvolvidas por nós para diversos objetos e superfícies.
             </h2>
-            <p className="mt-2 max-w-2xl font-sans text-sm font-light leading-6 text-[#8b4114]/72">
-              Banquinhos pintados, objetos, experimentos e peças afetivas aparecem aqui como produtos especiais do ateliê, com valores iniciais e possibilidade de personalização.
-            </p>
+            
           </motion.div>
 
-          <div className="rounded-xl border border-[#8b4114]/10 bg-[#fffaf5] p-4 shadow-[0_14px_30px_rgba(54,67,64,0.07)] sm:rotate-[0.6deg]">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.55, delay: 0.08, ease: "easeOut" }}
+            className="rounded-xl border border-[#8b4114]/10 bg-[#fffaf5] p-4 shadow-[0_14px_30px_rgba(54,67,64,0.07)] sm:rotate-[0.6deg]"
+          >
             <p className="font-sans text-[0.68rem] font-normal uppercase tracking-[0.18em] text-[#76877e]">
               Ideia diferente?
             </p>
             <h3 className="mt-1.5 font-sans text-lg font-extralight leading-tight text-[#8b4114] sm:text-xl">
-              Nem todo trabalho precisa virar uma linha fixa.
+              Quer encomendar alguma peça que não está disponível no site?
             </h3>
             <p className="mt-2 font-sans text-xs font-light leading-5 text-[#8b4114]/72">
-              Se você imaginou uma pintura em objeto, presente ou pequena intervenção, a conversa ajuda a descobrir se faz sentido.
+              Veja disponibilidade clicando aqui:
             </p>
             <a
               href={otherProjectsWhatsappUrl}
@@ -211,12 +216,12 @@ export function OtherProjectsSection() {
               className="mt-3 inline-flex h-9 items-center justify-center gap-2 rounded-full bg-[#7d876d] px-4 font-sans text-xs font-medium text-white shadow-[0_10px_22px_rgba(0,0,0,0.12)] transition-transform hover:-translate-y-0.5"
             >
               <MessageCircle className="h-4 w-4" aria-hidden="true" />
-              Conversar sobre ideia
+              Conversar
             </a>
-          </div>
+          </motion.div>
         </div>
 
-        <div className="mt-5 flex items-center justify-between gap-3 sm:mt-6">
+        <div className="mt-4 flex items-center justify-between gap-3 sm:mt-5">
           <p className="font-sans text-[0.7rem] font-medium uppercase tracking-wider text-[#8b4114]/60">
             Arraste a parede para ver as peças disponíveis
           </p>
@@ -250,7 +255,7 @@ export function OtherProjectsSection() {
             onPointerCancel={stopWallDrag}
             onPointerLeave={stopWallDrag}
             onScroll={syncLoopPosition}
-            className="flex min-h-[22rem] cursor-grab select-none items-start gap-5 overflow-x-auto px-5 pb-6 pt-8 active:cursor-grabbing sm:min-h-[25rem] sm:gap-7 sm:px-8 sm:pb-8 sm:pt-10 md:min-h-[28rem] md:gap-8 xl:min-h-[31rem] xl:px-8 xl:pb-8 xl:pt-11 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="flex min-h-[20rem] cursor-grab select-none items-start gap-5 overflow-x-auto px-5 pb-5 pt-7 active:cursor-grabbing sm:min-h-[23rem] sm:gap-6 sm:px-8 sm:pb-7 sm:pt-8 md:min-h-[26rem] md:gap-7 xl:min-h-[28rem] xl:px-8 xl:pb-7 xl:pt-9 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {carouselProjects.map((project, index) => (
               <StickerProductCard
@@ -264,18 +269,24 @@ export function OtherProjectsSection() {
           </div>
         </div>
 
-        <div className="mt-5 flex flex-col gap-3 border-t border-[#8b4114]/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.48, ease: "easeOut" }}
+          className="mt-4 flex flex-col gap-3 border-t border-[#8b4114]/10 pt-3 sm:flex-row sm:items-center sm:justify-between"
+        >
           <p className="font-sans text-[0.72rem] font-light uppercase tracking-[0.14em] text-[#8b4114]/50">
-            Peças especiais com produção limitada. Para orçar, conte o tipo de peça, tamanho desejado e prazo aproximado.
+            Fique de olho, sempre teremos peças a pronta entrega nessa aba :)
           </p>
           <a
             href="#pedido"
             className="inline-flex h-9 items-center justify-center gap-2 rounded-full bg-[#c68043] px-4 font-sans text-xs font-medium text-white shadow-[0_10px_24px_rgba(0,0,0,0.12)] transition-transform hover:-translate-y-0.5"
           >
-            Levar uma ideia
+            Conversar
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </a>
-        </div>
+        </motion.div>
       </div>
 
       <GalleryModal

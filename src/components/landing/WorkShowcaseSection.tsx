@@ -3,7 +3,7 @@ import { Baby, Brush, Gift, MessageCircle, Palette, Sparkles } from "lucide-reac
 import { buildWhatsappUrl } from "@/lib/whatsapp";
 
 const budgetMessage = [
-  "Olá! Quero pedir um orçamento com a Maiara Mattia.",
+  "Olá! Quero pedir um orçamento com a Maiara Matthia.",
   "Tenho interesse em um projeto, desenho personalizado ou arte de aniversário.",
   "Podemos conversar sobre ideias, valores e prazos?",
 ].join("\n");
@@ -36,9 +36,9 @@ const projectTypes = [
 
 export function WorkShowcaseSection() {
   return (
-    <section id="portfolio" className="relative overflow-hidden bg-[#f8f1e9] px-5 py-10 sm:px-8 md:py-14 lg:py-16">
+    <section id="portfolio" className="relative overflow-hidden bg-[#f8f1e9] px-5 py-8 sm:px-8 md:py-10 lg:py-12">
       <div className="relative mx-auto max-w-7xl">
-        <div className="grid gap-5 border-b border-[#8b4114]/15 pb-5 md:gap-6 md:pb-6 lg:grid-cols-[1fr_0.74fr] lg:items-end">
+        <div className="grid gap-4 border-b border-[#8b4114]/15 pb-4 md:gap-5 md:pb-5 lg:grid-cols-[1fr_0.74fr] lg:items-end">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -76,7 +76,7 @@ export function WorkShowcaseSection() {
           </div>
         </div>
 
-        <div className="mt-5 grid gap-3 sm:mt-6 sm:grid-cols-3 sm:gap-4">
+        <div className="mt-4 grid gap-3 sm:mt-5 sm:grid-cols-3 sm:gap-4">
           {projectTypes.map((project, index) => {
             const Icon = project.icon;
 
@@ -101,7 +101,7 @@ export function WorkShowcaseSection() {
           })}
         </div>
 
-        <div className="mt-6 flex flex-col gap-3 border-t border-[#8b4114]/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-5 flex flex-col gap-3 border-t border-[#8b4114]/10 pt-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="font-sans text-[0.72rem] font-light uppercase tracking-[0.14em] text-[#8b4114]/50">
             A parede de quadros agora continua na Galeria.
           </p>
