@@ -62,7 +62,7 @@ export function HeroSection({ phrase }: HeroSectionProps) {
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto grid min-h-[92svh] max-w-7xl gap-5 px-5 pb-8 pt-20 sm:gap-7 sm:px-8 sm:pb-10 sm:pt-20 md:pb-12 xl:grid-cols-[0.98fr_1.02fr] xl:items-center xl:gap-8 xl:px-5 xl:py-20">
+      <div className="relative z-10 mx-auto grid min-h-[100vh] max-w-7xl gap-5 px-5 pb-8 pt-20 sm:gap-7 sm:px-8 sm:pb-10 sm:pt-20 md:pb-12 xl:grid-cols-[0.98fr_1.02fr] xl:items-center xl:gap-8 xl:px-5 xl:py-20">
         <motion.div className="relative z-10 max-w-[42rem] md:max-w-3xl xl:max-w-[42rem]" variants={textParent} initial="hidden" animate="show">
           <motion.p variants={textItem} className="eyebrow text-white">
             Maiara Mattia · artista visual
