@@ -1,60 +1,61 @@
-import { Baby, BookOpen, Brush, Frame, Gift, Palette, Sparkles, Star } from "lucide-react";
+import { motion } from "framer-motion";
+import { BookOpen, Brush, Frame, Gift, Heart, Palette, Sparkles, Star } from "lucide-react";
 
 const services = [
   {
     number: "01",
-    title: "Retrato de família",
-    eyebrow: "memória para emoldurar",
-    text: "Uma composição com gente querida, pets, objetos da casa e frases que só aquela família reconhece.",
-    details: ["nomes e datas", "pets e pequenas pistas", "arquivo para imprimir"],
+    title: "Retratos afetivos",
+    eyebrow: "histórias em traço",
+    text: "Ilustrações feitas a partir de pessoas, vínculos e detalhes que fazem sentido para aquela história.",
+    details: ["família", "casais", "pets"],
     icon: Frame,
   },
   {
     number: "02",
-    title: "Maternidade",
-    eyebrow: "gestação, chegada e quarto",
-    text: "Artes delicadas para anunciar, decorar ou guardar uma fase que passa rápido demais.",
-    details: ["chá de bebê", "quadro de nascimento", "lembrança afetiva"],
-    icon: Baby,
+    title: "Memórias ilustradas",
+    eyebrow: "para guardar",
+    text: "Uma cena, uma frase ou uma lembrança vira arte com acabamento leve e personalizado.",
+    details: ["datas especiais", "frases", "lembranças"],
+    icon: Heart,
   },
   {
     number: "03",
-    title: "Papelaria infantil",
-    eyebrow: "identidade para brincar",
-    text: "Capas, bilhetes, convites e peças escolares com personagem, cor e uma história própria.",
-    details: ["convites", "capas e etiquetas", "kit visual"],
+    title: "Papelaria afetiva",
+    eyebrow: "peças delicadas",
+    text: "Artes para capas, cartões e detalhes impressos com identidade visual feita com cuidado.",
+    details: ["capas", "cartões", "etiquetas"],
     icon: BookOpen,
   },
   {
     number: "04",
-    title: "Maker em linhas",
+    title: "Pequeno artista",
     eyebrow: "desenho da criança",
-    text: "O rabisco original continua sendo o protagonista; eu cuido da cor, composição e acabamento.",
-    details: ["desenho enviado", "paleta escolhida", "arte final personalizada"],
+    text: "O desenho original da criança ganha cor, composição e uma versão pronta para virar lembrança.",
+    details: ["desenho enviado", "cores", "arte final"],
     icon: Palette,
   },
   {
     number: "05",
-    title: "Presentes personalizados",
-    eyebrow: "para datas com nome",
-    text: "Quadros e artes feitos a partir de uma história real, sem cara de presente comprado na pressa.",
-    details: ["aniversário", "dia das mães", "lembranças de família"],
+    title: "Presentes com nome",
+    eyebrow: "feito para alguém",
+    text: "Artes personalizadas para presentear com intenção, sem excesso e com uma estética própria.",
+    details: ["aniversário", "família", "datas afetivas"],
     icon: Gift,
   },
   {
     number: "06",
-    title: "Peças lúdicas",
-    eyebrow: "personagens e objetos",
-    text: "Pequenos universos visuais para marcas, festas, coleções ou ideias que precisam ganhar corpo.",
-    details: ["mascotes", "elementos de festa", "coleções visuais"],
+    title: "Produtos do ateliê",
+    eyebrow: "prontos ou sob consulta",
+    text: "Peças autorais e ilustrações disponíveis para quem quer escolher algo já criado pela Maiara.",
+    details: ["pôsteres", "coleções", "peças prontas"],
     icon: Sparkles,
   },
 ];
 
 const processNotes = [
-  "uma conversa curta sobre a ideia",
-  "referências, nomes e pequenos símbolos",
-  "rascunho, ajustes e arte final pronta",
+  "você envia a ideia",
+  "a Maiara organiza o caminho",
+  "a arte segue para finalização",
 ];
 
 const cardStyles = [
@@ -98,7 +99,7 @@ const cardStyles = [
 
 export function ServicesSection() {
   return (
-    <section id="servicos" className="relative isolate overflow-hidden bg-[#faf4ed] px-5 py-12 sm:px-8 md:py-14 lg:py-14 xl:py-16">
+    <section id="servicos" className="relative isolate overflow-hidden bg-[#faf4ed] px-5 py-9 sm:px-8 md:py-11 lg:py-12 xl:py-12">
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
         <div className="absolute inset-0 bg-[radial-gradient(#8b4114_0.75px,transparent_0.75px)] [background-size:24px_24px] opacity-[0.06]" />
         <div className="absolute right-[-8%] top-1/3 h-80 w-80 rounded-full bg-[#dbe3c9]/35 blur-3xl" />
@@ -106,8 +107,14 @@ export function ServicesSection() {
         <Star className="absolute bottom-20 right-[6%] h-8 w-8 -rotate-12 fill-[#8b4114] text-[#8b4114]/80" />
       </div>
 
-      <div className="mx-auto grid max-w-[88rem] gap-6 md:gap-8 lg:grid-cols-[0.3fr_0.7fr] lg:items-start lg:gap-9">
-        <div className="relative min-w-0 max-w-full rounded-xl border border-[#8b4114]/10 bg-white p-4 text-[#8b4114] shadow-[0_18px_45px_rgba(54,67,64,0.10)] sm:-rotate-[1deg] sm:rounded-[2.5rem_1.25rem_2.75rem_1.5rem] sm:p-6 lg:sticky lg:top-20">
+      <div className="mx-auto grid max-w-[88rem] gap-5 md:gap-6 lg:grid-cols-[0.3fr_0.7fr] lg:items-start lg:gap-7">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.58, ease: "easeOut" }}
+          className="relative min-w-0 max-w-full rounded-xl border border-[#8b4114]/10 bg-white p-4 text-[#8b4114] shadow-[0_18px_45px_rgba(54,67,64,0.10)] sm:-rotate-[1deg] sm:rounded-[2.5rem_1.25rem_2.75rem_1.5rem] sm:p-6 lg:sticky lg:top-20"
+        >
           <span className="absolute -top-3 left-1/2 h-7 w-24 -translate-x-1/2 rotate-2 bg-[#d6bea1]/55 backdrop-blur-[1px]" aria-hidden="true" />
           <span className="absolute -right-3 top-24 h-5 w-5 rounded-full bg-[#7d876d]" aria-hidden="true" />
           <span className="absolute -right-7 top-16 h-3 w-3 rounded-full bg-[#ddb8a6]" aria-hidden="true" />
@@ -116,16 +123,16 @@ export function ServicesSection() {
             Serviços do ateliê
           </p>
           <h2 className="mt-3 max-w-xl font-sans text-[1.7rem] font-extralight leading-[1.15] text-[#8b4114] sm:text-[2rem]">
-            Encomendas com pista, história e um tantinho de{" "}
+            Ilustrações personalizadas com afeto, detalhe e um toque de{" "}
             <span className="relative inline-block whitespace-nowrap">
-              brincadeira.
+              delicadeza.
               <svg className="absolute -bottom-2 left-0 h-3 w-full text-[#c68043]" viewBox="0 0 180 12" preserveAspectRatio="none" aria-hidden="true">
                 <path d="M2 7c40-7 88 5 176-3" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
               </svg>
             </span>
           </h2>
           <p className="mt-4 max-w-md font-sans text-[0.82rem] font-light leading-6 text-[#8b4114]/75">
-            Cada pedido começa no detalhe: um desenho da criança, uma frase da família, uma flor do jardim, uma lembrança que merece ficar visível.
+            Cada pedido nasce de uma ideia simples: uma pessoa, uma memória, um desenho ou uma peça que merece ganhar forma.
           </p>
 
           <div className="mt-5 rounded-xl bg-[#f8f1e9] p-3.5 sm:mt-6 sm:rounded-[1.5rem_0.8rem_1.5rem_0.8rem] sm:p-4">
@@ -143,17 +150,21 @@ export function ServicesSection() {
               ))}
             </ol>
           </div>
-        </div>
+        </motion.div>
 
         <div className="min-w-0">
-          <div className="-mx-5 flex max-w-[calc(100%+2.5rem)] snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-5 sm:mx-0 sm:grid sm:max-w-none sm:snap-none sm:grid-cols-2 sm:items-stretch sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 xl:gap-6">
+          <div className="-mx-5 flex max-w-[calc(100%+2.5rem)] snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 sm:mx-0 sm:grid sm:max-w-none sm:snap-none sm:grid-cols-2 sm:items-stretch sm:gap-4 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 xl:gap-5">
             {services.map((service, index) => {
               const Icon = service.icon;
               const style = cardStyles[index];
 
               return (
-                <article
+                <motion.article
                   key={service.title}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.48, delay: index * 0.05, ease: "easeOut" }}
                   className={`group relative flex min-w-[78vw] snap-center flex-col overflow-hidden rounded-xl border border-[#8b4114]/10 bg-white p-4 shadow-[0_16px_35px_rgba(54,67,64,0.09)] transition-[transform,box-shadow] duration-300 hover:z-10 hover:rotate-0 hover:-translate-y-1 hover:shadow-[0_22px_44px_rgba(54,67,64,0.14)] sm:min-w-0 sm:rounded-[1.6rem_1rem_1.9rem_1.1rem] sm:p-5 lg:min-h-[292px] xl:min-h-[276px] ${style.card}`}
                 >
                   
@@ -183,14 +194,20 @@ export function ServicesSection() {
                       </span>
                     ))}
                   </div>
-                </article>
+                </motion.article>
               );
             })}
           </div>
 
-          <div className="relative mt-5 overflow-hidden rounded-[1.3rem_2.5rem_1.5rem_2.2rem] border border-[#8b4114]/10 bg-[#fffaf5] px-5 py-3 text-[#8b4114] shadow-[0_14px_30px_rgba(54,67,64,0.07)] sm:flex sm:items-center sm:justify-between sm:gap-5 sm:rotate-[0.5deg]">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.48, ease: "easeOut" }}
+            className="relative mt-4 overflow-hidden rounded-[1.3rem_2.5rem_1.5rem_2.2rem] border border-[#8b4114]/10 bg-[#fffaf5] px-5 py-3 text-[#8b4114] shadow-[0_14px_30px_rgba(54,67,64,0.07)] sm:flex sm:items-center sm:justify-between sm:gap-5 sm:rotate-[0.5deg]"
+          >
             <p className="font-sans text-[0.78rem] font-light leading-5 text-[#8b4114]/75">
-              Não precisa chegar com tudo decidido. Uma foto, um desenho ou uma memória já bastam para começar.
+              Não precisa chegar com tudo pronto. Uma referência ou uma ideia já bastam para começar.
             </p>
             <a
               href="#pedido"
@@ -198,7 +215,7 @@ export function ServicesSection() {
             >
               Começar pedido
             </a>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

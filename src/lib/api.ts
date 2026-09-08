@@ -34,6 +34,54 @@ export type CreateOrderResponse = {
   whatsappUrl: string | null;
 };
 
+export type OrderStatusValue =
+  | "awaiting_payment"
+  | "received"
+  | "payment_confirmed"
+  | "in_production"
+  | "awaiting_approval"
+  | "finished";
+
+export type OrderStatusResponse = {
+  code: string;
+  product: string;
+  size: string | null;
+  colors: string | null;
+  notes: string | null;
+  status: OrderStatusValue;
+  orderType: OrderType;
+  source: OrderSource;
+  expiresAt: string | null;
+  customerName: string;
+  createdAt: string;
+  updatedAt: string;
+  items: Array<{
+    product_id: string | null;
+    title: string;
+    category: string | null;
+    order_type: OrderType | null;
+    price: string | null;
+    dimensions: string | null;
+    quantity: number;
+    notes: string | null;
+    image_url: string | null;
+    sort_order: number;
+  }>;
+  events: Array<{
+    status: OrderStatusValue;
+    note: string | null;
+    created_at: string;
+  }>;
+  files: Array<{
+    id: string;
+    kind: "original" | "preview" | "final";
+    file_name: string;
+    content_type: string;
+    size_bytes: number;
+    created_at: string;
+  }>;
+};
+
 export type GalleryProductApiRow = {
   id: string;
   name: string;
@@ -92,6 +140,16 @@ export async function uploadOrderFile(uploadUrl: string, file: File) {
   }
 
   return response.json() as Promise<{ fileId: string; objectKey: string }>;
+}
+
+export async function getOrderStatus(code: string, token: string) {
+  const response = await fetch(`${apiBaseUrl}/api/orders/${encodeURIComponent(code)}?token=${encodeURIComponent(token)}`);
+
+  if (!response.ok) {
+    throw new Error(await readApiError(response));
+  }
+
+  return response.json() as Promise<OrderStatusResponse>;
 }
 
 export async function listGalleryProducts() {

@@ -62,29 +62,30 @@ export function HeroSection({ phrase }: HeroSectionProps) {
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto grid min-h-[100svh] max-w-7xl gap-6 px-5 pb-10 pt-20 sm:gap-8 sm:px-8 sm:pb-14 sm:pt-24 md:pb-16 xl:grid-cols-[0.98fr_1.02fr] xl:items-center xl:gap-10 xl:px-5 xl:py-24">
+      <div className="relative z-10 mx-auto grid min-h-[92svh] max-w-7xl gap-5 px-5 pb-8 pt-20 sm:gap-7 sm:px-8 sm:pb-10 sm:pt-20 md:pb-12 xl:grid-cols-[0.98fr_1.02fr] xl:items-center xl:gap-8 xl:px-5 xl:py-20">
         <motion.div className="relative z-10 max-w-[42rem] md:max-w-3xl xl:max-w-[42rem]" variants={textParent} initial="hidden" animate="show">
           <motion.p variants={textItem} className="eyebrow text-white">
-            Maiara Mattia · artista visual
+            Maiara Matthia · artista visual
           </motion.p>
           <motion.h1 variants={textItem} className="mt-3 max-w-2xl font-poppins text-[2.15rem] font-thin leading-[1.08] text-[#8b4114] sm:mt-5 sm:text-[2.8rem] sm:leading-[1.04] lg:text-[3.45rem] xl:text-6xl">
             Beleza nas pequenas delicadezas do cotidiano.
           </motion.h1>
           <motion.p variants={textItem} className="mt-4 max-w-xl font-sans text-sm font-light leading-6 text-[#8b4114]/85 sm:mt-5 sm:text-lg sm:leading-7 md:text-xl md:leading-8">
-            Sou publicitária e apaixonada por ilustrar, mas, acima de tudo, sou alguém que encontra beleza nas pequenas delicadezas do cotidiano.
-          </motion.p>
-          <motion.div variants={textItem} className="mt-5 grid max-w-2xl gap-3 font-sans text-[0.82rem] font-light leading-5 text-[#8b4114]/82 sm:mt-6 sm:grid-cols-2 sm:gap-4 sm:text-sm sm:leading-6 md:text-base md:leading-7">
+            Sou artista visual e ilustradora, formada pela UCDB. Meu trabalho nasce da infância, da natureza e das memórias afetivas. 
+            <br />Acredito que as coisas mais bonitas são também as mais simples:
+          </motion.p> 
+          <motion.div variants={textItem} className="mt-4 grid max-w-2xl gap-3 font-sans text-[0.82rem] font-light leading-5 text-[#8b4114]/82 sm:mt-5 sm:grid-cols-2 sm:gap-3 sm:text-sm sm:leading-6 md:text-base md:leading-7">
             <p className="border-l border-white/45 pl-4 sm:pl-5">
-              Meu trabalho nasce da infância, da natureza e das memórias afetivas. Cresce entre flores, folhas, animais, madeira e tons empoeirados.
+              Uma flor encontrada durante a caminhada, o papel de carta guardado por muitos anos. Um abraço de quem amamos ou um galho transformado em brincadeira.
             </p>
             <p className="border-l border-white/45 pl-4 sm:pl-5">
-              Acredito que a arte pode desacelerar o olhar e despertar lembranças, criando acolhimento, leveza e a sensação de que sempre esteve ali.
+              É desse lugar que nasce o meu trabalho. Entre ilustrações, pintura e criação manual, procuro transformar memórias em imagens e objetos que acolhem.
             </p>
           </motion.div>
           <motion.div variants={textItem} className="mt-4 inline-flex max-w-full rounded-full border border-white/45 bg-white/20 px-3 py-2 font-sans text-[0.62rem] font-light uppercase leading-4 tracking-[0.1em] text-[#8b4114]/75 backdrop-blur-sm sm:mt-5 sm:max-w-xl sm:px-5 sm:text-xs sm:tracking-[0.14em] md:text-sm">
             histórias em ilustrações e objetos feitos para durar
           </motion.div>
-          <motion.div variants={textItem} className="mt-6 flex flex-col gap-2.5 sm:mt-7 sm:flex-row sm:gap-3">
+          <motion.div variants={textItem} className="mt-5 flex flex-col gap-2.5 sm:mt-6 sm:flex-row sm:gap-3">
             <motion.a
               href="#portfolio"
               whileHover={{ y: -3, rotate: -1 }}
@@ -116,7 +117,7 @@ export function HeroSection({ phrase }: HeroSectionProps) {
             <div className="relative z-10 overflow-hidden rounded-[1.5rem] border border-white/45 bg-white/35 p-2.5 shadow-[0_24px_60px_rgba(93,51,29,0.18)] backdrop-blur-sm sm:rounded-[2rem] sm:p-3">
               <img
                 src="/image/maiara.jpeg"
-                alt="Retrato de Maiara Mattia cercada por ilustrações florais"
+                alt="Retrato de Maiara Matthia cercada por ilustrações florais"
                 className="aspect-[4/5] w-full rounded-[1.05rem] object-cover object-center sm:rounded-[1.45rem]"
               />
             </div>

@@ -36,6 +36,8 @@ const statusTabOptions: { value: AdminOrderStatus | "all"; label: string }[] = [
   { value: "finished", label: "Finalizados" },
 ];
 
+const emptyOrders: AdminOrderRow[] = [];
+
 const AdminOrders = () => {
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [selectedOrder, setSelectedOrder] = useState<AdminOrderRow | null>(null);
@@ -52,7 +54,7 @@ const AdminOrders = () => {
     retry: false,
   });
 
-  const orders = data?.orders ?? [];
+  const orders = data?.orders ?? emptyOrders;
 
   const updateStatus = useMutation({
     mutationFn: ({ code, nextStatus }: { code: string; nextStatus: AdminOrderStatus }) =>

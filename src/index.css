@@ -92,7 +92,7 @@
   }
 
   .section-shell {
-    @apply px-5 py-12 sm:px-8 md:py-16 xl:px-5 xl:py-20;
+    @apply px-5 py-10 sm:px-8 md:py-12 xl:px-5 xl:py-14;
   }
 
   .soft-card {

@@ -67,7 +67,7 @@ export function Header() {
       <nav className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-5">
         <a
           href="#inicio"
-          aria-label="Maiara Mattia - início"
+          aria-label="Maiara Matthia - início"
           className="flex items-center gap-3 transition-colors duration-500"
           style={{ color: headerAccentColor }}
         >
@@ -90,11 +90,11 @@ export function Header() {
           className="hidden items-center gap-7 font-sans text-sm font-normal transition-colors duration-500 md:flex"
           style={{ color: navTextColor }}
         >
-          <a href="#portfolio">Projetos</a>
-          <a href="#outros-projetos">Ateliê</a>
-          <a href="#maker">Maker</a>
-          <a href="#feedbacks">Feedbacks</a>
-          <a href="#pedido">Pedido</a>
+          <a href="#familinha">Personalizados</a>
+          <a href="#outros-projetos">Produtos</a>
+          <a href="#maker">Pequeno Artista</a>
+          <a href="#feedbacks">Clientes</a>
+          <a href="#pedido">Contato</a>
 
           
         </div>

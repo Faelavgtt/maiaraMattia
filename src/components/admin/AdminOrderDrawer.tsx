@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Check,
   ChevronRight,
@@ -60,13 +60,24 @@ export function AdminOrderDrawer({
 }: AdminOrderDrawerProps) {
   const [copiedCode, setCopiedCode] = useState(false);
   const [selectedPreviewImage, setSelectedPreviewImage] = useState<string | null>(null);
+  const copyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Cleanup timer on unmount to prevent setState on unmounted component
+  useEffect(() => {
+    return () => {
+      if (copyTimerRef.current) {
+        clearTimeout(copyTimerRef.current);
+      }
+    };
+  }, []);
 
   if (!isOpen || !order) return null;
 
   const copyCode = () => {
     navigator.clipboard.writeText(order.code);
     setCopiedCode(true);
-    setTimeout(() => setCopiedCode(false), 2000);
+    if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
+    copyTimerRef.current = setTimeout(() => setCopiedCode(false), 2000);
   };
 
   const cleanPhone = order.customer_phone.replace(/\D/g, "");
@@ -285,12 +296,54 @@ export function AdminOrderDrawer({
                 {noteFields.subtitle && (
                   <span className="inline-flex items-center gap-1 rounded-lg bg-white px-2.5 py-1 text-[#8b4114] border border-[#8b4114]/10">
                     <Sparkles className="h-3 w-3 text-[#76877e]" />
-                    <span>Subtítulo: "{noteFields.subtitle}"</span>
+                    <span>Subtítulo: &ldquo;{noteFields.subtitle}&rdquo;</span>
+                  </span>
+                )}
+                {noteFields.orientation && (
+                  <span className="inline-flex items-center gap-1 rounded-lg bg-white px-2.5 py-1 text-[#8b4114] border border-[#8b4114]/10">
+                    <span className="text-[#76877e]">↕</span>
+                    <span>Orientação: {noteFields.orientation}</span>
+                  </span>
+                )}
+                {noteFields.background && (
+                  <span className="inline-flex items-center gap-1 rounded-lg bg-white px-2.5 py-1 text-[#8b4114] border border-[#8b4114]/10">
+                    <span
+                      className="h-3 w-3 rounded-full border border-[#8b4114]/20"
+                      style={{ backgroundColor: noteFields.background }}
+                    />
+                    <span>Fundo: {noteFields.background}</span>
+                  </span>
+                )}
+                {noteFields.outline && (
+                  <span className="inline-flex items-center gap-1 rounded-lg bg-white px-2.5 py-1 text-[#8b4114] border border-[#8b4114]/10">
+                    <span
+                      className="h-3 w-3 rounded-full border-2"
+                      style={{ borderColor: noteFields.outline }}
+                    />
+                    <span>Traço: {noteFields.outline}</span>
+                  </span>
+                )}
+                {noteFields.uploadedFile && (
+                  <span className="inline-flex items-center gap-1 rounded-lg bg-white px-2.5 py-1 text-[#8b4114] border border-[#8b4114]/10">
+                    <span>📎</span>
+                    <span>{noteFields.uploadedFile}</span>
                   </span>
                 )}
               </div>
 
-              {/* Customer Observations Box */}
+              {/* Designer Notes from Maker */}
+              {noteFields.designerNotes && noteFields.designerNotes !== "sem observações" && (
+                <div className="mt-3 rounded-xl border border-[#8b4114]/10 bg-white p-3 text-xs">
+                  <span className="block font-semibold uppercase tracking-wider text-[#76877e] text-[10px]">
+                    Observações para a Designer
+                  </span>
+                  <p className="mt-1 font-light leading-relaxed text-[#8b4114] whitespace-pre-wrap">
+                    {noteFields.designerNotes}
+                  </p>
+                </div>
+              )}
+
+              {/* Free-form Customer Observations Box */}
               {noteFields.observations && (
                 <div className="mt-3 rounded-xl border border-amber-200/80 bg-amber-50/50 p-3 text-xs">
                   <span className="block font-semibold uppercase tracking-wider text-amber-900 text-[10px]">
@@ -302,6 +355,7 @@ export function AdminOrderDrawer({
                 </div>
               )}
             </div>
+
 
             {/* Cart Items Breakdown if any */}
             {order.items && order.items.length > 0 && (
@@ -480,16 +534,53 @@ export function AdminOrderDrawer({
   );
 }
 
+function normalizeNoteKey(key: string) {
+  return key
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase();
+}
+
 function parseOrderNotes(notes: string | null) {
   if (!notes) return { subtitle: "", observations: "" };
 
-  const subtitleMatch = notes.match(/Subtítulo\s*:\s*([^|\n]+)/i);
-  const subtitle = subtitleMatch ? subtitleMatch[1].trim() : "";
+  // Parse key: value pairs — same normalization as the worker
+  const fields = new Map<string, string>();
+  const unknownLines: string[] = [];
 
-  const cleanObservations = notes
-    .replace(/Subtítulo\s*:\s*[^|\n]+/gi, "")
-    .replace(/^\|\s*|\s*\|$/g, "")
-    .trim();
+  const knownKeys = new Set([
+    "subtitulo",
+    "orientacao",
+    "fundo",
+    "traco",
+    "arquivo enviado",
+    "observacoes da designer",
+  ]);
 
-  return { subtitle, observations: cleanObservations };
+  for (const line of notes.split("\n")) {
+    const separatorIndex = line.indexOf(":");
+    if (separatorIndex > 0) {
+      const rawKey = line.slice(0, separatorIndex);
+      const value = line.slice(separatorIndex + 1).trim();
+      const normalizedKey = normalizeNoteKey(rawKey);
+      if (value && knownKeys.has(normalizedKey)) {
+        fields.set(normalizedKey, value);
+      } else if (value) {
+        unknownLines.push(line.trim());
+      }
+    } else if (line.trim()) {
+      unknownLines.push(line.trim());
+    }
+  }
+
+  return {
+    subtitle: fields.get("subtitulo") ?? "",
+    orientation: fields.get("orientacao") ?? "",
+    background: fields.get("fundo") ?? "",
+    outline: fields.get("traco") ?? "",
+    uploadedFile: fields.get("arquivo enviado") ?? "",
+    designerNotes: fields.get("observacoes da designer") ?? "",
+    observations: unknownLines.join("\n").trim(),
+  };
 }
