@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, ReactNode, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Check, MessageCircle, Paintbrush, Send, Upload, WandSparkles } from "lucide-react";
+import { ArrowRight, Check, Paintbrush, Send, Upload, WandSparkles } from "lucide-react";
 
 const backgroundOptions = [
   { name: "Branco", value: "#ffffff" },
@@ -51,8 +51,8 @@ const svgExamples: Record<string, { src: string; label: string; sizeClass: strin
 
 const makerProcessSteps = [
   {
-    title: "Envie o desenho",
-    text: "Nós manteremos todas as características, mas faremos de forma minimalista, em formato de linhas e num tom só, escolhido por você.",
+    title: "Como funciona",
+    text: "Envie o desenho do seu pequeno artista e nós o transformaremos em uma obra de arte. Manteremos cada detalhe especial, traduzindo o desenho para um traço minimalista, em uma única cor escolhida por você.",
     icon: Send,
   },
   {
@@ -184,22 +184,7 @@ export function MakerSection({
           transition={{ duration: 0.55, delay: 0.06, ease: "easeOut" }}
           className="mb-4"
         >
-          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4">
-            <motion.article
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.45, ease: "easeOut" }}
-              className="rounded-xl border border-white/35 bg-white p-3 text-[#8b4114] shadow-[0_12px_30px_rgba(0,0,0,0.07)] sm:p-3.5"
-            >
-              <span className="font-sans text-xs font-light text-[#7d876d]">Como funciona</span>
-              <div className="mt-3 flex h-9 w-9 items-center justify-center rounded-full border border-[#ddb8a6] bg-[#ddb8a6]/45 text-[#8b4114] sm:mt-4 sm:h-10 sm:w-10">
-                <MessageCircle className="h-4 w-4" />
-              </div>
-              <p className="mt-3 font-sans text-xs font-light leading-5 text-[#8b4114] sm:mt-4 sm:text-sm sm:leading-6">
-                Nos envie um desenho do seu pequeno artista e nós transformaremos numa obra de arte para ser pendurada na parede.
-              </p>
-            </motion.article>
+          <div className="grid gap-3 sm:grid-cols-3">
             {makerProcessSteps.map((step, index) => {
               const Icon = step.icon;
               return (
