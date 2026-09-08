@@ -68,7 +68,7 @@ export function HeroSection({ phrase }: HeroSectionProps) {
             Maiara Mattia · artista visual
           </motion.p>
           <motion.h1 variants={textItem} className="mt-3 max-w-2xl font-poppins text-[2.15rem] font-thin leading-[1.08] text-[#8b4114] sm:mt-5 sm:text-[2.8rem] sm:leading-[1.04] lg:text-[3.45rem] xl:text-6xl">
-            Beleza nas pequenas delicadezas do cotidiano.
+            A beleza nas pequenas delicadezas do dia a dia.
           </motion.h1>
           <motion.p variants={textItem} className="mt-4 max-w-xl font-sans text-sm font-light leading-6 text-[#8b4114]/85 sm:mt-5 sm:text-lg sm:leading-7 md:text-xl md:leading-8">
             Sou artista visual e ilustradora, formada pela UCDB. Meu trabalho nasce da infância, da natureza e das memórias afetivas. 
