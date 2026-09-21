@@ -136,19 +136,49 @@ export function CartDrawer() {
                 <form onSubmit={submitCheckout} className="mt-4 space-y-2.5 rounded-md border border-[#8b4114]/15 bg-white p-3.5 sm:mt-5 sm:space-y-3 sm:p-4">
                   <label className="block font-sans text-xs font-light text-[#8b4114]">
                     Seu nome
-                    <input name="customerName" required className="mt-1 h-10 w-full rounded-full border border-[#ddb8a6] px-4 outline-none focus:border-[#c68043] sm:h-11" />
+                    <input
+                      name="customerName"
+                      required
+                      minLength={2}
+                      maxLength={80}
+                      autoComplete="name"
+                      className="mt-1 h-10 w-full rounded-full border border-[#ddb8a6] px-4 outline-none focus:border-[#c68043] sm:h-11"
+                    />
                   </label>
                   <label className="block font-sans text-xs font-light text-[#8b4114]">
                     WhatsApp
-                    <input name="phone" required className="mt-1 h-10 w-full rounded-full border border-[#ddb8a6] px-4 outline-none focus:border-[#c68043] sm:h-11" />
+                    <input
+                      name="phone"
+                      type="tel"
+                      required
+                      minLength={10}
+                      maxLength={20}
+                      inputMode="tel"
+                      autoComplete="tel"
+                      pattern="[0-9()+\-\s]{10,20}"
+                      title="Informe um WhatsApp com DDD."
+                      className="mt-1 h-10 w-full rounded-full border border-[#ddb8a6] px-4 outline-none focus:border-[#c68043] sm:h-11"
+                    />
                   </label>
                   <label className="block font-sans text-xs font-light text-[#8b4114]">
                     E-mail opcional
-                    <input name="email" type="email" className="mt-1 h-10 w-full rounded-full border border-[#ddb8a6] px-4 outline-none focus:border-[#c68043] sm:h-11" />
+                    <input
+                      name="email"
+                      type="email"
+                      maxLength={120}
+                      autoComplete="email"
+                      className="mt-1 h-10 w-full rounded-full border border-[#ddb8a6] px-4 outline-none focus:border-[#c68043] sm:h-11"
+                    />
                   </label>
                   <label className="block font-sans text-xs font-light text-[#8b4114]">
                     Observações do pedido
-                    <textarea name="notes" rows={2} className="mt-1 w-full resize-none rounded-xl border border-[#ddb8a6] p-3 outline-none focus:border-[#c68043] sm:min-h-20" placeholder="Cores, nomes, prazo ou detalhes importantes." />
+                    <textarea
+                      name="notes"
+                      rows={2}
+                      maxLength={600}
+                      className="mt-1 w-full resize-none rounded-xl border border-[#ddb8a6] p-3 outline-none focus:border-[#c68043] sm:min-h-20"
+                      placeholder="Cores, nomes, prazo ou detalhes importantes."
+                    />
                   </label>
                   <button disabled={isSubmitting} className="inline-flex h-11 w-full items-center justify-center rounded-full bg-[#7d876d] px-5 font-sans text-sm font-medium text-white disabled:opacity-60">
                     {isSubmitting ? "Enviando..." : "Finalizar pedido"}
