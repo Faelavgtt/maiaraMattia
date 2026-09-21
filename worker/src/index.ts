@@ -38,13 +38,23 @@ type AdminIdentity = {
   role: "owner" | "admin";
 };
 
+class HttpError extends Error {
+  constructor(public status: number, message: string) {
+    super(message);
+  }
+}
+
 const allowedOrderFileTypes = new Set(["image/jpeg", "image/png", "application/pdf"]);
 const allowedGalleryImageTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 const maxOrderFileBytes = 50 * 1024 * 1024;
 const maxGalleryImageBytes = 8 * 1024 * 1024;
+const maxJsonBodyBytes = 64 * 1024;
 const adminSessionCookieName = "maiara_admin_session";
 const adminSessionDurationMs = 1000 * 60 * 60 * 24 * 7;
 const passwordHashIterations = 100000;
+const minuteMs = 1000 * 60;
+const hourMs = minuteMs * 60;
+const dayMs = hourMs * 24;
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -55,6 +65,9 @@ export default {
     const url = new URL(request.url);
 
     try {
+      const adminOriginError = rejectCrossSiteAdminMutation(request, env, url);
+      if (adminOriginError) return adminOriginError;
+
       if (url.pathname === "/health") {
         return json({ ok: true, storage: env.DB ? "d1" : "disabled" }, 200, env);
       }
@@ -231,12 +244,17 @@ export default {
 
       return json({ error: "Not found" }, 404, env);
     } catch (error) {
+      if (error instanceof HttpError) {
+        return json({ error: error.message }, error.status, env);
+      }
+
       return json({ error: error instanceof Error ? error.message : "Unexpected error" }, 500, env);
     }
   },
 
   async scheduled(_controller: ScheduledController, env: Env, _ctx: ExecutionContext): Promise<void> {
     await deleteExpiredUnpaidOrders(env);
+    await deleteExpiredRateLimits(env);
   },
 };
 
@@ -249,13 +267,16 @@ async function createOrder(request: Request, env: Env) {
   const db = requireDb(env);
   if (db instanceof Response) return db;
 
+  const bodySizeError = rejectOversizedJson(request, env);
+  if (bodySizeError) return bodySizeError;
+
   const body = await readJson(request);
-  const customerName = requireString(body.customerName, "customerName");
-  const phone = requireString(body.phone, "phone");
-  const email = optionalString(body.email);
-  const notes = optionalString(body.notes);
-  const colors = optionalString(body.colors);
-  const size = optionalString(body.size);
+  const customerName = requireBoundedString(body.customerName, "customerName", 2, 80);
+  const phone = normalizeRequiredPhone(body.phone);
+  const email = optionalEmail(body.email);
+  const notes = optionalBoundedString(body.notes, "notes", 600);
+  const colors = optionalBoundedString(body.colors, "colors", 80);
+  const size = optionalBoundedString(body.size, "size", 80);
   const items = normalizeOrderItems(body.items, body);
   const product = summarizeOrderItems(items);
   const orderType = requireEnum(body.orderType ?? inferOrderType(items), "orderType", orderTypes);
@@ -268,8 +289,14 @@ async function createOrder(request: Request, env: Env) {
   const code = orderCode();
   const token = randomToken();
 
+  const ipLimit = await checkRateLimit(env, "order_ip", clientFingerprint(request), 8, hourMs);
+  if (ipLimit) return ipLimit;
+
+  const phoneLimit = await checkRateLimit(env, "order_phone", phone, 5, dayMs);
+  if (phoneLimit) return phoneLimit;
+
   const existingCustomer = await db.prepare("SELECT id FROM customers WHERE phone = ? LIMIT 1")
-    .bind(normalizePhone(phone))
+    .bind(phone)
     .first<{ id: string }>();
 
   const finalCustomerId = existingCustomer?.id ?? customerId;
@@ -280,7 +307,7 @@ async function createOrder(request: Request, env: Env) {
       .run();
   } else {
     await db.prepare("INSERT INTO customers (id, name, phone, email, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)")
-      .bind(finalCustomerId, customerName, normalizePhone(phone), email, now, now)
+      .bind(finalCustomerId, customerName, phone, email, now, now)
       .run();
   }
 
@@ -510,9 +537,18 @@ async function loginAdmin(request: Request, env: Env) {
 
   await ensureBootstrapAdmin(env, request);
 
+  const bodySizeError = rejectOversizedJson(request, env);
+  if (bodySizeError) return bodySizeError;
+
   const body = await readJson(request);
   const login = requireString(body.login, "login").toLowerCase();
   const password = requireString(body.password, "password");
+
+  const ipLimit = await checkRateLimit(env, "admin_login_ip", clientFingerprint(request), 20, 15 * minuteMs);
+  if (ipLimit) return ipLimit;
+
+  const loginLimit = await checkRateLimit(env, "admin_login_user", login, 10, 15 * minuteMs);
+  if (loginLimit) return loginLimit;
 
   const user = await db.prepare(
     `SELECT id, username, email, password_hash, role, is_active, created_at, updated_at, last_login_at
@@ -1329,37 +1365,38 @@ function toOtherProjectResponse(row: OtherProjectRow) {
 
 function normalizeOrderItems(value: unknown, fallbackBody: Record<string, unknown>): OrderItemInput[] {
   if (!Array.isArray(value) || value.length === 0) {
+    const product = requireBoundedString(fallbackBody.product, "product", 1, 120);
     return [{
       productId: null,
-      title: requireString(fallbackBody.product, "product"),
+      title: product,
       category: null,
-      orderType: requireEnum(fallbackBody.orderType ?? inferOrderTypeFromText(requireString(fallbackBody.product, "product")), "orderType", orderTypes),
+      orderType: requireEnum(fallbackBody.orderType ?? inferOrderTypeFromText(product), "orderType", orderTypes),
       price: null,
-      dimensions: optionalString(fallbackBody.size),
+      dimensions: optionalBoundedString(fallbackBody.size, "size", 80),
       quantity: 1,
-      notes: optionalString(fallbackBody.notes),
+      notes: optionalBoundedString(fallbackBody.notes, "notes", 300),
       imageUrl: null,
     }];
   }
 
   return value.slice(0, 20).map((item, index) => {
-    if (!isRecord(item)) throw new Error(`items.${index} is invalid`);
+    if (!isRecord(item)) throw new HttpError(400, `items.${index} is invalid`);
 
     const quantity = Number(item.quantity ?? 1);
     if (!Number.isInteger(quantity) || quantity < 1 || quantity > 99) {
-      throw new Error(`items.${index}.quantity is invalid`);
+      throw new HttpError(400, `items.${index}.quantity is invalid`);
     }
 
     return {
-      productId: optionalString(item.productId),
-      title: requireString(item.title, `items.${index}.title`),
-      category: optionalString(item.category),
+      productId: optionalBoundedString(item.productId, `items.${index}.productId`, 80),
+      title: requireBoundedString(item.title, `items.${index}.title`, 1, 120),
+      category: optionalBoundedString(item.category, `items.${index}.category`, 80),
       orderType: optionalOrderType(item.orderType, item),
-      price: optionalString(item.price),
-      dimensions: optionalString(item.dimensions),
+      price: optionalBoundedString(item.price, `items.${index}.price`, 40),
+      dimensions: optionalBoundedString(item.dimensions, `items.${index}.dimensions`, 80),
       quantity,
-      notes: optionalString(item.notes),
-      imageUrl: optionalString(item.imageUrl),
+      notes: optionalBoundedString(item.notes, `items.${index}.notes`, 300),
+      imageUrl: optionalBoundedString(item.imageUrl, `items.${index}.imageUrl`, 300),
     };
   });
 }
@@ -1367,9 +1404,9 @@ function normalizeOrderItems(value: unknown, fallbackBody: Record<string, unknow
 function optionalOrderType(value: unknown, item: Record<string, unknown>) {
   if (typeof value === "string" && orderTypes.includes(value as (typeof orderTypes)[number])) return value;
   return inferOrderType([{
-    productId: optionalString(item.productId),
+    productId: optionalBoundedString(item.productId, "productId", 80),
     title: typeof item.title === "string" ? item.title : "",
-    category: optionalString(item.category),
+    category: optionalBoundedString(item.category, "category", 80),
     orderType: null,
     price: null,
     dimensions: null,
@@ -1428,7 +1465,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function requireString(value: unknown, field: string) {
   if (typeof value !== "string" || value.trim().length === 0) {
-    throw new Error(`${field} is required`);
+    throw new HttpError(400, `${field} is required`);
   }
 
   return value.trim();
@@ -1438,14 +1475,53 @@ function optionalString(value: unknown) {
   return typeof value === "string" && value.trim().length > 0 ? value.trim() : null;
 }
 
+function requireBoundedString(value: unknown, field: string, minLength: number, maxLength: number) {
+  const text = requireString(value, field);
+  if (text.length < minLength || text.length > maxLength) {
+    throw new HttpError(400, `${field} must be between ${minLength} and ${maxLength} characters`);
+  }
+
+  return text;
+}
+
+function optionalBoundedString(value: unknown, field: string, maxLength: number) {
+  const text = optionalString(value);
+  if (!text) return null;
+  if (text.length > maxLength) {
+    throw new HttpError(400, `${field} must be up to ${maxLength} characters`);
+  }
+
+  return text;
+}
+
+function normalizeRequiredPhone(value: unknown) {
+  const phone = requireString(value, "phone");
+  const digits = normalizePhone(phone);
+  if (!/^\d{10,15}$/.test(digits)) {
+    throw new HttpError(400, "phone is invalid");
+  }
+
+  return digits;
+}
+
+function optionalEmail(value: unknown) {
+  const email = optionalBoundedString(value, "email", 120);
+  if (!email) return null;
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw new HttpError(400, "email is invalid");
+  }
+
+  return email.toLowerCase();
+}
+
 function requireStringArray(value: unknown, field: string) {
   if (!Array.isArray(value)) {
-    throw new Error(`${field} is required`);
+    throw new HttpError(400, `${field} is required`);
   }
 
   const items = value.filter((item): item is string => typeof item === "string").map((item) => item.trim()).filter(Boolean);
   if (items.length === 0) {
-    throw new Error(`${field} is required`);
+    throw new HttpError(400, `${field} is required`);
   }
 
   return items;
@@ -1454,7 +1530,7 @@ function requireStringArray(value: unknown, field: string) {
 function requireNumber(value: unknown, field: string) {
   const number = Number(value);
   if (!Number.isFinite(number)) {
-    throw new Error(`${field} is invalid`);
+    throw new HttpError(400, `${field} is invalid`);
   }
 
   return number;
@@ -1462,7 +1538,7 @@ function requireNumber(value: unknown, field: string) {
 
 function requireEnum<T extends string>(value: unknown, field: string, allowed: readonly T[]) {
   if (typeof value !== "string" || !allowed.includes(value as T)) {
-    throw new Error(`${field} is invalid`);
+    throw new HttpError(400, `${field} is invalid`);
   }
 
   return value as T;
@@ -1471,7 +1547,7 @@ function requireEnum<T extends string>(value: unknown, field: string, allowed: r
 function requireObjectKey(value: unknown, field: string) {
   const key = objectKeyFromValue(value);
   if (!key) {
-    throw new Error(`${field} is required`);
+    throw new HttpError(400, `${field} is required`);
   }
 
   return key;
@@ -1521,6 +1597,90 @@ function parseStringArray(value: string) {
   }
 
   return [];
+}
+
+function rejectOversizedJson(request: Request, env: Env) {
+  const contentLength = Number(request.headers.get("content-length") ?? 0);
+  if (contentLength > maxJsonBodyBytes) {
+    return json({ error: "A mensagem enviada está muito grande." }, 413, env);
+  }
+
+  return null;
+}
+
+function rejectCrossSiteAdminMutation(request: Request, env: Env, url: URL) {
+  if (!url.pathname.startsWith("/api/admin/")) return null;
+  if (["GET", "HEAD", "OPTIONS"].includes(request.method)) return null;
+  if (!env.APP_ORIGIN) return null;
+
+  const expectedOrigin = normalizeOrigin(env.APP_ORIGIN);
+  const origin = normalizeOrigin(request.headers.get("origin"));
+  const referer = normalizeOrigin(request.headers.get("referer"));
+  const actualOrigin = origin ?? referer;
+
+  if (actualOrigin && expectedOrigin && actualOrigin !== expectedOrigin) {
+    return json({ error: "Origem da requisição não permitida." }, 403, env);
+  }
+
+  return null;
+}
+
+function normalizeOrigin(value: string | null | undefined) {
+  if (!value) return null;
+
+  try {
+    return new URL(value).origin;
+  } catch {
+    return null;
+  }
+}
+
+function clientFingerprint(request: Request) {
+  const forwardedFor = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const ip = request.headers.get("cf-connecting-ip") ?? request.headers.get("x-real-ip") ?? forwardedFor;
+  return ip || request.headers.get("user-agent") || "unknown-client";
+}
+
+async function checkRateLimit(env: Env, scope: string, identifier: string, limit: number, windowMs: number) {
+  const db = requireDb(env);
+  if (db instanceof Response) return db;
+
+  const now = Date.now();
+  const key = await sha256Hex(`${scope}:${identifier}`);
+  const existing = await db.prepare(
+    "SELECT count, window_start, expires_at FROM rate_limits WHERE key = ? LIMIT 1",
+  )
+    .bind(key)
+    .first<{ count: number; window_start: number; expires_at: number }>();
+
+  if (existing && existing.expires_at > now) {
+    if (existing.count >= limit) {
+      return rateLimitResponse(env, existing.expires_at - now);
+    }
+
+    await db.prepare("UPDATE rate_limits SET count = ?, updated_at = ? WHERE key = ?")
+      .bind(existing.count + 1, new Date().toISOString(), key)
+      .run();
+    return null;
+  }
+
+  await db.prepare(
+    `INSERT OR REPLACE INTO rate_limits (key, scope, count, window_start, expires_at, updated_at)
+     VALUES (?, ?, 1, ?, ?, ?)`,
+  )
+    .bind(key, scope, now, now + windowMs, new Date().toISOString())
+    .run();
+
+  return null;
+}
+
+function rateLimitResponse(env: Env, retryAfterMs: number) {
+  const retryAfterSeconds = Math.max(1, Math.ceil(retryAfterMs / 1000));
+  const response = json({
+    error: "Muitas tentativas em pouco tempo. Aguarde alguns minutos e tente novamente.",
+  }, 429, env);
+  response.headers.set("retry-after", String(retryAfterSeconds));
+  return response;
 }
 
 function requireDb(env: Env) {
@@ -1706,6 +1866,15 @@ async function deleteExpiredUnpaidOrders(env: Env) {
     "DELETE FROM orders WHERE status = 'awaiting_payment' AND expires_at IS NOT NULL AND expires_at <= ?",
   )
     .bind(new Date().toISOString())
+    .run();
+}
+
+async function deleteExpiredRateLimits(env: Env) {
+  const db = requireDb(env);
+  if (db instanceof Response) return;
+
+  await db.prepare("DELETE FROM rate_limits WHERE expires_at <= ?")
+    .bind(Date.now())
     .run();
 }
 

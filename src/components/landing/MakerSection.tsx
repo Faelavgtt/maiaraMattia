@@ -276,18 +276,30 @@ export function MakerSection({
                 <input
                   name="customerName"
                   required
+                  minLength={2}
+                  maxLength={80}
+                  autoComplete="name"
                   className="h-10 w-full rounded-full border border-[#ddb8a6] px-4 font-sans text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
                   placeholder="Seu nome"
                 />
                 <input
                   name="phone"
+                  type="tel"
                   required
+                  minLength={10}
+                  maxLength={20}
+                  inputMode="tel"
+                  autoComplete="tel"
+                  pattern="[0-9()+\-\s]{10,20}"
+                  title="Informe um WhatsApp com DDD."
                   className="h-10 w-full rounded-full border border-[#ddb8a6] px-4 font-sans text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
                   placeholder="WhatsApp"
                 />
                 <input
                   name="email"
                   type="email"
+                  maxLength={120}
+                  autoComplete="email"
                   className="h-10 w-full rounded-full border border-[#ddb8a6] px-4 font-sans text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
                   placeholder="E-mail opcional"
                 />
@@ -346,13 +358,15 @@ export function MakerSection({
               <div className="grid gap-3 sm:grid-cols-2">
               <input
                 value={title}
-                onChange={(event) => onTitleChange(event.target.value)}
+                maxLength={80}
+                onChange={(event) => onTitleChange(event.target.value.slice(0, 80))}
                 className="h-10 w-full rounded-full border border-[#ddb8a6] px-4 font-sans text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
                 placeholder="Ex: O mundo da Lia"
               />
               <input
                 value={subtitle}
-                onChange={(event) => onSubtitleChange(event.target.value)}
+                maxLength={120}
+                onChange={(event) => onSubtitleChange(event.target.value.slice(0, 120))}
                 className="h-10 w-full rounded-full border border-[#ddb8a6] px-4 font-sans text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
                 placeholder="Ex: primeiro desenho de 2026"
               />
@@ -373,7 +387,8 @@ export function MakerSection({
             <ConfigBlock title="Info para a designer" className="2xl:col-span-2">
               <textarea
                 value={designerNotes}
-                onChange={(event) => onDesignerNotesChange(event.target.value)}
+                maxLength={600}
+                onChange={(event) => onDesignerNotesChange(event.target.value.slice(0, 600))}
                 rows={2}
                 className="w-full resize-none rounded-xl border border-[#ddb8a6] p-3 font-sans text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
                 placeholder="Ex: manter o sol, remover rabiscos do canto, usar a frase exatamente assim..."

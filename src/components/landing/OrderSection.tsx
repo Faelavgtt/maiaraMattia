@@ -48,11 +48,29 @@ export function OrderSection({ onSubmit }: OrderSectionProps) {
           <div className="grid gap-3 md:grid-cols-2 md:gap-4">
             <label className="font-sans text-xs font-normal uppercase tracking-[0.12em] text-[#8b4114]/75">
               Seu nome
-              <input name="name" required className="mt-2 h-11 w-full rounded-full border border-[#ddb8a6] bg-white px-4 font-sans text-sm font-light normal-case tracking-normal outline-none focus:border-[#c68043] md:h-12" />
+              <input
+                name="name"
+                required
+                minLength={2}
+                maxLength={80}
+                autoComplete="name"
+                className="mt-2 h-11 w-full rounded-full border border-[#ddb8a6] bg-white px-4 font-sans text-sm font-light normal-case tracking-normal outline-none focus:border-[#c68043] md:h-12"
+              />
             </label>
             <label className="font-sans text-xs font-normal uppercase tracking-[0.12em] text-[#8b4114]/75">
               WhatsApp
-              <input name="phone" required className="mt-2 h-11 w-full rounded-full border border-[#ddb8a6] bg-white px-4 font-sans text-sm font-light normal-case tracking-normal outline-none focus:border-[#c68043] md:h-12" />
+              <input
+                name="phone"
+                type="tel"
+                required
+                minLength={10}
+                maxLength={20}
+                inputMode="tel"
+                autoComplete="tel"
+                pattern="[0-9()+\-\s]{10,20}"
+                title="Informe um WhatsApp com DDD."
+                className="mt-2 h-11 w-full rounded-full border border-[#ddb8a6] bg-white px-4 font-sans text-sm font-light normal-case tracking-normal outline-none focus:border-[#c68043] md:h-12"
+              />
             </label>
           </div>
 
@@ -61,6 +79,7 @@ export function OrderSection({ onSubmit }: OrderSectionProps) {
             <textarea
               name="projectIdea"
               rows={3}
+              maxLength={600}
               className="mt-2 w-full resize-none rounded-xl border border-[#ddb8a6] bg-white p-3 font-sans text-sm font-light normal-case tracking-normal outline-none focus:border-[#c68043] md:min-h-24"
               placeholder="Retrato, convite, desenho da criança..."
             />
