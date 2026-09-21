@@ -9,7 +9,7 @@ const feedbacks = [
     src: "/image/feedbacks/feedback1.png",
     color: "bg-[#ddb8a6]",
     tape: "bg-[#e4e7d9]",
-    rotate: "-rotate-[1.5deg]",
+    rotate: "sm:-rotate-[1.5deg]",
   },
   {
     name: "Mãe do Theo",
@@ -17,7 +17,7 @@ const feedbacks = [
     src: "/image/feedbacks/feedback2.png",
     color: "bg-[#e4e7d9]",
     tape: "bg-[#f0dfd4]",
-    rotate: "rotate-[1.25deg]",
+    rotate: "sm:rotate-[1.25deg]",
   },
   {
     name: "Familia da Helena",
@@ -25,7 +25,7 @@ const feedbacks = [
     src: "/image/feedbacks/feedback3.png",
     color: "bg-[#f9e7d6]",
     tape: "bg-[#ddb8a6]",
-    rotate: "-rotate-[0.75deg]",
+    rotate: "sm:-rotate-[0.75deg]",
   },
   {
     name: "Mãe do Bento",
@@ -33,7 +33,7 @@ const feedbacks = [
     src: "/image/feedbacks/feedback4.png",
     color: "bg-[#d19c88]",
     tape: "bg-[#e4e7d9]",
-    rotate: "rotate-[1.75deg]",
+    rotate: "sm:rotate-[1.75deg]",
   },
   {
     name: "Familia da Alice",
@@ -41,13 +41,13 @@ const feedbacks = [
     src: "/image/feedbacks/feedback5.png",
     color: "bg-[#7d876d]",
     tape: "bg-[#f9e7d6]",
-    rotate: "-rotate-[1.25deg]",
+    rotate: "sm:-rotate-[1.25deg]",
   },
 ] as const;
 
 export function FeedbacksSection() {
   return (
-    <section id="feedbacks" className="relative isolate overflow-hidden bg-[#d19c88] px-5 py-9 text-[#8b4114] sm:px-8 md:py-11 xl:py-12">
+    <section id="feedbacks" className="relative isolate overflow-hidden bg-[#d19c88] px-5 py-8 text-[#8b4114] sm:px-8 md:py-11 xl:py-12">
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
         <img
           src="/image/elementosFloral/floral1.png"
@@ -79,17 +79,17 @@ export function FeedbacksSection() {
               <MessageCircleHeart className="h-3.5 w-3.5" aria-hidden="true" />
               Clientes
             </p>
-            <h2 className="mt-3 max-w-4xl font-sans text-[1.85rem] font-extralight leading-tight text-[#8b4114] sm:text-5xl md:text-[2.0rem] xl:text-[2.0rem]">
+            <h2 className="mt-3 max-w-4xl font-sans text-[1.65rem] font-extralight leading-tight text-[#8b4114] sm:text-3xl md:text-[2rem] xl:text-[2rem]">
               Recados que chegam e despertam um sorriso a certeza que a missão foi cumprida.
             </h2>
           </div>
 
-          <p className="max-w-2xl font-sans text-sm font-light leading-6 text-[#8b4114]/78 sm:text-base sm:leading-7 lg:justify-self-end">
+          <p className="max-w-2xl font-sans text-[0.82rem] font-light leading-5 text-[#8b4114]/78 sm:text-base sm:leading-7 lg:justify-self-end">
             Um pedacinho da história depois que a arte chega: a surpresa, o carinho da família e aquele detalhe pequeno que fez tudo fazer sentido.
           </p>
         </motion.div>
 
-        <div className="mt-5 grid grid-cols-2 gap-3 sm:mt-6 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-5">
+        <div className="-mx-5 mt-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-5 pt-2 sm:mx-0 sm:mt-6 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:px-0 sm:pb-0 sm:pt-0 lg:grid-cols-3 xl:grid-cols-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {feedbacks.map((feedback, index) => (
             <FeedbackCard key={feedback.name} feedback={feedback} index={index} />
           ))}
@@ -109,7 +109,7 @@ function FeedbackCard({ feedback, index }: { feedback: (typeof feedbacks)[number
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.48, delay: index * 0.05, ease: "easeOut" }}
-      className={`group relative rounded-[1.2rem] shadow-[0_18px_38px_rgba(93,51,29,0.15)] transition-transform duration-300 hover:-translate-y-1 hover:rotate-0 sm:rounded-[1.7rem_1rem_2rem_1.1rem] ${feedback.rotate}`}
+      className={`group relative min-w-[72vw] snap-center rounded-[1.2rem] shadow-[0_18px_38px_rgba(93,51,29,0.15)] transition-transform duration-300 hover:-translate-y-1 hover:rotate-0 min-[420px]:min-w-[64vw] sm:min-w-0 sm:rounded-[1.7rem_1rem_2rem_1.1rem] ${feedback.rotate}`}
     >
       <span className={`absolute left-1/2 -top-3 z-20 h-5 w-16 -translate-x-1/2 ${feedback.tape} opacity-90 shadow-sm sm:-top-5 sm:h-7 sm:w-24 ${index % 2 === 0 ? "rotate-2" : "-rotate-2"}`} aria-hidden="true" />
 
@@ -119,7 +119,7 @@ function FeedbackCard({ feedback, index }: { feedback: (typeof feedbacks)[number
             <img
               src={feedback.src}
               alt={`Print do feedback de ${feedback.name}`}
-              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+              className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-300 sm:object-cover ${imageLoaded ? "opacity-100" : "opacity-0"}`}
               loading="eager"
               onError={() => setImageMissing(true)}
               onLoad={() => setImageLoaded(true)}

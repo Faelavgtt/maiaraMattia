@@ -62,19 +62,19 @@ export function HeroSection({ phrase }: HeroSectionProps) {
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto grid min-h-[100vh] max-w-7xl gap-5 px-5 pb-8 pt-20 sm:gap-7 sm:px-8 sm:pb-10 sm:pt-20 md:pb-12 xl:grid-cols-[0.98fr_1.02fr] xl:items-center xl:gap-8 xl:px-5 xl:py-20">
+      <div className="relative z-10 mx-auto grid min-h-[88svh] max-w-7xl gap-4 px-5 pb-6 pt-16 sm:min-h-[92svh] sm:gap-7 sm:px-8 sm:pb-10 sm:pt-20 md:pb-12 xl:min-h-[100vh] xl:grid-cols-[0.98fr_1.02fr] xl:items-center xl:gap-8 xl:px-5 xl:py-20">
         <motion.div className="relative z-10 max-w-[42rem] md:max-w-3xl xl:max-w-[42rem]" variants={textParent} initial="hidden" animate="show">
           <motion.p variants={textItem} className="eyebrow text-white">
             Maiara Mattia · artista visual
           </motion.p>
-          <motion.h1 variants={textItem} className="mt-3 max-w-2xl font-poppins text-[2.15rem] font-thin leading-[1.08] text-[#8b4114] sm:mt-5 sm:text-[2.8rem] sm:leading-[1.04] lg:text-[3.45rem] xl:text-6xl">
+          <motion.h1 variants={textItem} className="mt-3 max-w-2xl font-poppins text-[2rem] font-thin leading-[1.06] text-[#8b4114] min-[380px]:text-[2.2rem] sm:mt-5 sm:text-[2.8rem] sm:leading-[1.04] lg:text-[3.45rem] xl:text-6xl">
             A beleza nas pequenas delicadezas do dia a dia.
           </motion.h1>
-          <motion.p variants={textItem} className="mt-4 max-w-xl font-sans text-sm font-light leading-6 text-[#8b4114]/85 sm:mt-5 sm:text-lg sm:leading-7 md:text-xl md:leading-8">
+          <motion.p variants={textItem} className="mt-3 max-w-xl font-sans text-[0.82rem] font-light leading-5 text-[#8b4114]/85 sm:mt-5 sm:text-lg sm:leading-7 md:text-xl md:leading-8">
             Sou artista visual e ilustradora, formada pela UCDB. Meu trabalho nasce da infância, da natureza e das memórias afetivas. 
             <br />Acredito que as coisas mais bonitas são também as mais simples:
           </motion.p> 
-          <motion.div variants={textItem} className="mt-4 grid max-w-2xl gap-3 font-sans text-[0.82rem] font-light leading-5 text-[#8b4114]/82 sm:mt-5 sm:grid-cols-2 sm:gap-3 sm:text-sm sm:leading-6 md:text-base md:leading-7">
+          <motion.div variants={textItem} className="mt-3 grid max-w-2xl grid-cols-2 gap-2.5 font-sans text-[0.72rem] font-light leading-[1.45] text-[#8b4114]/82 min-[380px]:text-[0.76rem] sm:mt-5 sm:gap-3 sm:text-sm sm:leading-6 md:text-base md:leading-7">
             <p className="border-l border-white/45 pl-4 sm:pl-5">
               Uma flor encontrada durante a caminhada, o papel de carta guardado por muitos anos. Um abraço de quem amamos ou um galho transformado em brincadeira.
             </p>
@@ -90,7 +90,7 @@ export function HeroSection({ phrase }: HeroSectionProps) {
               href="#portfolio"
               whileHover={{ y: -3, rotate: -1 }}
               whileTap={{ scale: 0.97 }}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#8b4114] px-5 font-sans text-sm font-medium text-white shadow-[0_12px_26px_rgba(0,0,0,0.16)] sm:h-12 sm:px-6 sm:text-base md:text-lg"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#8b4114] px-5 font-sans text-sm font-medium text-white shadow-[0_12px_26px_rgba(0,0,0,0.16)] sm:h-12 sm:px-6 sm:text-base md:text-lg"
             >
               Conhecer o universo
               <ArrowRight className="h-4 w-4" />
@@ -99,7 +99,7 @@ export function HeroSection({ phrase }: HeroSectionProps) {
               href="#pedido"
               whileHover={{ y: -3, rotate: 1 }}
               whileTap={{ scale: 0.97 }}
-              className="inline-flex h-11 items-center justify-center rounded-full border border-[#8b4114]/25 bg-white px-5 font-sans text-sm font-light text-[#8b4114] sm:h-12 sm:px-6 sm:text-base md:text-lg"
+              className="inline-flex h-10 items-center justify-center rounded-full border border-[#8b4114]/25 bg-white px-5 font-sans text-sm font-light text-[#8b4114] sm:h-12 sm:px-6 sm:text-base md:text-lg"
             >
               Criar comigo
             </motion.a>
@@ -108,7 +108,7 @@ export function HeroSection({ phrase }: HeroSectionProps) {
 
         <div className="relative min-h-0 md:min-h-0 xl:min-h-[620px]">
           <motion.div
-            className="relative mx-auto mt-1 max-w-[250px] sm:max-w-[320px] md:mt-3 md:max-w-[380px] lg:max-w-[420px] xl:max-w-[470px]"
+            className="relative mx-auto mt-0 max-w-[210px] min-[380px]:max-w-[230px] sm:max-w-[320px] md:mt-3 md:max-w-[380px] lg:max-w-[420px] xl:max-w-[470px]"
             initial={{ opacity: 0, y: 34, rotate: -3, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, rotate: 1, scale: 1 }}
             transition={{ type: "spring", stiffness: 95, damping: 15, delay: 0.25 }}

@@ -159,7 +159,7 @@ export function OtherProjectsSection() {
   }, []);
 
   return (
-    <section id="outros-projetos" className="relative isolate overflow-hidden bg-[#faf4ed] px-5 py-9 sm:px-8 md:py-11 xl:py-12">
+    <section id="outros-projetos" className="relative isolate overflow-hidden bg-[#faf4ed] px-5 py-8 sm:px-8 md:py-11 xl:py-12">
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
         <div className="absolute inset-0 bg-[radial-gradient(#8b4114_0.75px,transparent_0.75px)] [background-size:24px_24px] opacity-[0.07]" />
 
@@ -187,7 +187,7 @@ export function OtherProjectsSection() {
               <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
               Outros trabalhos do ateliê
             </p>
-            <h2 className="mt-2 font-sans text-[1.75rem] font-extralight leading-tight text-[#8b4114] sm:text-3xl md:text-[2.15rem] xl:text-[2.25rem]">
+            <h2 className="mt-2 font-sans text-[1.6rem] font-extralight leading-tight text-[#8b4114] sm:text-3xl md:text-[2.15rem] xl:text-[2.25rem]">
               Peças artísticas desenvolvidas por nós para diversos objetos e superfícies.
             </h2>
             
@@ -255,7 +255,7 @@ export function OtherProjectsSection() {
             onPointerCancel={stopWallDrag}
             onPointerLeave={stopWallDrag}
             onScroll={syncLoopPosition}
-            className="flex min-h-[20rem] cursor-grab select-none items-start gap-5 overflow-x-auto px-5 pb-5 pt-7 active:cursor-grabbing sm:min-h-[23rem] sm:gap-6 sm:px-8 sm:pb-7 sm:pt-8 md:min-h-[26rem] md:gap-7 xl:min-h-[28rem] xl:px-8 xl:pb-7 xl:pt-9 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="flex min-h-[17rem] cursor-grab select-none items-start gap-4 overflow-x-auto px-4 pb-4 pt-6 active:cursor-grabbing sm:min-h-[23rem] sm:gap-6 sm:px-8 sm:pb-7 sm:pt-8 md:min-h-[26rem] md:gap-7 xl:min-h-[28rem] xl:px-8 xl:pb-7 xl:pt-9 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {carouselProjects.map((project, index) => (
               <StickerProductCard
@@ -341,8 +341,8 @@ function StickerProductCard({
         }
       }}
       style={{
-        width: `min(${Math.round(project.width * 0.94)}px, 78vw)`,
-        marginTop: index % 2 === 0 ? 0 : 26,
+        width: `min(${Math.round(project.width * 0.84)}px, 68vw)`,
+        marginTop: index % 2 === 0 ? 0 : 16,
         rotate: `${project.rotate}deg`,
       }}
     >
@@ -357,7 +357,7 @@ function StickerProductCard({
       </div>
 
       <div
-        className="relative overflow-hidden rounded-[0.45rem] border border-[#8b4114]/8 bg-[#fffaf5] p-3 shadow-[0_10px_20px_rgba(54,67,64,0.13)] transition-shadow duration-300 before:absolute before:inset-0 before:bg-[radial-gradient(#8b4114_0.7px,transparent_0.7px)] before:[background-size:18px_18px] before:opacity-[0.025] group-hover:shadow-[0_14px_24px_rgba(54,67,64,0.17)]"
+        className="relative overflow-hidden rounded-[0.45rem] border border-[#8b4114]/8 bg-[#fffaf5] p-2.5 shadow-[0_10px_20px_rgba(54,67,64,0.13)] transition-shadow duration-300 before:absolute before:inset-0 before:bg-[radial-gradient(#8b4114_0.7px,transparent_0.7px)] before:[background-size:18px_18px] before:opacity-[0.025] group-hover:shadow-[0_14px_24px_rgba(54,67,64,0.17)] sm:p-3"
       >
         <div className="relative z-20 rounded-[0.35rem] bg-[#fffaf5] p-1.5 shadow-[0_6px_12px_rgba(54,67,64,0.10)]">
           <div className="relative aspect-[5/4] overflow-hidden rounded-[0.25rem]" style={{ backgroundColor: project.surface }}>
@@ -383,15 +383,15 @@ function StickerProductCard({
           </div>
         </div>
 
-        <div className="relative z-20 mt-3 grid grid-cols-[1fr_2.35rem] items-end gap-3">
+        <div className="relative z-20 mt-2.5 grid grid-cols-[1fr_2rem] items-end gap-2.5 sm:mt-3 sm:grid-cols-[1fr_2.35rem] sm:gap-3">
           <div className="min-w-0">
-            <h3 className="font-sans text-base font-medium leading-tight text-[#8b4114] sm:text-lg">{project.title}</h3>
-            <p className="mt-1 line-clamp-2 font-sans text-[0.75rem] font-light leading-4 text-[#8b4114]/72">
+            <h3 className="font-sans text-sm font-medium leading-tight text-[#8b4114] sm:text-lg">{project.title}</h3>
+            <p className="mt-1 line-clamp-2 font-sans text-[0.7rem] font-light leading-4 text-[#8b4114]/72 sm:text-[0.75rem]">
               {project.description}
             </p>
           </div>
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#7d876d] text-white shadow-[0_5px_10px_rgba(54,67,64,0.10)] transition-transform group-hover:scale-105">
-            <ShoppingBag className="h-4 w-4" aria-hidden="true" />
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#7d876d] text-white shadow-[0_5px_10px_rgba(54,67,64,0.10)] transition-transform group-hover:scale-105 sm:h-9 sm:w-9">
+            <ShoppingBag className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
           </span>
         </div>
       </div>

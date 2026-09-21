@@ -167,7 +167,7 @@ export function GallerySection() {
   }, []);
 
   return (
-    <section id="galeria" className="relative isolate overflow-hidden bg-[#faf4ed] px-5 pb-9 pt-2 sm:px-8 md:pb-11 md:pt-3 xl:pb-12">
+    <section id="galeria" className="relative isolate overflow-hidden bg-[#faf4ed] px-5 pb-8 pt-2 sm:px-8 md:pb-11 md:pt-3 xl:pb-12">
       
       {/* Background Decorativo */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
@@ -196,11 +196,11 @@ export function GallerySection() {
               Ilustrações
             </div>
 
-            <h2 className="mt-3 font-sans text-[1.85rem] font-light leading-tight text-[#8b4114] sm:text-3xl md:text-[2.35rem] xl:text-[2.5rem]">
+            <h2 className="mt-3 font-sans text-[1.65rem] font-light leading-tight text-[#8b4114] sm:text-3xl md:text-[2.35rem] xl:text-[2.5rem]">
               Em formato de pôsteres, disponíveis de forma individual ou coleção completa
 
             </h2>
-            <p className="mt-3 max-w-2xl font-sans text-sm font-light leading-6 text-[#8b4114]/80 sm:text-base sm:leading-relaxed">
+            <p className="mt-2 max-w-2xl font-sans text-[0.82rem] font-light leading-5 text-[#8b4114]/80 sm:mt-3 sm:text-base sm:leading-relaxed">
               Explores clicando em uma das opções para ver os detalhes de cada desenho, dimensões e como comprar.
             </p>
           </motion.div>
@@ -271,7 +271,7 @@ export function GallerySection() {
             onPointerCancel={stopWallDrag}
             onPointerLeave={stopWallDrag}
             onScroll={syncLoopPosition}
-            className="flex min-h-[20rem] cursor-grab select-none items-start gap-5 overflow-x-auto px-5 pb-5 pt-7 active:cursor-grabbing sm:min-h-[23rem] sm:gap-6 sm:px-8 sm:pb-7 sm:pt-8 md:min-h-[26rem] md:gap-7 md:px-10 xl:min-h-[28rem] xl:gap-8 xl:px-10 xl:pb-8 xl:pt-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="flex min-h-[17rem] cursor-grab select-none items-start gap-4 overflow-x-auto px-4 pb-4 pt-6 active:cursor-grabbing sm:min-h-[23rem] sm:gap-6 sm:px-8 sm:pb-7 sm:pt-8 md:min-h-[26rem] md:gap-7 md:px-10 xl:min-h-[28rem] xl:gap-8 xl:px-10 xl:pb-8 xl:pt-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {carouselProjects.map((project, index) => (
               <GalleryFrame 
@@ -339,7 +339,7 @@ function GalleryFrame({
   reduceMotion: boolean;
   onSelect: () => void;
 }) {
-  const frameWidth = `min(${Math.round(project.width * 0.96)}px, 74vw)`;
+  const frameWidth = `min(${Math.round(project.width * 0.88)}px, 66vw)`;
   const hasDiscountPrice = Boolean(project.originalPrice && project.originalPrice !== project.price);
 
   return (
