@@ -1,10 +1,12 @@
 import type { LucideIcon } from "lucide-react";
+import { AdminHelpTooltip } from "@/components/admin/AdminHelpTooltip";
 
 type AdminMetricCardProps = {
   icon: LucideIcon;
   label: string;
   value: number | string;
   subtitle?: string;
+  helpText?: string;
   tone?: "terracotta" | "sage" | "amber" | "neutral";
 };
 
@@ -28,18 +30,22 @@ export function AdminMetricCard({
   label,
   value,
   subtitle,
+  helpText,
   tone = "terracotta",
 }: AdminMetricCardProps) {
   const selectedTone = toneStyles[tone] ?? toneStyles.terracotta;
   const formattedValue = typeof value === "number" ? String(value).padStart(2, "0") : value;
 
   return (
-    <article className="group relative overflow-hidden rounded-xl border border-[#8b4114]/10 bg-white p-3.5 shadow-[0_4px_20px_rgba(93,51,29,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(93,51,29,0.08)]">
+    <article className="group relative rounded-xl border border-[#8b4114]/10 bg-white p-3.5 shadow-[0_4px_20px_rgba(93,51,29,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(93,51,29,0.08)]">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <p className="font-sans text-xs font-normal uppercase tracking-[0.14em] text-[#76877e]">
-            {label}
-          </p>
+          <div className="flex items-start gap-2">
+            <p className="font-sans text-xs font-normal uppercase tracking-[0.1em] text-[#76877e]">
+              {label}
+            </p>
+            {helpText && <AdminHelpTooltip label={helpText} />}
+          </div>
           <strong className="mt-1.5 block font-sans text-2xl font-light tracking-tight text-[#8b4114] sm:text-3xl">
             {formattedValue}
           </strong>
