@@ -162,16 +162,16 @@ export function MakerSection({
           maskSize: "cover",
         }}
       />
-      <div className="relative z-10 mx-auto max-w-screen-2xl px-5 py-4 sm:px-8 xl:px-5">
+      <div className="relative z-10 mx-auto max-w-screen-2xl px-5 py-5 sm:px-8 xl:px-5">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.55, ease: "easeOut" }}
-          className="mb-4 max-w-5xl pt-4 md:mb-5"
+          className="mb-3 max-w-5xl pt-2 md:mb-5 md:pt-4"
         >
           <p className="font-sans text-xs font-normal uppercase tracking-[0.22em] text-white">Pequeno Artista</p>
-          <h2 className="mt-1 font-sans text-[1.85rem] font-extralight leading-tight text-white sm:text-3xl md:text-[2.2rem] xl:text-4xl">
+          <h2 className="mt-1 font-sans text-[1.65rem] font-extralight leading-tight text-white sm:text-3xl md:text-[2.2rem] xl:text-4xl">
             Do rabisco espontâneo ao quadro pronto para guardar
           </h2>
           
@@ -184,7 +184,7 @@ export function MakerSection({
           transition={{ duration: 0.55, delay: 0.06, ease: "easeOut" }}
           className="mb-4"
         >
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:snap-none sm:grid-cols-3 sm:gap-3 sm:overflow-visible sm:px-0 sm:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {makerProcessSteps.map((step, index) => {
               const Icon = step.icon;
               return (
@@ -194,14 +194,18 @@ export function MakerSection({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{ duration: 0.45, delay: (index + 1) * 0.05, ease: "easeOut" }}
-                  className="rounded-xl border border-white/35 bg-white p-3 text-[#8b4114] shadow-[0_12px_30px_rgba(0,0,0,0.07)] sm:p-3.5"
+                  className="grid min-w-[82vw] snap-center grid-cols-[2.4rem_minmax(0,1fr)] gap-3 rounded-xl border border-white/35 bg-white p-3 text-[#8b4114] shadow-[0_12px_30px_rgba(0,0,0,0.07)] min-[420px]:min-w-[74vw] sm:block sm:min-w-0 sm:p-3.5"
                 >
-                  <span className="font-sans text-xs font-light text-[#7d876d]">0{index + 1}</span>
-                  <div className="mt-3 flex h-9 w-9 items-center justify-center rounded-full border border-[#ddb8a6] bg-[#ddb8a6]/45 text-[#8b4114] sm:mt-4 sm:h-10 sm:w-10">
-                    <Icon className="h-4 w-4" />
+                  <div className="flex flex-col items-center gap-2 sm:block">
+                  <span className="font-sans text-[0.68rem] font-light text-[#7d876d] sm:text-xs">0{index + 1}</span>
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full border border-[#ddb8a6] bg-[#ddb8a6]/45 text-[#8b4114] sm:mt-4 sm:h-10 sm:w-10">
+                    <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </div>
-                  <h3 className="mt-3 font-sans text-base font-light leading-tight text-[#8b4114] sm:mt-4 sm:text-lg xl:text-xl">{step.title}</h3>
-                  <p className="mt-2 font-sans text-xs font-light leading-5 text-[#8b4114] sm:text-sm sm:leading-6">{step.text}</p>
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="font-sans text-sm font-light leading-tight text-[#8b4114] sm:mt-4 sm:text-lg xl:text-xl">{step.title}</h3>
+                    <p className="mt-1.5 line-clamp-3 font-sans text-[0.72rem] font-light leading-4 text-[#8b4114] sm:mt-2 sm:line-clamp-none sm:text-sm sm:leading-6">{step.text}</p>
+                  </div>
                 </motion.article>
               );
             })}
@@ -219,8 +223,8 @@ export function MakerSection({
               <p className="mb-2 text-center font-sans text-[10px] font-light uppercase tracking-[0.14em] text-[#8b4114]/70 sm:mb-3 sm:text-[11px]">
                 Exemplo de como irá ficar
               </p>
-              <div className="flex min-h-[280px] items-center justify-center rounded-lg bg-[#ddb8a6]/35 p-3 sm:min-h-[320px] sm:p-4 md:min-h-[360px] xl:min-h-[390px]">
-                <div className={`rounded-md bg-white shadow-[0_12px_32px_rgba(0,0,0,0.08)] ${orientation === "portrait" ? "w-full max-w-[240px] sm:max-w-[285px] xl:max-w-[330px]" : "w-full max-w-[330px] sm:max-w-[390px] xl:max-w-[470px]"}`}>
+              <div className="flex min-h-[235px] items-center justify-center rounded-lg bg-[#ddb8a6]/35 p-3 sm:min-h-[320px] sm:p-4 md:min-h-[360px] xl:min-h-[390px]">
+                <div className={`rounded-md bg-white shadow-[0_12px_32px_rgba(0,0,0,0.08)] ${orientation === "portrait" ? "w-full max-w-[200px] min-[380px]:max-w-[220px] sm:max-w-[285px] xl:max-w-[330px]" : "w-full max-w-[280px] min-[380px]:max-w-[310px] sm:max-w-[390px] xl:max-w-[470px]"}`}>
                   <div className={`bg-white p-3 sm:p-4 xl:p-5 ${orientation === "portrait" ? "aspect-[3/4]" : "aspect-[4/3]"}`}>
                     <div className="flex h-full flex-col">
                       <div
@@ -229,11 +233,11 @@ export function MakerSection({
                       >
                         <SketchPreview outlineColor={outlineColor} selectedExample={selectedExample} />
                       </div>
-                      <div className="flex min-h-[66px] flex-col items-center justify-center bg-white px-3 py-3 text-center text-black sm:min-h-[76px] xl:min-h-[86px] xl:px-4 xl:py-4">
-                        <p className="font-poppins text-sm font-normal leading-none tracking-wide sm:text-base xl:text-lg">
+                      <div className="flex min-h-[56px] flex-col items-center justify-center bg-white px-3 py-2.5 text-center text-black sm:min-h-[76px] xl:min-h-[86px] xl:px-4 xl:py-4">
+                        <p className="font-poppins text-xs font-normal leading-none tracking-wide sm:text-base xl:text-lg">
                           "{previewTitle}"
                         </p>
-                        <p className="mt-1.5 font-poppins text-xs font-normal leading-tight sm:text-sm xl:mt-2">
+                        <p className="mt-1 font-poppins text-[10px] font-normal leading-tight sm:text-sm xl:mt-2">
                           {previewSubtitle}
                         </p>
                       </div>

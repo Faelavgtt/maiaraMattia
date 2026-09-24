@@ -11,6 +11,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { AdminMetricCard } from "@/components/admin/AdminMetricCard";
+import { AdminHelpTooltip } from "@/components/admin/AdminHelpTooltip";
 import { AdminOrderDrawer } from "@/components/admin/AdminOrderDrawer";
 import { AdminOrdersKanban } from "@/components/admin/AdminOrdersKanban";
 import { AdminOrdersTable } from "@/components/admin/AdminOrdersTable";
@@ -28,11 +29,11 @@ import {
 type ViewMode = "list" | "kanban";
 
 const statusTabOptions: { value: AdminOrderStatus | "all"; label: string }[] = [
-  { value: "all", label: "Todos os Pedidos" },
-  { value: "awaiting_payment", label: "Aguardando Pagamento" },
-  { value: "payment_confirmed", label: "Pagamento Confirmado" },
-  { value: "in_production", label: "Em Produção" },
-  { value: "awaiting_approval", label: "Aguardando Aprovação" },
+  { value: "all", label: "Todos" },
+  { value: "awaiting_payment", label: "Aguardando pagamento" },
+  { value: "payment_confirmed", label: "Pagamento ok" },
+  { value: "in_production", label: "Em produção" },
+  { value: "awaiting_approval", label: "Em revisão" },
   { value: "finished", label: "Finalizados" },
 ];
 
@@ -155,20 +156,20 @@ const AdminOrders = () => {
   };
 
   return (
-    <section className="px-4 py-4 sm:px-6 lg:h-[calc(100vh-4rem)] lg:overflow-hidden lg:px-6">
-      <div className="mx-auto flex h-full max-w-7xl flex-col gap-3.5">
+    <section className="px-3 py-4 sm:px-5 lg:px-6">
+      <div className="mx-auto flex h-full max-w-7xl flex-col gap-4">
         {/* Page Title & View Switcher */}
         <div className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="inline-flex items-center gap-1.5 rounded-lg bg-[#eef4f0] px-2.5 py-1 text-xs font-medium text-[#2d523a]">
               <FolderKanban className="h-3.5 w-3.5" />
-              <span>Central de Pedidos do Ateliê</span>
+              <span>Pedidos do Ateliê</span>
             </div>
             <h1 className="mt-1.5 font-sans text-2xl font-light tracking-tight text-[#8b4114] sm:text-3xl">
-              Gestão de Pedidos
+              Acompanhar pedidos
             </h1>
-            <p className="mt-0.5 font-sans text-xs font-light text-[#8b4114]/70">
-              Acompanhe cada etapa de produção, contate clientes via WhatsApp e confirme pagamentos.
+            <p className="mt-0.5 max-w-2xl font-sans text-sm font-light leading-relaxed text-[#8b4114]/70">
+              Veja quem está esperando pagamento, o que está em produção e quais pedidos precisam de revisão.
             </p>
           </div>
 
@@ -197,7 +198,7 @@ const AdminOrders = () => {
                 }`}
               >
                 <Kanban className="h-3.5 w-3.5" />
-                <span>Pipeline</span>
+                <span>Etapas</span>
               </button>
             </div>
 
@@ -217,37 +218,45 @@ const AdminOrders = () => {
         {/* Stats Metrics Cards */}
         <div className="grid shrink-0 gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
           <AdminMetricCard
-            label="Total de Pedidos"
+            label="Todos os pedidos"
             value={orderStats.total}
             icon={FolderKanban}
             tone="terracotta"
-            subtitle="Todos os registros"
+            subtitle="Tudo que entrou no painel"
+            helpText="Conta todos os pedidos cadastrados, incluindo finalizados."
           />
           <AdminMetricCard
-            label="Aguardando Pagamento"
+            label="Falta pagamento"
             value={orderStats.awaitingPayment}
             icon={Clock3}
             tone="amber"
-            subtitle="Pendentes de confirmação"
+            subtitle="Ainda sem confirmação"
+            helpText="Pedidos que ainda não devem seguir para produção sem confirmar o pagamento."
           />
           <AdminMetricCard
-            label="Em Produção / Aprov."
+            label="Em andamento"
             value={orderStats.inProgress}
             icon={Layers}
             tone="sage"
-            subtitle="Em andamento no ateliê"
+            subtitle="Produção ou revisão"
+            helpText="Pedidos que já avançaram e ainda não foram finalizados."
           />
           <AdminMetricCard
-            label="Com Arquivos Anexos"
+            label="Com anexos"
             value={orderStats.withFiles}
             icon={FileCheck}
             tone="neutral"
-            subtitle="Prontos para desenho"
+            subtitle="Com imagem ou arquivo"
+            helpText="Pedidos que têm arquivos enviados pela cliente ou pelo painel."
           />
         </div>
 
         {/* Status Segmented Tabs Bar (Shopify style) */}
         <div className="flex shrink-0 items-center gap-2 overflow-x-auto pb-1">
+          <div className="sticky left-0 z-10 flex shrink-0 items-center gap-1 rounded-xl border border-[#8b4114]/10 bg-[#fffaf5] px-3 py-2 text-xs font-medium text-[#8b4114] shadow-sm">
+            Situação
+            <AdminHelpTooltip label="Clique em uma situação para ver apenas os pedidos daquela etapa." />
+          </div>
           {statusTabOptions.map((tab) => {
             const isActive = status === tab.value;
             const count = tabCounts[tab.value] ?? 0;
@@ -257,7 +266,7 @@ const AdminOrders = () => {
                 key={tab.value}
                 type="button"
                 onClick={() => setStatus(tab.value)}
-                className={`flex shrink-0 items-center gap-2 rounded-xl px-4 py-2 font-sans text-xs font-medium transition-all ${
+                  className={`flex min-h-10 shrink-0 items-center gap-2 rounded-xl px-4 py-2 font-sans text-xs font-medium transition-all ${
                   isActive
                     ? "bg-[#8b4114] text-white shadow-sm ring-1 ring-[#8b4114]"
                     : "border border-[#8b4114]/10 bg-white text-[#76877e] hover:bg-[#fffaf5] hover:text-[#8b4114]"
@@ -292,7 +301,7 @@ const AdminOrders = () => {
         />
 
         {/* View Mode: List vs Kanban Board */}
-        <div className="min-h-0 flex-1 overflow-y-auto pr-1.5 lg:pr-2">
+        <div className="min-h-0 flex-1 pr-1.5 lg:pr-2">
           {viewMode === "list" ? (
             <AdminOrdersTable
               orders={filteredOrders}

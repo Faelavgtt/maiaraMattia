@@ -230,8 +230,8 @@ const AdminOtherProjects = () => {
   };
 
   return (
-    <section className="px-4 py-4 sm:px-5 lg:h-[calc(100vh-4rem)] lg:overflow-hidden lg:px-6">
-      <div className="mx-auto flex h-full max-w-[96rem] flex-col">
+    <section className="px-3 py-4 sm:px-5 lg:px-6">
+      <div className="mx-auto flex max-w-[96rem] flex-col">
         <AdminGalleryHeader
           statusMessage={statusMessage}
           productsCount={products.length}
@@ -240,7 +240,7 @@ const AdminOtherProjects = () => {
           countLabel="Produtos especiais"
         />
 
-        <div className="mt-4 grid min-h-0 flex-1 gap-4 xl:grid-cols-[minmax(0,1.42fr)_minmax(22rem,0.58fr)]">
+        <div className="mt-4 grid gap-4 2xl:grid-cols-[minmax(0,1.38fr)_minmax(24rem,0.62fr)] 2xl:items-start">
           <AdminGalleryProductForm
             form={form}
             isSaving={isSaving}

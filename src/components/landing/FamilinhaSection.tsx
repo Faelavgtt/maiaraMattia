@@ -43,7 +43,7 @@ const familyProductDetails = [
 
 export function FamilinhaSection() {
   return (
-    <section id="familinha" className="relative isolate overflow-hidden bg-[#faf4ed] px-5 pb-10 pt-10 sm:px-8 md:pb-14 md:pt-12 xl:pb-16">
+    <section id="familinha" className="relative isolate overflow-hidden bg-[#faf4ed] px-5 pb-8 pt-8 sm:px-8 md:pb-14 md:pt-12 xl:pb-16">
       
       {/* Background Ilustrado Estilo Infância */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
@@ -75,11 +75,11 @@ export function FamilinhaSection() {
             PERSONALIZADOS
           </div>
 
-          <h2 className="mt-4 max-w-2xl font-sans text-[1.85rem] font-light leading-tight text-[#8b4114] sm:mt-5 sm:text-4xl md:text-[2.35rem] xl:text-[2.5rem]">
+          <h2 className="mt-3 max-w-2xl font-sans text-[1.7rem] font-light leading-tight text-[#8b4114] sm:mt-5 sm:text-4xl md:text-[2.35rem] xl:text-[2.5rem]">
             Uma arte feita à mão para apresentar quem mora no seu coração.
           </h2>
 
-          <div className="mt-3 space-y-3 max-w-xl font-sans text-sm font-light leading-6 text-[#8b4114]/80 sm:text-base sm:leading-relaxed">
+          <div className="mt-3 grid max-w-xl gap-2.5 font-sans text-[0.82rem] font-light leading-5 text-[#8b4114]/80 sm:block sm:space-y-3 sm:text-base sm:leading-relaxed">
             <p>
               A Familinha é uma ilustração autoral que reúne num abraço os membros da sua família.
             </p>
@@ -88,7 +88,7 @@ export function FamilinhaSection() {
             </p>
           </div>
 
-          <div className="mt-6 grid max-w-[48rem] grid-cols-3 gap-3 sm:gap-4 lg:gap-5 xl:gap-6">
+          <div className="mt-5 grid max-w-[48rem] grid-cols-3 gap-2.5 sm:mt-6 sm:gap-4 lg:gap-5 xl:gap-6">
             {familyFrames.map((frame, index) => (
               <motion.figure
                 key={frame.src}
@@ -139,7 +139,7 @@ export function FamilinhaSection() {
             </h3>
           </div>
 
-          <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
+            <div className="mt-3 grid grid-cols-2 gap-2.5">
             {familyProductDetails.map((detail) => (
               <div key={detail.label} className="rounded-xl border border-[#8b4114]/10 bg-[#fff9f2] px-3.5 py-2.5">
                 <span className="block font-sans text-[0.62rem] font-semibold uppercase tracking-[0.15em] text-[#76877e]">
@@ -152,7 +152,7 @@ export function FamilinhaSection() {
             ))}
           </div>
 
-          <div className="mt-4 space-y-3 font-sans text-sm font-light leading-6 text-[#8b4114]/78">
+          <div className="mt-4 grid gap-2.5 font-sans text-[0.82rem] font-light leading-5 text-[#8b4114]/78 sm:space-y-3 sm:text-sm sm:leading-6">
             <p>
               Criamos a partir das características de cada membro, tom de cabelo, pele e paleta de cores escolhida pelo cliente.
             </p>

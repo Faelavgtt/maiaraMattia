@@ -7,7 +7,6 @@ import {
   CheckCircle2,
   Clock3,
   Database,
-  ExternalLink,
   Eye,
   FolderKanban,
   Layers,
@@ -19,6 +18,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { AdminMetricCard } from "@/components/admin/AdminMetricCard";
+import { AdminHelpTooltip } from "@/components/admin/AdminHelpTooltip";
 import { AdminOrderDrawer } from "@/components/admin/AdminOrderDrawer";
 import { AdminStatusBadge } from "@/components/admin/AdminStatusBadge";
 import {
@@ -54,8 +54,8 @@ const quickLinks = [
     accent: "bg-amber-50 text-amber-900",
   },
   {
-    title: "Bucket",
-    description: "Consulte arquivos e imagens enviados para o projeto.",
+    title: "Arquivos",
+    description: "Consulte imagens e anexos enviados para o projeto.",
     href: "/admin/bucket",
     icon: Database,
     accent: "bg-[#f8f1e9] text-[#8b4114]",
@@ -145,45 +145,49 @@ const Admin = () => {
     () => [
       {
         key: "open",
-        label: "Pedidos Abertos",
+        label: "Pedidos em aberto",
         icon: FolderKanban,
         value: openOrders,
         tone: "terracotta" as const,
-        subtitle: `${orders.length} pedidos no histórico`,
+        subtitle: `${orders.length} pedidos ao todo`,
+        helpText: "Mostra os pedidos que ainda precisam de alguma ação. Pedidos finalizados ficam fora desta conta.",
       },
       {
         key: "payment",
-        label: "Aguardando Pagamento",
+        label: "Falta confirmar pagamento",
         icon: Clock3,
         value: pipelineStats.awaiting,
         tone: "amber" as const,
-        subtitle: "Orçamentos pendentes",
+        subtitle: "Clientes ainda sem confirmação",
+        helpText: "Mostra os pedidos que ainda dependem da confirmação de pagamento para seguir.",
       },
       {
         key: "paid",
-        label: "Em Produção / Aprov.",
+        label: "Em produção ou revisão",
         icon: Layers,
         value: pipelineStats.production + pipelineStats.approval,
         tone: "sage" as const,
-        subtitle: `${pipelineStats.production} produzindo • ${pipelineStats.approval} aprovando`,
+        subtitle: `${pipelineStats.production} produzindo, ${pipelineStats.approval} revisando`,
+        helpText: "Mostra os pedidos em produção e os que aguardam revisão da cliente.",
       },
       {
         key: "products",
-        label: "Produtos Ativos",
+        label: "Produtos no site",
         icon: TrendingUp,
         value: galleryCount + otherProjectsCount,
         tone: "neutral" as const,
-        subtitle: `${galleryCount} galeria + ${otherProjectsCount} especiais`,
+        subtitle: `${galleryCount} na galeria, ${otherProjectsCount} especiais`,
+        helpText: "Mostra quantos produtos estão cadastrados para aparecer no site.",
       },
     ],
     [galleryCount, openOrders, orders.length, otherProjectsCount, pipelineStats],
   );
 
   return (
-    <section className="px-4 py-4 sm:px-6 lg:h-[calc(100vh-4rem)] lg:overflow-hidden lg:px-6">
-      <div className="mx-auto flex h-full max-w-7xl flex-col gap-3.5">
+    <section className="px-3 py-4 sm:px-5 lg:px-6">
+      <div className="mx-auto flex h-full max-w-7xl flex-col gap-4">
         {/* Welcome Executive Header */}
-        <div className="relative overflow-hidden rounded-xl border border-[#8b4114]/10 bg-gradient-to-br from-[#fffaf5] via-white to-[#fbf4ee] p-4 shadow-[0_4px_24px_rgba(93,51,29,0.04)]">
+        <div className="relative overflow-hidden rounded-xl border border-[#8b4114]/10 bg-gradient-to-br from-[#fffaf5] via-white to-[#fbf4ee] p-4 shadow-[0_4px_24px_rgba(93,51,29,0.04)] sm:p-5">
           <div
             className="pointer-events-none absolute right-0 top-0 h-64 w-64 -translate-y-12 translate-x-12 rounded-full bg-[#f0dfd4]/40 blur-3xl"
             aria-hidden="true"
@@ -198,8 +202,8 @@ const Admin = () => {
               <h1 className="mt-2 font-sans text-2xl font-light tracking-tight text-[#8b4114] sm:text-3xl">
                 Painel do Ateliê
               </h1>
-              <p className="mt-1 font-sans text-xs font-light leading-relaxed text-[#8b4114]/75">
-                Visão operacional do ateliê: orçamentos, produção artesanal e catálogo de produtos.
+              <p className="mt-1 max-w-2xl font-sans text-sm font-light leading-relaxed text-[#8b4114]/75">
+                Aqui você vê o que precisa de atenção hoje: pedidos, pagamentos, produção e produtos publicados no site.
               </p>
             </div>
 
@@ -210,14 +214,14 @@ const Admin = () => {
                 className="inline-flex h-10 items-center gap-2 rounded-xl bg-[#8b4114] px-4 font-sans text-xs font-medium text-white shadow-sm transition-all hover:bg-[#72340e]"
               >
                 <FolderKanban className="h-4 w-4" />
-                <span>Ver Pedidos</span>
+                <span>Ver pedidos</span>
               </Link>
               <Link
                 to="/admin/galeria"
                 className="inline-flex h-10 items-center gap-2 rounded-xl border border-[#8b4114]/15 bg-white px-4 font-sans text-xs font-medium text-[#8b4114] shadow-2xs transition-all hover:bg-[#f0dfd4]"
               >
                 <PlusCircle className="h-4 w-4" />
-                <span>Novo Produto</span>
+                <span>Cadastrar produto</span>
               </Link>
             </div>
           </div>
@@ -233,22 +237,26 @@ const Admin = () => {
               value={metric.value}
               tone={metric.tone}
               subtitle={metric.subtitle}
+              helpText={metric.helpText}
             />
           ))}
         </div>
 
         {/* Main Section: Compact Management & Side Orders */}
-        <div className="grid min-h-0 flex-1 gap-3.5 xl:grid-cols-[minmax(0,1fr)_22rem] xl:items-stretch">
+        <div className="grid min-h-0 flex-1 gap-4 xl:grid-cols-[minmax(0,1fr)_23rem] xl:items-stretch">
           <div className="min-w-0 space-y-3">
             <div className="grid gap-3 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
-              <div className="rounded-xl border border-amber-200/80 bg-gradient-to-r from-amber-50/70 via-white to-amber-50/40 p-3 shadow-2xs">
+              <div className="rounded-xl border border-amber-200/80 bg-gradient-to-r from-amber-50/70 via-white to-amber-50/40 p-3.5 shadow-2xs sm:p-4">
                 <div className="flex items-center justify-between gap-2 border-b border-amber-200/60 pb-2">
                   <div className="flex items-center gap-2">
                     <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100 text-amber-900">
                       <AlertCircle className="h-4 w-4" />
                     </div>
                     <div>
-                      <h3 className="font-sans text-sm font-semibold text-amber-950">Atenção Hoje</h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-sans text-sm font-semibold text-amber-950">Precisa de atenção</h3>
+                        <AdminHelpTooltip label="Mostra pedidos que precisam de resposta primeiro, como pagamento ou aprovação." />
+                      </div>
                       <p className="font-sans text-xs font-light text-amber-900/70">
                         {urgentOrders.length} {urgentOrders.length === 1 ? "pedido requer" : "pedidos requerem"} ação
                       </p>
@@ -256,7 +264,7 @@ const Admin = () => {
                   </div>
 
                   <Link to="/admin/pedidos" className="shrink-0 font-sans text-xs font-medium text-amber-900 hover:text-amber-950">
-                    Gerenciar &rarr;
+                    Abrir pedidos &rarr;
                   </Link>
                 </div>
 
@@ -264,7 +272,7 @@ const Admin = () => {
                   {urgentOrders.length === 0 ? (
                     <div className="flex items-center gap-2 py-2 text-xs font-light text-emerald-800">
                       <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                      <span>Nenhuma ação imediata.</span>
+                      <span>Nada urgente por enquanto.</span>
                     </div>
                   ) : (
                     <div className="grid gap-2 sm:grid-cols-2">
@@ -301,11 +309,14 @@ const Admin = () => {
                 </div>
               </div>
 
-              <div className="rounded-xl border border-[#8b4114]/10 bg-white p-3 shadow-[0_4px_20px_rgba(93,51,29,0.03)]">
+              <div className="rounded-xl border border-[#8b4114]/10 bg-white p-3.5 shadow-[0_4px_20px_rgba(93,51,29,0.03)] sm:p-4">
                 <div className="flex items-center justify-between gap-2">
                   <div>
-                    <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.12em] text-[#76877e]">Fluxo</p>
-                    <h3 className="font-sans text-sm font-medium text-[#8b4114]">Pipeline do Ateliê</h3>
+                    <div className="flex items-center gap-2">
+                      <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.12em] text-[#76877e]">Etapas</p>
+                      <AdminHelpTooltip label="Mostra quantos pedidos existem em cada etapa do trabalho." />
+                    </div>
+                    <h3 className="font-sans text-sm font-medium text-[#8b4114]">Caminho dos pedidos</h3>
                   </div>
                   <Link to="/admin/pedidos" className="font-sans text-xs font-medium text-[#8b4114] hover:underline">
                     Ver &rarr;
@@ -314,15 +325,15 @@ const Admin = () => {
 
                 <div className="mt-2 grid grid-cols-5 gap-1.5">
                   {[
-                    { label: "Pag.", value: pipelineStats.awaiting, className: "border-amber-200 bg-amber-50/60 text-amber-900" },
+                    { label: "A pagar", value: pipelineStats.awaiting, className: "border-amber-200 bg-amber-50/60 text-amber-900" },
                     { label: "Pago", value: pipelineStats.paid, className: "border-emerald-200 bg-emerald-50/60 text-emerald-900" },
-                    { label: "Prod.", value: pipelineStats.production, className: "border-[#8b4114]/20 bg-[#fbeee7] text-[#8b4114]" },
-                    { label: "Aprov.", value: pipelineStats.approval, className: "border-purple-200 bg-purple-50/60 text-purple-900" },
-                    { label: "Fim", value: pipelineStats.finished, className: "border-slate-200 bg-slate-50 text-slate-800" },
+                    { label: "Fazendo", value: pipelineStats.production, className: "border-[#8b4114]/20 bg-[#fbeee7] text-[#8b4114]" },
+                    { label: "Revisão", value: pipelineStats.approval, className: "border-purple-200 bg-purple-50/60 text-purple-900" },
+                    { label: "Pronto", value: pipelineStats.finished, className: "border-slate-200 bg-slate-50 text-slate-800" },
                   ].map((item) => (
                     <div key={item.label} className={`rounded-lg border p-2 text-center ${item.className}`}>
                       <span className="block font-sans text-lg font-light">{item.value}</span>
-                      <span className="font-sans text-[10px] font-medium">{item.label}</span>
+                      <span className="block min-h-8 font-sans text-[10px] font-medium leading-4 sm:min-h-0">{item.label}</span>
                     </div>
                   ))}
                 </div>
@@ -331,11 +342,14 @@ const Admin = () => {
 
             <div className="grid gap-3 lg:grid-cols-2">
             {/* Catalog Snapshot */}
-            <div className="rounded-xl border border-[#8b4114]/10 bg-white p-3.5 shadow-[0_4px_20px_rgba(93,51,29,0.03)]">
+            <div className="rounded-xl border border-[#8b4114]/10 bg-white p-3.5 shadow-[0_4px_20px_rgba(93,51,29,0.03)] sm:p-4">
               <div className="mb-3">
-                <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-[#76877e]">
-                  Catálogo
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-[#76877e]">
+                    Site
+                  </p>
+                  <AdminHelpTooltip label="Mostra quantos produtos estão cadastrados para aparecer no site." />
+                </div>
                 <h3 className="mt-0.5 font-sans text-base font-medium text-[#8b4114]">
                   Produtos no Site
                 </h3>
@@ -351,7 +365,7 @@ const Admin = () => {
                   </p>
                   <p className="mt-1 font-sans text-2xl font-light text-[#8b4114]">{galleryCount}</p>
                   <span className="mt-1 block text-[11px] text-[#76877e] group-hover:text-[#8b4114] transition-colors">
-                    Gerenciar &rarr;
+                    Editar galeria &rarr;
                   </span>
                 </Link>
 
@@ -364,24 +378,27 @@ const Admin = () => {
                   </p>
                   <p className="mt-1 font-sans text-2xl font-light text-[#8b4114]">{otherProjectsCount}</p>
                   <span className="mt-1 block text-[11px] text-[#76877e] group-hover:text-[#8b4114] transition-colors">
-                    Gerenciar &rarr;
+                    Editar especiais &rarr;
                   </span>
                 </Link>
               </div>
             </div>
 
             {/* Quick Actions Navigation Cards */}
-            <div className="rounded-xl border border-[#8b4114]/10 bg-white p-3.5 shadow-[0_4px_20px_rgba(93,51,29,0.03)] space-y-2.5">
+            <div className="space-y-2.5 rounded-xl border border-[#8b4114]/10 bg-white p-3.5 shadow-[0_4px_20px_rgba(93,51,29,0.03)] sm:p-4">
               <div>
-                <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-[#76877e]">
-                  Navegação Rápida
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-[#76877e]">
+                    Atalhos
+                  </p>
+                  <AdminHelpTooltip label="Mostra atalhos para as áreas mais usadas do painel." />
+                </div>
                 <h3 className="mt-0.5 font-sans text-base font-medium text-[#8b4114]">
-                  Gerenciar Ateliê
+                  Ir para uma área
                 </h3>
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {quickLinks.map((item) => {
                   const Icon = item.icon;
 
@@ -398,7 +415,7 @@ const Admin = () => {
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center justify-between gap-1">
-                          <h4 className="truncate font-sans text-xs font-medium text-[#8b4114]">
+                          <h4 className="font-sans text-xs font-medium leading-snug text-[#8b4114]">
                             {item.title}
                           </h4>
                           <ArrowRight className="h-3 w-3 shrink-0 text-[#76877e] transition-transform group-hover:translate-x-0.5" />
@@ -412,14 +429,17 @@ const Admin = () => {
             </div>
           </div>
 
-          <aside className="flex min-h-0 flex-col rounded-xl border border-[#8b4114]/10 bg-white p-3.5 shadow-[0_4px_20px_rgba(93,51,29,0.03)]">
+          <aside className="flex min-h-[26rem] flex-col rounded-xl border border-[#8b4114]/10 bg-white p-3.5 shadow-[0_4px_20px_rgba(93,51,29,0.03)] sm:p-4 xl:min-h-0">
             <div className="flex shrink-0 items-center justify-between gap-3 border-b border-[#8b4114]/10 pb-2.5">
               <div>
-                <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-[#76877e]">
-                  Acompanhamento
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-[#76877e]">
+                    Pedidos
+                  </p>
+                  <AdminHelpTooltip label="Clique em um pedido para abrir os detalhes. O botão WhatsApp abre a conversa da cliente." side="left" />
+                </div>
                 <h2 className="mt-0.5 font-sans text-base font-medium text-[#8b4114]">
-                  Pedidos Feitos
+                  Últimos pedidos
                 </h2>
               </div>
               <Link

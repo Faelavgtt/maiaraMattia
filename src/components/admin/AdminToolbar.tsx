@@ -1,4 +1,5 @@
 import { Filter, RotateCcw, Search, X } from "lucide-react";
+import { AdminHelpTooltip } from "@/components/admin/AdminHelpTooltip";
 import { adminStatuses } from "@/components/admin/admin-data";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { AdminOrderSource, AdminOrderStatus, AdminOrderType } from "@/lib/admin-api";
@@ -44,7 +45,7 @@ export function AdminToolbar({
   onClearFilters,
 }: AdminToolbarProps) {
   const selectTriggerClassName =
-    "h-10 rounded-xl border-[#8b4114]/15 bg-white px-3 font-sans text-xs sm:text-sm font-light text-[#8b4114] shadow-sm outline-none ring-0 transition-all hover:border-[#8b4114]/35 focus:ring-0 focus:ring-offset-0 data-[state=open]:border-[#8b4114]";
+    "h-11 rounded-xl border-[#8b4114]/15 bg-[#fffaf5] px-3 font-sans text-xs sm:text-sm font-light text-[#8b4114] shadow-sm outline-none ring-0 transition-all hover:border-[#8b4114]/35 focus:ring-0 focus:ring-offset-0 data-[state=open]:border-[#8b4114]";
   const selectContentClassName =
     "z-[70] rounded-xl border-[#8b4114]/15 bg-white p-1 font-sans text-[#8b4114] shadow-[0_12px_32px_rgba(93,51,29,0.12)]";
   const selectItemClassName =
@@ -66,104 +67,147 @@ export function AdminToolbar({
   ].filter(Boolean).length;
 
   return (
-    <div className="rounded-2xl border border-[#8b4114]/10 bg-white p-3.5 shadow-[0_4px_20px_rgba(93,51,29,0.03)]">
-      <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-[minmax(220px,1.4fr)_repeat(4,minmax(140px,1fr))_auto] lg:items-center">
+    <div className="rounded-2xl border border-[#8b4114]/10 bg-white p-3.5 shadow-[0_4px_20px_rgba(93,51,29,0.03)] sm:p-4">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <Filter className="h-4 w-4 text-[#76877e]" />
+          <h2 className="font-sans text-sm font-medium text-[#8b4114]">Encontrar pedidos</h2>
+          <AdminHelpTooltip label="Use estes campos para filtrar a lista sem alterar os pedidos." />
+        </div>
+        {activeFilterCount > 0 && (
+          <span className="rounded-full bg-[#f8f1e9] px-2.5 py-1 font-sans text-[11px] font-medium text-[#8b4114]">
+            {activeFilterCount} filtro(s) ativo(s)
+          </span>
+        )}
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-[minmax(240px,1.35fr)_repeat(4,minmax(150px,1fr))_auto] xl:items-end">
         {/* Search Input */}
-        <div className="relative flex h-10 items-center rounded-xl border border-[#8b4114]/15 bg-white px-3 shadow-sm transition-all focus-within:border-[#8b4114]">
-          <Search className="h-4 w-4 shrink-0 text-[#76877e]" />
-          <input
-            value={search}
-            onChange={(event) => onSearchChange(event.target.value)}
-            className="w-full bg-transparent px-2 font-sans text-xs sm:text-sm font-light text-[#8b4114] outline-none placeholder:text-[#76877e]/70"
-            placeholder="Buscar por pedido, cliente ou projeto..."
-          />
-          {search && (
-            <button
-              type="button"
-              onClick={() => onSearchChange("")}
-              className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[#76877e] hover:bg-[#f0dfd4] hover:text-[#8b4114]"
-              aria-label="Limpar busca"
-            >
-              <X className="h-3 w-3" />
-            </button>
-          )}
+        <div className="space-y-1">
+          <div className="flex items-center gap-1.5 font-sans text-[11px] font-medium text-[#8b4114]/75">
+            Buscar
+            <AdminHelpTooltip label="Busque por nome, telefone, código do pedido, produto ou observação." />
+          </div>
+          <div className="relative flex h-11 items-center rounded-xl border border-[#8b4114]/15 bg-[#fffaf5] px-3 shadow-sm transition-all focus-within:border-[#8b4114] focus-within:bg-white">
+            <Search className="h-4 w-4 shrink-0 text-[#76877e]" />
+            <input
+              value={search}
+              onChange={(event) => onSearchChange(event.target.value)}
+              className="w-full bg-transparent px-2 font-sans text-xs font-light text-[#8b4114] outline-none placeholder:text-[#76877e]/70 sm:text-sm"
+              placeholder="Nome, telefone ou código..."
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={() => onSearchChange("")}
+                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[#76877e] hover:bg-[#f0dfd4] hover:text-[#8b4114]"
+                aria-label="Limpar busca"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Status Filter */}
-        <Select
-          value={status}
-          onValueChange={(value) => onStatusChange(value as AdminOrderStatus | "all")}
-        >
-          <SelectTrigger className={selectTriggerClassName}>
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent className={selectContentClassName}>
-            <SelectItem className={selectItemClassName} value="all">Todos os status</SelectItem>
-            {adminStatuses.map((item) => (
-              <SelectItem className={selectItemClassName} key={item.value} value={item.value}>
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="space-y-1">
+          <div className="flex items-center gap-1.5 font-sans text-[11px] font-medium text-[#8b4114]/75">
+            Situação
+            <AdminHelpTooltip label="Filtra os pedidos pela etapa atual, como pagamento, produção, revisão ou finalizado." />
+          </div>
+          <Select
+            value={status}
+            onValueChange={(value) => onStatusChange(value as AdminOrderStatus | "all")}
+          >
+            <SelectTrigger className={selectTriggerClassName}>
+              <SelectValue placeholder="Situação" />
+            </SelectTrigger>
+            <SelectContent className={selectContentClassName}>
+              <SelectItem className={selectItemClassName} value="all">Todas as situações</SelectItem>
+              {adminStatuses.map((item) => (
+                <SelectItem className={selectItemClassName} key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
         {/* Type Filter */}
-        <Select
-          value={type}
-          onValueChange={(value) => onTypeChange(value as AdminOrderType | "all")}
-        >
-          <SelectTrigger className={selectTriggerClassName}>
-            <SelectValue placeholder="Tipo" />
-          </SelectTrigger>
-          <SelectContent className={selectContentClassName}>
-            <SelectItem className={selectItemClassName} value="all">Todos os tipos</SelectItem>
-            {orderTypes.map((item) => (
-              <SelectItem className={selectItemClassName} key={item.value} value={item.value}>
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="space-y-1">
+          <div className="flex items-center gap-1.5 font-sans text-[11px] font-medium text-[#8b4114]/75">
+            Produto
+            <AdminHelpTooltip label="Filtra pelo tipo de produto, como Familinha, Maker, Galeria ou projetos especiais." />
+          </div>
+          <Select
+            value={type}
+            onValueChange={(value) => onTypeChange(value as AdminOrderType | "all")}
+          >
+            <SelectTrigger className={selectTriggerClassName}>
+              <SelectValue placeholder="Produto" />
+            </SelectTrigger>
+            <SelectContent className={selectContentClassName}>
+              <SelectItem className={selectItemClassName} value="all">Todos os produtos</SelectItem>
+              {orderTypes.map((item) => (
+                <SelectItem className={selectItemClassName} key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
         {/* Source Filter */}
-        <Select
-          value={source}
-          onValueChange={(value) => onSourceChange(value as AdminOrderSource | "all")}
-        >
-          <SelectTrigger className={selectTriggerClassName}>
-            <SelectValue placeholder="Origem" />
-          </SelectTrigger>
-          <SelectContent className={selectContentClassName}>
-            <SelectItem className={selectItemClassName} value="all">Todas as origens</SelectItem>
-            {orderSources.map((item) => (
-              <SelectItem className={selectItemClassName} key={item.value} value={item.value}>
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="space-y-1">
+          <div className="flex items-center gap-1.5 font-sans text-[11px] font-medium text-[#8b4114]/75">
+            Entrada
+            <AdminHelpTooltip label="Filtra pela origem do pedido, como carrinho, Maker ou cadastro manual." />
+          </div>
+          <Select
+            value={source}
+            onValueChange={(value) => onSourceChange(value as AdminOrderSource | "all")}
+          >
+            <SelectTrigger className={selectTriggerClassName}>
+              <SelectValue placeholder="Entrada" />
+            </SelectTrigger>
+            <SelectContent className={selectContentClassName}>
+              <SelectItem className={selectItemClassName} value="all">Todas as entradas</SelectItem>
+              {orderSources.map((item) => (
+                <SelectItem className={selectItemClassName} key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
         {/* File State Filter */}
-        <Select
-          value={fileState}
-          onValueChange={(value) => onFileStateChange(value as "all" | "with_files" | "without_files")}
-        >
-          <SelectTrigger className={selectTriggerClassName}>
-            <SelectValue placeholder="Arquivos" />
-          </SelectTrigger>
-          <SelectContent className={selectContentClassName}>
-            <SelectItem className={selectItemClassName} value="all">Todos os arquivos</SelectItem>
-            <SelectItem className={selectItemClassName} value="with_files">Com anexo</SelectItem>
-            <SelectItem className={selectItemClassName} value="without_files">Sem anexo</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="space-y-1">
+          <div className="flex items-center gap-1.5 font-sans text-[11px] font-medium text-[#8b4114]/75">
+            Anexos
+            <AdminHelpTooltip label="Filtra pedidos com arquivos anexados ou pedidos que ainda estão sem arquivo." />
+          </div>
+          <Select
+            value={fileState}
+            onValueChange={(value) => onFileStateChange(value as "all" | "with_files" | "without_files")}
+          >
+            <SelectTrigger className={selectTriggerClassName}>
+              <SelectValue placeholder="Anexos" />
+            </SelectTrigger>
+            <SelectContent className={selectContentClassName}>
+              <SelectItem className={selectItemClassName} value="all">Todos os anexos</SelectItem>
+              <SelectItem className={selectItemClassName} value="with_files">Com imagem/arquivo</SelectItem>
+              <SelectItem className={selectItemClassName} value="without_files">Sem imagem/arquivo</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
         {/* Reset Filters Button */}
         <button
           type="button"
           onClick={onClearFilters}
           disabled={!hasActiveFilters}
-          className={`inline-flex h-10 items-center justify-center gap-2 rounded-xl border px-3 font-sans text-xs sm:text-sm font-light transition-all ${
+          className={`inline-flex h-11 items-center justify-center gap-2 rounded-xl border px-3 font-sans text-xs font-light transition-all sm:text-sm ${
             hasActiveFilters
               ? "border-[#8b4114]/25 bg-[#fffaf5] text-[#8b4114] hover:bg-[#f0dfd4] shadow-sm"
               : "border-transparent text-[#8b4114]/40 cursor-not-allowed"
@@ -182,4 +226,3 @@ export function AdminToolbar({
     </div>
   );
 }
-

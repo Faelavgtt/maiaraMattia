@@ -23,7 +23,7 @@ const navigationItems = [
   { label: "Pedidos", href: "/admin/pedidos", icon: FolderKanban },
   { label: "Galeria", href: "/admin/galeria", icon: Layers3 },
   { label: "Outros projetos", href: "/admin/outros", icon: PackageOpen },
-  { label: "Bucket", href: "/admin/bucket", icon: Database },
+  { label: "Arquivos", href: "/admin/bucket", icon: Database },
   { label: "Usuários", href: "/admin/usuarios", icon: Users, ownerOnly: true },
 ];
 
@@ -73,7 +73,7 @@ export function AdminLayout() {
     <main className="min-h-screen bg-[#f8f1e9] text-[#8b4114] antialiased">
       <div
         className={`grid min-h-screen transition-[grid-template-columns] duration-300 ${
-          isSidebarOpen ? "lg:grid-cols-[17.5rem_1fr]" : "lg:grid-cols-[5.25rem_1fr]"
+          isSidebarOpen ? "lg:grid-cols-[15.5rem_1fr] 2xl:grid-cols-[17.5rem_1fr]" : "lg:grid-cols-[5.25rem_1fr]"
         }`}
       >
         {/* DESKTOP SIDEBAR */}
@@ -130,7 +130,7 @@ export function AdminLayout() {
             {isSidebarOpen && (
               <div className="mt-5 px-2.5">
                 <span className="font-sans text-[0.65rem] font-medium uppercase tracking-[0.18em] text-[#76877e]">
-                  Menu Administrativo
+                  Menu do painel
                 </span>
               </div>
             )}
@@ -181,7 +181,7 @@ export function AdminLayout() {
                       {session?.username ?? "Administrador"}
                     </p>
                     <p className="truncate font-sans text-[0.68rem] text-[#76877e]">
-                      {session?.role === "owner" ? "Admin Principal" : "Admin"}
+                      {session?.role === "owner" ? "Administrador principal" : "Administrador"}
                     </p>
                   </div>
                 )}
@@ -243,7 +243,7 @@ export function AdminLayout() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#407a53] opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-[#407a53]" />
                 </span>
-                <span>Painel Online</span>
+                <span>Painel ativo</span>
               </div>
 
               <a
@@ -253,7 +253,7 @@ export function AdminLayout() {
                 className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-[#8b4114]/15 bg-white px-3 font-sans text-xs font-light text-[#8b4114] shadow-sm transition-all hover:bg-[#f0dfd4] hover:shadow"
                 title="Abrir site público"
               >
-                <span>Ver Loja</span>
+                <span>Ver site</span>
                 <ExternalLink className="h-3.5 w-3.5 text-[#76877e]" />
               </a>
             </div>
@@ -331,7 +331,7 @@ export function AdminLayout() {
                           {session?.username ?? "Administrador"}
                         </p>
                         <p className="truncate font-sans text-[0.68rem] text-[#76877e]">
-                          {session?.role === "owner" ? "Admin Principal" : "Admin"}
+                          {session?.role === "owner" ? "Administrador principal" : "Administrador"}
                         </p>
                       </div>
                     </div>
