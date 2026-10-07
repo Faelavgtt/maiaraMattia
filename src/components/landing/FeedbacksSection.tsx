@@ -49,16 +49,7 @@ export function FeedbacksSection() {
   return (
     <section id="feedbacks" className="relative isolate overflow-hidden bg-[#d19c88] px-5 py-8 text-[#8b4114] sm:px-8 md:py-11 xl:py-12">
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
-        <img
-          src="/image/elementosFloral/floral1.png"
-          alt=""
-          className="garden-sway absolute -bottom-24 -left-24 h-72 w-auto opacity-35 sm:h-96 lg:opacity-45"
-        />
-        <img
-          src="/image/elementosFloral/floral5.png"
-          alt=""
-          className="garden-sway-slow absolute -right-32 top-10 h-72 w-auto opacity-30 sm:h-96 lg:opacity-45"
-        />
+        
         <Star className="services-float absolute left-[9%] top-16 h-8 w-8 rotate-12 fill-[#f9e7d6] text-[#f9e7d6]" />
         <Heart className="services-float-slow absolute bottom-20 right-[12%] h-9 w-9 -rotate-12 fill-[#7d876d] text-[#7d876d]" />
         <svg className="absolute left-[28%] top-8 h-16 w-40 text-[#8b4114]/18" viewBox="0 0 160 60" fill="none">

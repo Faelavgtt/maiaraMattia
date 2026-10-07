@@ -51,12 +51,18 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   * {
     @apply border-border;
   }
 
   body {
     @apply bg-background text-foreground font-sans font-light;
+    overflow-x: hidden;
     background-image:
       radial-gradient(circle at 18% 12%, rgba(238, 191, 97, 0.10), transparent 28%),
       radial-gradient(circle at 82% 18%, rgba(147, 177, 151, 0.10), transparent 24%),
@@ -219,21 +225,33 @@
   }
 }
 
+@property --garden-rotate {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0deg;
+}
+
 @keyframes garden-sway {
   0%, 100% {
-    transform: translateY(0) rotate(var(--garden-rotate, 0deg));
+    transform: translate(0, 0) rotate(0deg);
   }
-  50% {
-    transform: translateY(-5px) rotate(calc(var(--garden-rotate, 0deg) + 2deg));
+  30% {
+    transform: translate(4px, -3px) rotate(2.8deg);
+  }
+  65% {
+    transform: translate(-2px, 2px) rotate(-1.5deg);
   }
 }
 
 @keyframes garden-sway-slow {
   0%, 100% {
-    transform: translateY(0) rotate(var(--garden-rotate, 0deg));
+    transform: translate(0, 0) rotate(0deg);
   }
-  50% {
-    transform: translateY(4px) rotate(calc(var(--garden-rotate, 0deg) - 2deg));
+  35% {
+    transform: translate(-4px, 3px) rotate(-2.6deg);
+  }
+  70% {
+    transform: translate(2px, -2px) rotate(1.4deg);
   }
 }
 
@@ -405,12 +423,12 @@
 }
 
 .garden-sway {
-  animation: garden-sway 6.5s ease-in-out infinite;
+  animation: garden-sway 5.5s ease-in-out infinite;
   transform-origin: bottom center;
 }
 
 .garden-sway-slow {
-  animation: garden-sway-slow 8s ease-in-out infinite;
+  animation: garden-sway-slow 7s ease-in-out infinite;
   transform-origin: bottom center;
 }
 
@@ -457,9 +475,6 @@
   .hero-badge {
     animation: none;
   }
-
-  .garden-sway,
-  .garden-sway-slow,
   .garden-leaf-rest,
   .services-float,
   .services-float-slow {

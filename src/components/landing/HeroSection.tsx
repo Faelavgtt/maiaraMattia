@@ -28,31 +28,31 @@ export function HeroSection({ phrase }: HeroSectionProps) {
           src="/image/elementosFloral/floral7.png"
           alt=""
           className="garden-sway-slow absolute -left-10 top-0 z-[2] h-40 w-auto opacity-80 sm:h-48 md:-left-14 md:h-56 xl:left-0 xl:-top-5 xl:h-80 xl:opacity-95"
-          style={{ "--garden-rotate": "0deg" } as CSSProperties}
+          style={{ rotate: "0deg", transformOrigin: "top left", "--garden-rotate": "0deg" } as CSSProperties}
         />
         <img
           src="/image/elementosFloral/floral1.png"
           alt=""
           className="garden-sway absolute -bottom-24 -left-28 h-[18rem] w-auto opacity-55 sm:h-[22rem] md:-bottom-28 md:-left-32 md:h-[28rem] xl:-bottom-28 xl:-left-24 xl:h-[38rem] xl:opacity-90"
-          style={{ "--garden-rotate": "-7deg" } as CSSProperties}
+          style={{ rotate: "-7deg", transformOrigin: "bottom left", animationDelay: "-1.8s", "--garden-rotate": "-7deg" } as CSSProperties}
         />
         <img
           src="/image/elementosFloral/floral5.png"
           alt=""
           className="garden-sway-slow absolute -right-32 bottom-8 h-[17rem] w-auto opacity-55 sm:h-[21rem] md:-right-36 md:h-[27rem] xl:-right-20 xl:bottom-0 xl:h-[34rem] xl:opacity-90"
-          style={{ "--garden-rotate": "-12deg" } as CSSProperties}
+          style={{ rotate: "-12deg", transformOrigin: "bottom right", animationDelay: "-3.5s", "--garden-rotate": "-12deg" } as CSSProperties}
         />
         <img
           src="/image/elementosFloral/floral3.png"
           alt=""
           className="garden-sway absolute -left-24 top-[38%] h-40 w-auto opacity-45 sm:h-48 md:-left-28 md:h-56 xl:-left-20 xl:top-[34%] xl:h-80 xl:opacity-75"
-          style={{ "--garden-rotate": "8deg" } as CSSProperties}
+          style={{ rotate: "8deg", transformOrigin: "bottom left", animationDelay: "-2.2s", "--garden-rotate": "8deg" } as CSSProperties}
         />
         <img
           src="/image/elementosFloral/floral2.png"
           alt=""
           className="garden-sway-slow absolute -right-24 top-[18%] h-36 w-auto opacity-45 sm:h-44 md:-right-28 md:h-52 xl:-right-12 xl:top-[21%] xl:h-72 xl:opacity-75"
-          style={{ "--garden-rotate": "-16deg" } as CSSProperties}
+          style={{ rotate: "-16deg", transformOrigin: "top right", animationDelay: "-4.8s", "--garden-rotate": "-16deg" } as CSSProperties}
         />
         <div className="garden-bee-path absolute left-0 top-[61%] h-9 w-9 md:h-11 md:w-11 xl:top-[58%] xl:h-16 xl:w-16">
           <img src="/image/elementosFloral/abelha.png" alt="" className="garden-bee h-full w-auto" />
@@ -74,11 +74,11 @@ export function HeroSection({ phrase }: HeroSectionProps) {
             Sou artista visual e ilustradora, formada pela UCDB. Meu trabalho nasce da infância, da natureza e das memórias afetivas. 
             <br />Acredito que as coisas mais bonitas são também as mais simples:
           </motion.p> 
-          <motion.div variants={textItem} className="mt-3 grid max-w-2xl grid-cols-2 gap-2.5 font-sans text-[0.72rem] font-light leading-[1.45] text-[#8b4114]/82 min-[380px]:text-[0.76rem] sm:mt-5 sm:gap-3 sm:text-sm sm:leading-6 md:text-base md:leading-7">
-            <p className="border-l border-white/45 pl-4 sm:pl-5">
+          <motion.div variants={textItem} className="mt-3 grid max-w-2xl grid-cols-1 gap-2.5 font-sans text-xs font-light leading-relaxed text-[#8b4114]/85 sm:mt-5 sm:grid-cols-2 sm:gap-3 sm:text-sm sm:leading-6 md:text-base md:leading-7">
+            <p className="border-l-2 border-white/50 pl-3.5 sm:border-l sm:border-white/45 sm:pl-5">
               Uma flor encontrada durante a caminhada, o papel de carta guardado por muitos anos. Um abraço de quem amamos ou um galho transformado em brincadeira.
             </p>
-            <p className="border-l border-white/45 pl-4 sm:pl-5">
+            <p className="border-l-2 border-white/50 pl-3.5 sm:border-l sm:border-white/45 sm:pl-5">
               É desse lugar que nasce o meu trabalho. Entre ilustrações, pintura e criação manual, procuro transformar memórias em imagens e objetos que acolhem.
             </p>
           </motion.div>
@@ -90,7 +90,7 @@ export function HeroSection({ phrase }: HeroSectionProps) {
               href="#portfolio"
               whileHover={{ y: -3, rotate: -1 }}
               whileTap={{ scale: 0.97 }}
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#8b4114] px-5 font-sans text-sm font-medium text-white shadow-[0_12px_26px_rgba(0,0,0,0.16)] sm:h-12 sm:px-6 sm:text-base md:text-lg"
+              className="inline-flex h-11 min-h-[44px] items-center justify-center gap-2 rounded-full bg-[#8b4114] px-5 font-sans text-sm font-medium text-white shadow-[0_12px_26px_rgba(0,0,0,0.16)] sm:h-12 sm:px-6 sm:text-base md:text-lg"
             >
               Conhecer o universo
               <ArrowRight className="h-4 w-4" />
@@ -99,7 +99,7 @@ export function HeroSection({ phrase }: HeroSectionProps) {
               href="#pedido"
               whileHover={{ y: -3, rotate: 1 }}
               whileTap={{ scale: 0.97 }}
-              className="inline-flex h-10 items-center justify-center rounded-full border border-[#8b4114]/25 bg-white px-5 font-sans text-sm font-light text-[#8b4114] sm:h-12 sm:px-6 sm:text-base md:text-lg"
+              className="inline-flex h-11 min-h-[44px] items-center justify-center rounded-full border border-[#8b4114]/25 bg-white px-5 font-sans text-sm font-light text-[#8b4114] sm:h-12 sm:px-6 sm:text-base md:text-lg"
             >
               Criar comigo
             </motion.a>

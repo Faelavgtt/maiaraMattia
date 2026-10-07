@@ -54,7 +54,7 @@ export function OrderSection({ onSubmit }: OrderSectionProps) {
                 minLength={2}
                 maxLength={80}
                 autoComplete="name"
-                className="mt-2 h-11 w-full rounded-full border border-[#ddb8a6] bg-white px-4 font-sans text-sm font-light normal-case tracking-normal outline-none focus:border-[#c68043] md:h-12"
+                className="mt-2 h-11 w-full rounded-full border border-[#ddb8a6] bg-white px-4 font-sans text-base sm:text-sm font-light normal-case tracking-normal outline-none focus:border-[#c68043] md:h-12"
               />
             </label>
             <label className="font-sans text-xs font-normal uppercase tracking-[0.12em] text-[#8b4114]/75">
@@ -69,7 +69,7 @@ export function OrderSection({ onSubmit }: OrderSectionProps) {
                 autoComplete="tel"
                 pattern="[0-9()+\-\s]{10,20}"
                 title="Informe um WhatsApp com DDD."
-                className="mt-2 h-11 w-full rounded-full border border-[#ddb8a6] bg-white px-4 font-sans text-sm font-light normal-case tracking-normal outline-none focus:border-[#c68043] md:h-12"
+                className="mt-2 h-11 w-full rounded-full border border-[#ddb8a6] bg-white px-4 font-sans text-base sm:text-sm font-light normal-case tracking-normal outline-none focus:border-[#c68043] md:h-12"
               />
             </label>
           </div>
@@ -80,12 +80,12 @@ export function OrderSection({ onSubmit }: OrderSectionProps) {
               name="projectIdea"
               rows={3}
               maxLength={600}
-              className="mt-2 w-full resize-none rounded-xl border border-[#ddb8a6] bg-white p-3 font-sans text-sm font-light normal-case tracking-normal outline-none focus:border-[#c68043] md:min-h-24"
+              className="mt-2 w-full resize-none rounded-xl border border-[#ddb8a6] bg-white p-3 font-sans text-base sm:text-sm font-light normal-case tracking-normal outline-none focus:border-[#c68043] md:min-h-24"
               placeholder="Retrato, convite, desenho da criança..."
             />
           </label>
 
-          <button type="submit" className="mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#7d876d] px-5 font-sans text-sm font-medium text-white transition-transform hover:-translate-y-0.5 md:h-12 md:text-base">
+          <button type="submit" className="mt-5 inline-flex h-12 min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-[#7d876d] px-5 font-sans text-sm font-medium text-white transition-transform hover:-translate-y-0.5 active:translate-y-0 md:h-12 md:text-base">
             Enviar no WhatsApp
             <ArrowRight className="h-5 w-5" />
           </button>
