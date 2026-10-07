@@ -1,4 +1,5 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle2, Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useCart } from "@/lib/cart";
@@ -9,6 +10,16 @@ export function CartDrawer() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
   const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null);
+  const [isMobileView, setIsMobileView] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth < 640 : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => setIsMobileView(window.innerWidth < 640);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const submitCheckout = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -46,10 +57,12 @@ export function CartDrawer() {
 
   return (
     <>
-      <button
+      <motion.button
         type="button"
         onClick={openCart}
-        className="fixed bottom-4 right-4 z-40 inline-flex h-12 items-center gap-2 rounded-full bg-[#8b4114] px-4 font-sans text-xs font-medium text-white shadow-[0_18px_36px_rgba(93,51,29,0.22)] transition-transform hover:-translate-y-0.5 sm:bottom-5 sm:right-5 sm:h-14 sm:px-5 sm:text-sm"
+        whileHover={{ scale: 1.04 }}
+        whileTap={{ scale: 0.94 }}
+        className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom,0px))] right-4 z-40 inline-flex h-12 items-center gap-2 rounded-full bg-[#8b4114] px-4 font-sans text-xs font-medium text-white shadow-[0_18px_36px_rgba(93,51,29,0.22)] sm:bottom-5 sm:right-5 sm:h-14 sm:px-5 sm:text-sm"
         aria-label="Abrir carrinho"
       >
         <ShoppingBag className="h-5 w-5" />
@@ -59,12 +72,33 @@ export function CartDrawer() {
             {itemCount}
           </span>
         )}
-      </button>
+      </motion.button>
 
-      {isOpen && (
-        <div className="fixed inset-0 z-[1000]">
-          <button type="button" className="absolute inset-0 bg-[#1f1713]/50" onClick={closeCart} aria-label="Fechar carrinho" />
-          <aside className="absolute bottom-0 right-0 flex h-[min(100svh,92vh)] w-full max-w-md flex-col overflow-hidden rounded-t-2xl bg-[#fffaf5] shadow-2xl sm:top-0 sm:h-full sm:rounded-none">
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.24 }}
+            className="fixed inset-0 z-[1000]"
+          >
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.24 }}
+              className="absolute inset-0 bg-[#1f1713]/60 backdrop-blur-xs"
+              onClick={closeCart}
+              aria-label="Fechar carrinho"
+            />
+            <motion.aside
+              initial={isMobileView ? { y: "100%" } : { x: "100%" }}
+              animate={isMobileView ? { y: 0 } : { x: 0 }}
+              exit={isMobileView ? { y: "100%" } : { x: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 320 }}
+              className="absolute bottom-0 right-0 flex h-[min(100svh,92vh)] w-full max-w-md flex-col overflow-hidden rounded-t-2xl bg-[#fffaf5] pb-[env(safe-area-inset-bottom,0px)] shadow-2xl sm:top-0 sm:h-full sm:rounded-none sm:pb-0"
+            >
             <div className="flex items-center justify-between border-b border-[#8b4114]/12 px-4 py-3 sm:px-5 sm:py-4">
               <div>
                 <p className="font-sans text-xs font-light uppercase tracking-[0.18em] text-[#76877e]">Carrinho</p>
@@ -142,7 +176,7 @@ export function CartDrawer() {
                       minLength={2}
                       maxLength={80}
                       autoComplete="name"
-                      className="mt-1 h-10 w-full rounded-full border border-[#ddb8a6] px-4 outline-none focus:border-[#c68043] sm:h-11"
+                      className="mt-1 h-11 sm:h-11 w-full rounded-full border border-[#ddb8a6] px-4 text-base sm:text-sm outline-none focus:border-[#c68043]"
                     />
                   </label>
                   <label className="block font-sans text-xs font-light text-[#8b4114]">
@@ -157,7 +191,7 @@ export function CartDrawer() {
                       autoComplete="tel"
                       pattern="[0-9()+\-\s]{10,20}"
                       title="Informe um WhatsApp com DDD."
-                      className="mt-1 h-10 w-full rounded-full border border-[#ddb8a6] px-4 outline-none focus:border-[#c68043] sm:h-11"
+                      className="mt-1 h-11 sm:h-11 w-full rounded-full border border-[#ddb8a6] px-4 text-base sm:text-sm outline-none focus:border-[#c68043]"
                     />
                   </label>
                   <label className="block font-sans text-xs font-light text-[#8b4114]">
@@ -167,7 +201,7 @@ export function CartDrawer() {
                       type="email"
                       maxLength={120}
                       autoComplete="email"
-                      className="mt-1 h-10 w-full rounded-full border border-[#ddb8a6] px-4 outline-none focus:border-[#c68043] sm:h-11"
+                      className="mt-1 h-11 sm:h-11 w-full rounded-full border border-[#ddb8a6] px-4 text-base sm:text-sm outline-none focus:border-[#c68043]"
                     />
                   </label>
                   <label className="block font-sans text-xs font-light text-[#8b4114]">
@@ -176,7 +210,7 @@ export function CartDrawer() {
                       name="notes"
                       rows={2}
                       maxLength={600}
-                      className="mt-1 w-full resize-none rounded-xl border border-[#ddb8a6] p-3 outline-none focus:border-[#c68043] sm:min-h-20"
+                      className="mt-1 w-full resize-none rounded-xl border border-[#ddb8a6] p-3 text-base sm:text-sm outline-none focus:border-[#c68043] sm:min-h-20"
                       placeholder="Cores, nomes, prazo ou detalhes importantes."
                     />
                   </label>
@@ -186,9 +220,10 @@ export function CartDrawer() {
                 </form>
               )}
             </div>
-          </aside>
-        </div>
-      )}
+            </motion.aside>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

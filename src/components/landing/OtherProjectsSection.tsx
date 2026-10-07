@@ -231,7 +231,7 @@ export function OtherProjectsSection() {
               type="button"
               onClick={() => scrollWall("previous")}
               aria-label="Ver peças anteriores"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-[#8b4114]/15 bg-white text-[#8b4114] shadow-xs transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8b4114]/40"
+              className="flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#8b4114]/15 bg-white text-[#8b4114] shadow-xs transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8b4114]/40"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -239,7 +239,7 @@ export function OtherProjectsSection() {
               type="button"
               onClick={() => scrollWall("next")}
               aria-label="Ver próximas peças"
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#8b4114] text-white shadow-xs transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8b4114]/40"
+              className="flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-[#8b4114] text-white shadow-xs transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8b4114]/40"
             >
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -255,7 +255,7 @@ export function OtherProjectsSection() {
             onPointerCancel={stopWallDrag}
             onPointerLeave={stopWallDrag}
             onScroll={syncLoopPosition}
-            className="flex min-h-[17rem] cursor-grab select-none items-start gap-4 overflow-x-auto px-4 pb-4 pt-6 active:cursor-grabbing sm:min-h-[23rem] sm:gap-6 sm:px-8 sm:pb-7 sm:pt-8 md:min-h-[26rem] md:gap-7 xl:min-h-[28rem] xl:px-8 xl:pb-7 xl:pt-9 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="flex min-h-[17rem] cursor-grab select-none items-start gap-4 overflow-x-auto px-4 pb-4 pt-6 touch-pan-x active:cursor-grabbing sm:min-h-[23rem] sm:gap-6 sm:px-8 sm:pb-7 sm:pt-8 md:min-h-[26rem] md:gap-7 xl:min-h-[28rem] xl:px-8 xl:pb-7 xl:pt-9 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {carouselProjects.map((project, index) => (
               <StickerProductCard
@@ -281,7 +281,7 @@ export function OtherProjectsSection() {
           </p>
           <a
             href="#pedido"
-            className="inline-flex h-9 items-center justify-center gap-2 rounded-full bg-[#c68043] px-4 font-sans text-xs font-medium text-white shadow-[0_10px_24px_rgba(0,0,0,0.12)] transition-transform hover:-translate-y-0.5"
+            className="inline-flex h-11 min-h-[44px] w-full sm:w-auto sm:h-9 items-center justify-center gap-2 rounded-full bg-[#c68043] px-5 font-sans text-xs font-medium text-white shadow-[0_10px_24px_rgba(0,0,0,0.12)] transition-transform hover:-translate-y-0.5"
           >
             Conversar
             <ArrowRight className="h-4 w-4" aria-hidden="true" />

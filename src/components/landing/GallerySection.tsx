@@ -246,7 +246,7 @@ export function GallerySection() {
               type="button"
               onClick={() => scrollWall("previous")}
               aria-label="Ver galerias anteriores"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-[#8b4114]/15 bg-white text-[#8b4114] shadow-xs transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8b4114]/40"
+              className="flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#8b4114]/15 bg-white text-[#8b4114] shadow-xs transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8b4114]/40"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -254,7 +254,7 @@ export function GallerySection() {
               type="button"
               onClick={() => scrollWall("next")}
               aria-label="Ver próximas galerias"
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#8b4114] text-white shadow-xs transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8b4114]/40"
+              className="flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-[#8b4114] text-white shadow-xs transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8b4114]/40"
             >
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -271,7 +271,7 @@ export function GallerySection() {
             onPointerCancel={stopWallDrag}
             onPointerLeave={stopWallDrag}
             onScroll={syncLoopPosition}
-            className="flex min-h-[17rem] cursor-grab select-none items-start gap-4 overflow-x-auto px-4 pb-4 pt-6 active:cursor-grabbing sm:min-h-[23rem] sm:gap-6 sm:px-8 sm:pb-7 sm:pt-8 md:min-h-[26rem] md:gap-7 md:px-10 xl:min-h-[28rem] xl:gap-8 xl:px-10 xl:pb-8 xl:pt-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="flex min-h-[17rem] cursor-grab select-none items-start gap-4 overflow-x-auto px-4 pb-4 pt-6 touch-pan-x active:cursor-grabbing sm:min-h-[23rem] sm:gap-6 sm:px-8 sm:pb-7 sm:pt-8 md:min-h-[26rem] md:gap-7 md:px-10 xl:min-h-[28rem] xl:gap-8 xl:px-10 xl:pb-8 xl:pt-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {carouselProjects.map((project, index) => (
               <GalleryFrame 
@@ -300,7 +300,7 @@ export function GallerySection() {
             href={customGalleryUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#c68043] px-5 font-sans text-xs font-medium text-white shadow-xs transition-transform hover:-translate-y-0.5"
+            className="inline-flex h-11 min-h-[44px] w-full sm:w-auto sm:h-10 items-center justify-center gap-2 rounded-full bg-[#c68043] px-5 font-sans text-xs font-medium text-white shadow-xs transition-transform hover:-translate-y-0.5"
           >
             <MessageCircle className="h-4 w-4" aria-hidden="true" />
             Orçar personalizado

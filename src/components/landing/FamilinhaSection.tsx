@@ -139,9 +139,14 @@ export function FamilinhaSection() {
             </h3>
           </div>
 
-            <div className="mt-3 grid grid-cols-2 gap-2.5">
-            {familyProductDetails.map((detail) => (
-              <div key={detail.label} className="rounded-xl border border-[#8b4114]/10 bg-[#fff9f2] px-3.5 py-2.5">
+          <div className="mt-3 grid grid-cols-2 gap-2.5">
+            {familyProductDetails.map((detail, index) => (
+              <div
+                key={detail.label}
+                className={`rounded-xl border border-[#8b4114]/10 bg-[#fff9f2] px-3.5 py-2.5 ${
+                  index === 0 ? "col-span-2 sm:col-span-1" : "col-span-1"
+                }`}
+              >
                 <span className="block font-sans text-[0.62rem] font-semibold uppercase tracking-[0.15em] text-[#76877e]">
                   {detail.label}
                 </span>
@@ -166,7 +171,7 @@ export function FamilinhaSection() {
 
           <a
             href="#pedido"
-            className="mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-full bg-[#7d876d] px-5 font-sans text-sm font-medium text-white shadow-sm transition hover:bg-[#69725b] sm:w-auto"
+            className="mt-4 inline-flex h-11 min-h-[44px] w-full items-center justify-center gap-2 rounded-full bg-[#7d876d] px-5 font-sans text-sm font-medium text-white shadow-sm transition hover:bg-[#69725b] active:scale-98 sm:w-auto"
           >
             Quero encomendar
             <MessageCircle className="h-4 w-4" />

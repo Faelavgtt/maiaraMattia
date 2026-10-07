@@ -283,7 +283,7 @@ export function MakerSection({
                   minLength={2}
                   maxLength={80}
                   autoComplete="name"
-                  className="h-10 w-full rounded-full border border-[#ddb8a6] px-4 font-sans text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
+                  className="h-11 min-h-[44px] sm:h-10 w-full rounded-full border border-[#ddb8a6] px-4 font-sans text-base sm:text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
                   placeholder="Seu nome"
                 />
                 <input
@@ -296,7 +296,7 @@ export function MakerSection({
                   autoComplete="tel"
                   pattern="[0-9()+\-\s]{10,20}"
                   title="Informe um WhatsApp com DDD."
-                  className="h-10 w-full rounded-full border border-[#ddb8a6] px-4 font-sans text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
+                  className="h-11 min-h-[44px] sm:h-10 w-full rounded-full border border-[#ddb8a6] px-4 font-sans text-base sm:text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
                   placeholder="WhatsApp"
                 />
                 <input
@@ -304,7 +304,7 @@ export function MakerSection({
                   type="email"
                   maxLength={120}
                   autoComplete="email"
-                  className="h-10 w-full rounded-full border border-[#ddb8a6] px-4 font-sans text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
+                  className="h-11 min-h-[44px] sm:h-10 w-full rounded-full border border-[#ddb8a6] px-4 font-sans text-base sm:text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
                   placeholder="E-mail opcional"
                 />
               </div>
@@ -317,7 +317,7 @@ export function MakerSection({
                     key={option.value}
                     type="button"
                     onClick={() => onBackgroundColorChange(option.value)}
-                    className={`h-9 w-9 rounded-full border sm:h-10 sm:w-10 ${backgroundColor === option.value ? "border-[#8b4114] ring-2 ring-[#8b4114]/25" : "border-[#ddb8a6]"}`}
+                    className={`h-10 w-10 min-[380px]:h-11 min-[380px]:w-11 sm:h-10 sm:w-10 rounded-full border transition-transform active:scale-95 ${backgroundColor === option.value ? "border-[#8b4114] ring-2 ring-[#8b4114]/25 scale-105" : "border-[#ddb8a6]"}`}
                     style={{ backgroundColor: option.value }}
                     aria-label={`Selecionar fundo ${option.name}`}
                   />
@@ -333,7 +333,7 @@ export function MakerSection({
                     key={option.value}
                     type="button"
                     onClick={() => onOutlineColorChange(option.value)}
-                    className={`h-9 w-9 rounded-full border sm:h-10 sm:w-10 ${outlineColor === option.value ? "border-[#8b4114] ring-2 ring-[#8b4114]/25" : "border-[#ddb8a6]"}`}
+                    className={`h-10 w-10 min-[380px]:h-11 min-[380px]:w-11 sm:h-10 sm:w-10 rounded-full border transition-transform active:scale-95 ${outlineColor === option.value ? "border-[#8b4114] ring-2 ring-[#8b4114]/25 scale-105" : "border-[#ddb8a6]"}`}
                     style={{ backgroundColor: option.value }}
                     aria-label={`Selecionar traço ${option.name}`}
                     title={option.name}
@@ -364,14 +364,14 @@ export function MakerSection({
                 value={title}
                 maxLength={80}
                 onChange={(event) => onTitleChange(event.target.value.slice(0, 80))}
-                className="h-10 w-full rounded-full border border-[#ddb8a6] px-4 font-sans text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
+                className="h-11 min-h-[44px] sm:h-10 w-full rounded-full border border-[#ddb8a6] px-4 font-sans text-base sm:text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
                 placeholder="Ex: O mundo da Lia"
               />
               <input
                 value={subtitle}
                 maxLength={120}
                 onChange={(event) => onSubtitleChange(event.target.value.slice(0, 120))}
-                className="h-10 w-full rounded-full border border-[#ddb8a6] px-4 font-sans text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
+                className="h-11 min-h-[44px] sm:h-10 w-full rounded-full border border-[#ddb8a6] px-4 font-sans text-base sm:text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
                 placeholder="Ex: primeiro desenho de 2026"
               />
               </div>
@@ -394,7 +394,7 @@ export function MakerSection({
                 maxLength={600}
                 onChange={(event) => onDesignerNotesChange(event.target.value.slice(0, 600))}
                 rows={2}
-                className="w-full resize-none rounded-xl border border-[#ddb8a6] p-3 font-sans text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
+                className="w-full resize-none rounded-xl border border-[#ddb8a6] p-3 font-sans text-base sm:text-sm font-light outline-none placeholder:text-[#8b4114]/45 focus:border-[#8b4114]"
                 placeholder="Ex: manter o sol, remover rabiscos do canto, usar a frase exatamente assim..."
               />
             </ConfigBlock>
@@ -410,7 +410,7 @@ export function MakerSection({
             <div className="z-10 flex justify-end pt-3 lg:col-span-2 2xl:col-span-3">
               <button
                 type="submit"
-                className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full bg-[#8b4114] px-5 font-sans text-xs font-medium text-white shadow-[0_10px_20px_rgba(0,0,0,0.12)] transition-transform hover:-translate-y-0.5 sm:w-auto"
+                className="inline-flex h-11 min-h-[44px] sm:h-10 w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-[#8b4114] px-5 font-sans text-sm sm:text-xs font-medium text-white shadow-[0_10px_20px_rgba(0,0,0,0.12)] transition-transform hover:-translate-y-0.5 active:translate-y-0"
               >
                 Enviar pedido
                 <Send className="h-4 w-4" />
@@ -439,7 +439,7 @@ function OptionButton({ active, onClick, children }: { active: boolean; onClick:
     <button
       type="button"
       onClick={onClick}
-      className={`h-9 rounded-full border px-4 font-sans text-xs font-light ${
+      className={`h-10 min-h-[42px] sm:h-9 rounded-full border px-5 sm:px-4 font-sans text-xs font-light transition-colors ${
         active ? "border-[#8b4114] bg-[#ddb8a6] text-[#8b4114]" : "border-[#ddb8a6] bg-white text-[#8b4114]"
       }`}
     >
@@ -450,7 +450,7 @@ function OptionButton({ active, onClick, children }: { active: boolean; onClick:
 
 function RadioLine({ active, onClick, label, detail }: { active: boolean; onClick: () => void; label: string; detail: string }) {
   return (
-    <button type="button" onClick={onClick} className="flex items-start gap-2 text-left">
+    <button type="button" onClick={onClick} className="flex items-start gap-2 text-left p-2 sm:p-0 rounded-xl border border-[#ddb8a6]/40 sm:border-0 bg-white/40 sm:bg-transparent">
       <span className={`mt-0.5 flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full border border-[#8b4114] ${active ? "bg-[#8b4114]" : "bg-white"}`}>
         {active && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
       </span>
