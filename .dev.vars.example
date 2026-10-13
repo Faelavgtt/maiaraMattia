@@ -1,0 +1,9 @@
+# Exemplo de variáveis locais (Cloudflare Workers)
+# Copie este arquivo para .dev.vars e preencha suas configurações
+# O arquivo .dev.vars é confidencial e já está no .gitignore
+
+APP_ORIGIN="http://localhost:5173"
+WHATSAPP_NUMBER="5567999999999"
+ADMIN_OWNER_USERNAME="admin"
+ADMIN_OWNER_EMAIL="admin@exemplo.com"
+ADMIN_OWNER_PASSWORD="sua-senha-segura-aqui"
