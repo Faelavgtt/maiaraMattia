@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   BarChart3,
   ChevronLeft,
@@ -17,6 +18,7 @@ import {
 } from "lucide-react";
 import { getAdminSession, signOutAdmin, type AdminSession } from "@/lib/admin-auth";
 import { clearAdminDrafts } from "@/lib/admin-drafts";
+import { listAdminOrders } from "@/lib/admin-api";
 
 const navigationItems = [
   { label: "Painel", href: "/admin", icon: BarChart3 },
@@ -32,6 +34,19 @@ export function AdminLayout() {
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
   const [session, setSession] = useState<AdminSession | null>(null);
   const location = useLocation();
+
+  const { data: ordersData } = useQuery({
+    queryKey: ["admin-orders"],
+    queryFn: listAdminOrders,
+    retry: false,
+    staleTime: 30000,
+  });
+
+  const pendingCount = useMemo(() => {
+    return (ordersData?.orders ?? []).filter((o) =>
+      ["awaiting_payment", "awaiting_approval"].includes(o.status),
+    ).length;
+  }, [ordersData?.orders]);
 
   useEffect(() => {
     getAdminSession().then(setSession);
@@ -139,6 +154,8 @@ export function AdminLayout() {
             <nav className="mt-2.5 space-y-1">
               {visibleNavigationItems.map((item) => {
                 const Icon = item.icon;
+                const isOrdersItem = item.href === "/admin/pedidos";
+                const hasPendingOrders = isOrdersItem && pendingCount > 0;
 
                 return (
                   <NavLink
@@ -154,10 +171,24 @@ export function AdminLayout() {
                           : "font-light text-[#8b4114]/85 hover:bg-[#f0dfd4]/70 hover:text-[#8b4114]"
                       }`
                     }
-                    title={isSidebarOpen ? undefined : item.label}
+                    title={isSidebarOpen ? undefined : `${item.label}${hasPendingOrders ? ` (${pendingCount} pendentes)` : ""}`}
                   >
-                    <Icon className="h-4 w-4 shrink-0 transition-transform group-hover:scale-110" />
-                    {isSidebarOpen && <span className="truncate">{item.label}</span>}
+                    <div className="relative shrink-0">
+                      <Icon className="h-4 w-4 transition-transform group-hover:scale-110" />
+                      {!isSidebarOpen && hasPendingOrders && (
+                        <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-500 ring-2 ring-white" />
+                      )}
+                    </div>
+                    {isSidebarOpen && (
+                      <>
+                        <span className="truncate">{item.label}</span>
+                        {hasPendingOrders && (
+                          <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-100 px-1.5 text-[11px] font-semibold text-amber-900 border border-amber-200/80">
+                            {pendingCount}
+                          </span>
+                        )}
+                      </>
+                    )}
                   </NavLink>
                 );
               })}
@@ -299,6 +330,8 @@ export function AdminLayout() {
                 <nav className="mt-4 flex-1 space-y-1 overflow-y-auto">
                   {visibleNavigationItems.map((item) => {
                     const Icon = item.icon;
+                    const isOrdersItem = item.href === "/admin/pedidos";
+                    const hasPendingOrders = isOrdersItem && pendingCount > 0;
 
                     return (
                       <NavLink
@@ -306,15 +339,22 @@ export function AdminLayout() {
                         to={item.href}
                         end={item.href === "/admin"}
                         className={({ isActive }) =>
-                          `flex h-11 items-center gap-3 rounded-xl px-3 font-sans text-sm transition-colors ${
+                          `flex h-11 items-center justify-between rounded-xl px-3 font-sans text-sm transition-colors ${
                             isActive
                               ? "bg-[#8b4114] font-medium text-white shadow-sm"
                               : "text-[#8b4114] hover:bg-[#f0dfd4]"
                           }`
                         }
                       >
-                        <Icon className="h-4 w-4 shrink-0" />
-                        <span>{item.label}</span>
+                        <div className="flex items-center gap-3">
+                          <Icon className="h-4 w-4 shrink-0" />
+                          <span>{item.label}</span>
+                        </div>
+                        {hasPendingOrders && (
+                          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-100 px-1.5 text-[11px] font-semibold text-amber-900 border border-amber-200">
+                            {pendingCount}
+                          </span>
+                        )}
                       </NavLink>
                     );
                   })}

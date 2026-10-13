@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Clock3,
@@ -40,14 +41,40 @@ const statusTabOptions: { value: AdminOrderStatus | "all"; label: string }[] = [
 const emptyOrders: AdminOrderRow[] = [];
 
 const AdminOrders = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlStatus = searchParams.get("status");
+  const initialStatus =
+    urlStatus && statusTabOptions.some((tab) => tab.value === urlStatus)
+      ? (urlStatus as AdminOrderStatus | "all")
+      : "all";
+
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [selectedOrder, setSelectedOrder] = useState<AdminOrderRow | null>(null);
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<AdminOrderStatus | "all">("all");
+  const [status, setStatus] = useState<AdminOrderStatus | "all">(initialStatus);
   const [type, setType] = useState<AdminOrderType | "all">("all");
   const [source, setSource] = useState<AdminOrderSource | "all">("all");
   const [fileState, setFileState] = useState<"all" | "with_files" | "without_files">("all");
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (urlStatus && statusTabOptions.some((tab) => tab.value === urlStatus)) {
+      setStatus(urlStatus as AdminOrderStatus | "all");
+    }
+  }, [urlStatus]);
+
+  const handleStatusChange = (nextStatus: AdminOrderStatus | "all") => {
+    setStatus(nextStatus);
+    setSearchParams((prev) => {
+      const p = new URLSearchParams(prev);
+      if (nextStatus === "all") {
+        p.delete("status");
+      } else {
+        p.set("status", nextStatus);
+      }
+      return p;
+    });
+  };
 
   const { data, isError, isLoading, refetch } = useQuery({
     queryKey: ["admin-orders"],
@@ -149,7 +176,7 @@ const AdminOrders = () => {
 
   const clearFilters = () => {
     setSearch("");
-    setStatus("all");
+    handleStatusChange("all");
     setType("all");
     setSource("all");
     setFileState("all");
@@ -265,7 +292,7 @@ const AdminOrders = () => {
               <button
                 key={tab.value}
                 type="button"
-                onClick={() => setStatus(tab.value)}
+                onClick={() => handleStatusChange(tab.value)}
                   className={`flex min-h-10 shrink-0 items-center gap-2 rounded-xl px-4 py-2 font-sans text-xs font-medium transition-all ${
                   isActive
                     ? "bg-[#8b4114] text-white shadow-sm ring-1 ring-[#8b4114]"
@@ -293,7 +320,7 @@ const AdminOrders = () => {
           source={source}
           fileState={fileState}
           onSearchChange={setSearch}
-          onStatusChange={setStatus}
+          onStatusChange={handleStatusChange}
           onTypeChange={setType}
           onSourceChange={setSource}
           onFileStateChange={setFileState}
