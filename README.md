@@ -69,4 +69,4 @@ Acesse `http://localhost:5173` no seu navegador.
 ## 👤 Autoria
 
 - **Artes e Identidade Visual:** Maiara Mattia
-- **Desenvolvimento:** [Rafael Vergotti](https://github.com/Faelavgtt)
+- **Desenvolvimento:** [Rafaela Vergotti](https://github.com/Faelavgtt)
