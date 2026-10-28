@@ -264,6 +264,7 @@ const AdminOtherProjects = () => {
 
       {libraryOpen && (
         <AdminGalleryImageLibraryModal
+          area="outros-projetos"
           activeField={activeImageField}
           selectedUrl={form[activeImageField]}
           onSelect={(url) => {

@@ -56,6 +56,9 @@ export type GalleryImageAsset = {
   size: number;
   uploaded: string;
   contentType: string | null;
+  area?: "quadros" | "outros-projetos" | "unassigned";
+  isUsedInQuadros?: boolean;
+  isUsedInOtherProjects?: boolean;
 };
 
 export type BucketFileAsset = GalleryImageAsset & {
@@ -293,13 +296,18 @@ export async function deleteAdminOtherProject(id: string) {
   return response.json() as Promise<{ id: string }>;
 }
 
-export async function uploadAdminGalleryImage(file: File) {
+export async function uploadAdminGalleryImage(file: File, area?: string) {
+  const headers: Record<string, string> = {
+    "content-type": file.type,
+    "x-file-name": file.name,
+  };
+  if (area) {
+    headers["x-area"] = area;
+  }
+
   const response = await fetch(`${apiBaseUrl}/api/admin/gallery-images`, {
     method: "PUT",
-    headers: {
-      "content-type": file.type,
-      "x-file-name": file.name,
-    },
+    headers,
     credentials: "include",
     body: file,
   });
