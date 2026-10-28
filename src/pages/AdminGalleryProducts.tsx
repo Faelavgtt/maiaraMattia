@@ -256,6 +256,7 @@ const AdminGalleryProducts = () => {
 
       {libraryOpen && (
         <AdminGalleryImageLibraryModal
+          area="quadros"
           activeField={activeImageField}
           selectedUrl={form[activeImageField]}
           onSelect={(url) => {

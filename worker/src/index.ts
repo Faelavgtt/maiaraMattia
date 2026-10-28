@@ -47,7 +47,7 @@ class HttpError extends Error {
 const allowedOrderFileTypes = new Set(["image/jpeg", "image/png", "application/pdf"]);
 const allowedGalleryImageTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 const maxOrderFileBytes = 50 * 1024 * 1024;
-const maxGalleryImageBytes = 8 * 1024 * 1024;
+const maxGalleryImageBytes = 50 * 1024 * 1024;
 const maxJsonBodyBytes = 64 * 1024;
 const adminSessionCookieName = "maiara_admin_session";
 const adminSessionDurationMs = 1000 * 60 * 60 * 24 * 7;
@@ -1050,17 +1050,19 @@ async function deleteOtherProject(env: Env, id: string) {
 async function uploadGalleryImage(request: Request, env: Env) {
   const contentType = request.headers.get("content-type") ?? "";
   const fileName = request.headers.get("x-file-name") ?? "gallery-image";
+  const area = request.headers.get("x-area") ?? "";
 
   if (!allowedGalleryImageTypes.has(contentType)) return json({ error: "Unsupported gallery image type" }, 415, env);
   if (!request.body) return json({ error: "Missing image body" }, 400, env);
 
   const fileBuffer = await request.arrayBuffer();
   if (fileBuffer.byteLength === 0 || fileBuffer.byteLength > maxGalleryImageBytes) {
-    return json({ error: "Gallery image must be up to 8 MB" }, 413, env);
+    return json({ error: "A imagem da galeria precisa ter até 50 MB" }, 413, env);
   }
 
   const fileId = crypto.randomUUID();
-  const objectKey = `gallery/${fileId}-${safeFileName(fileName)}`;
+  const subFolder = area === "outros-projetos" ? "outros-projetos/" : area === "quadros" ? "quadros/" : "";
+  const objectKey = `gallery/${subFolder}${fileId}-${safeFileName(fileName)}`;
 
   await env.FILES.put(objectKey, fileBuffer, { httpMetadata: { contentType } });
 
@@ -1074,14 +1076,64 @@ async function listGalleryImages(env: Env, cursor: string | null) {
     limit: 100,
   });
 
+  const galleryKeys = new Set<string>();
+  const otherKeys = new Set<string>();
+
+  if (env.DB) {
+    try {
+      const { results: gRows } = await env.DB.prepare(
+        "SELECT static_image_key, hover_image_key FROM gallery_products"
+      ).all<{ static_image_key?: string | null; hover_image_key?: string | null }>();
+      for (const row of gRows ?? []) {
+        if (row.static_image_key) {
+          galleryKeys.add(row.static_image_key);
+          if (!row.static_image_key.startsWith("gallery/")) galleryKeys.add(`gallery/${row.static_image_key}`);
+        }
+        if (row.hover_image_key) {
+          galleryKeys.add(row.hover_image_key);
+          if (!row.hover_image_key.startsWith("gallery/")) galleryKeys.add(`gallery/${row.hover_image_key}`);
+        }
+      }
+
+      const { results: oRows } = await env.DB.prepare(
+        "SELECT static_image_key, hover_image_key FROM other_projects"
+      ).all<{ static_image_key?: string | null; hover_image_key?: string | null }>();
+      for (const row of oRows ?? []) {
+        if (row.static_image_key) {
+          otherKeys.add(row.static_image_key);
+          if (!row.static_image_key.startsWith("gallery/")) otherKeys.add(`gallery/${row.static_image_key}`);
+        }
+        if (row.hover_image_key) {
+          otherKeys.add(row.hover_image_key);
+          if (!row.hover_image_key.startsWith("gallery/")) otherKeys.add(`gallery/${row.hover_image_key}`);
+        }
+      }
+    } catch {
+      // Ignore if DB read fails
+    }
+  }
+
   return json({
-    images: listed.objects.map((object) => ({
-      key: object.key,
-      url: `/api/gallery-images/${object.key}`,
-      size: object.size,
-      uploaded: object.uploaded.toISOString(),
-      contentType: object.httpMetadata?.contentType ?? inferContentTypeFromKey(object.key),
-    })),
+    images: listed.objects.map((object) => {
+      const isQuadros = object.key.startsWith("gallery/quadros/") || galleryKeys.has(object.key);
+      const isOther = object.key.startsWith("gallery/outros-projetos/") || otherKeys.has(object.key);
+
+      let area: "quadros" | "outros-projetos" | "unassigned" = "unassigned";
+      if (isQuadros && !isOther) area = "quadros";
+      else if (isOther && !isQuadros) area = "outros-projetos";
+      else if (isQuadros && isOther) area = "quadros";
+
+      return {
+        key: object.key,
+        url: `/api/gallery-images/${object.key}`,
+        size: object.size,
+        uploaded: object.uploaded.toISOString(),
+        contentType: object.httpMetadata?.contentType ?? inferContentTypeFromKey(object.key),
+        area,
+        isUsedInQuadros: isQuadros,
+        isUsedInOtherProjects: isOther,
+      };
+    }),
     cursor: listed.cursor ?? null,
     truncated: listed.truncated,
   }, 200, env);
