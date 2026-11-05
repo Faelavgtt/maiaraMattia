@@ -155,8 +155,34 @@ export const defaultGalleryProducts: readonly GalleryProduct[] = [
   },
 ];
 
-export function getGalleryFrameFormat(format: GalleryFrameFormat) {
-  return galleryFrameFormatOptions.find((item) => item.value === format) ?? galleryFrameFormatOptions[0];
+export function getGalleryFrameFormat(format?: string | null): (typeof galleryFrameFormatOptions)[number] {
+  if (!format) return galleryFrameFormatOptions[0];
+
+  const normalized = String(format).trim().toLowerCase();
+
+  const exactMatch = galleryFrameFormatOptions.find((item) => item.value.toLowerCase() === normalized);
+  if (exactMatch) return exactMatch;
+
+  const labelMatch = galleryFrameFormatOptions.find((item) => item.label.toLowerCase() === normalized);
+  if (labelMatch) return labelMatch;
+
+  if (normalized.includes("vert") || normalized === "retrato" || normalized === "em pé" || normalized === "em pe") {
+    return galleryFrameFormatOptions.find((item) => item.value === "portrait") ?? galleryFrameFormatOptions[1];
+  }
+  if (normalized.includes("horiz") || normalized === "paisagem" || normalized === "deitado") {
+    return galleryFrameFormatOptions.find((item) => item.value === "landscape") ?? galleryFrameFormatOptions[0];
+  }
+  if (normalized.includes("quadr") || normalized === "1:1" || normalized === "1/1") {
+    return galleryFrameFormatOptions.find((item) => item.value === "square") ?? galleryFrameFormatOptions[2];
+  }
+  if (normalized.includes("panoram") || normalized.includes("panorâm") || normalized === "wide") {
+    return galleryFrameFormatOptions.find((item) => item.value === "wide") ?? galleryFrameFormatOptions[3];
+  }
+  if (normalized.includes("classic") || normalized.includes("clássic") || normalized === "padrao") {
+    return galleryFrameFormatOptions.find((item) => item.value === "classic") ?? galleryFrameFormatOptions[4];
+  }
+
+  return galleryFrameFormatOptions[0];
 }
 
 export function readGalleryProducts(): GalleryProduct[] {
@@ -186,8 +212,9 @@ export function normalizeGalleryProduct(product: GalleryProduct): GalleryProduct
   return {
     ...product,
     name: product.name || product.title,
+    frameFormat: frameFormat.value,
     aspectRatio: frameFormat.aspectRatio,
-    width: Number.isFinite(product.width) ? product.width : frameFormat.width,
+    width: frameFormat.width,
     offset: Number.isFinite(product.offset) ? product.offset : 24,
     rotate: Number.isFinite(product.rotate) ? product.rotate : 0,
     includedItems: Array.isArray(product.includedItems) ? product.includedItems : [],
@@ -215,7 +242,7 @@ export function galleryProductFromApi(row: {
   rotate: number;
   sortOrder?: number;
 }): GalleryProduct {
-  const frameFormat = getGalleryFrameFormat(row.frameFormat as GalleryFrameFormat);
+  const frameFormat = getGalleryFrameFormat(row.frameFormat);
 
   return normalizeGalleryProduct({
     id: row.id,
@@ -233,8 +260,8 @@ export function galleryProductFromApi(row: {
     src: row.staticImage,
     hoverSrc: row.hoverImage ?? undefined,
     surface: row.surface,
-    width: row.width,
-    aspectRatio: row.aspectRatio,
+    width: frameFormat.width,
+    aspectRatio: frameFormat.aspectRatio,
     offset: row.offset,
     rotate: row.rotate,
     sortOrder: row.sortOrder,

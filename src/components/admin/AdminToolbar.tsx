@@ -81,7 +81,7 @@ export function AdminToolbar({
         )}
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-[minmax(240px,1.35fr)_repeat(4,minmax(150px,1fr))_auto] xl:items-end">
+      <div className="grid gap-2.5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[minmax(220px,1.4fr)_repeat(4,minmax(140px,1fr))_auto] xl:items-end">
         {/* Search Input */}
         <div className="space-y-1">
           <div className="flex items-center gap-1.5 font-sans text-[11px] font-medium text-[#8b4114]/75">

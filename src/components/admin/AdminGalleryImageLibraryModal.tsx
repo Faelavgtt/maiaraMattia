@@ -159,8 +159,8 @@ export function AdminGalleryImageLibraryModal({
       : `(${area === "quadros" ? "Quadros" : "Outros Projetos"})`;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1f1713]/55 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-lg border border-[#8b4114]/15 bg-[#fffaf5] shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1f1713]/55 p-2 sm:p-4 backdrop-blur-sm">
+      <div className="flex max-h-[94vh] sm:max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-[#8b4114]/15 bg-[#fffaf5] shadow-2xl">
         {/* Modal Header */}
         <div className="flex items-start justify-between gap-4 border-b border-[#8b4114]/10 bg-white p-5">
           <div>
@@ -203,7 +203,7 @@ export function AdminGalleryImageLibraryModal({
         {/* Toolbar & Filter Tabs */}
         <div className="flex flex-col gap-3 border-b border-[#8b4114]/10 bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
           {/* Tabs por Área */}
-          <div className="inline-flex rounded-lg bg-[#f0dfd4]/60 p-1 border border-[#8b4114]/10">
+          <div className="inline-flex rounded-xl bg-[#f0dfd4]/60 p-1 border border-[#8b4114]/10 overflow-x-auto max-w-full">
             <button
               type="button"
               onClick={() => setActiveTab("quadros")}
@@ -285,7 +285,7 @@ export function AdminGalleryImageLibraryModal({
               </p>
             </div>
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {visibleImages.map((image) => {
                 const isSelected = isImageSelected(selectedUrl, image);
 

@@ -119,7 +119,7 @@ export function AdminOrderDrawer({
       {/* Drawer Container */}
       <aside className="relative flex h-full w-full max-w-2xl flex-col bg-[#fffaf5] shadow-2xl transition-transform duration-300 ease-out sm:border-l sm:border-[#8b4114]/15">
         {/* Drawer Header */}
-        <header className="flex items-center justify-between border-b border-[#8b4114]/10 bg-white px-6 py-4">
+        <header className="flex items-center justify-between border-b border-[#8b4114]/10 bg-white px-4 py-3 sm:px-6 sm:py-4">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 rounded-xl bg-[#f8f1e9] px-3 py-1.5 border border-[#8b4114]/10">
               <span className="font-mono text-sm font-semibold tracking-wide text-[#8b4114]">
@@ -149,7 +149,7 @@ export function AdminOrderDrawer({
         </header>
 
         {/* Drawer Scrollable Content */}
-        <div className="flex-1 space-y-6 overflow-y-auto p-6">
+        <div className="flex-1 space-y-4 overflow-y-auto p-4 sm:space-y-6 sm:p-6">
           {/* Visual Production Pipeline Stepper */}
           <div className="rounded-2xl border border-[#8b4114]/10 bg-white p-5 shadow-2xs">
             <p className="mb-3 font-sans text-[11px] font-semibold uppercase tracking-[0.12em] text-[#76877e]">

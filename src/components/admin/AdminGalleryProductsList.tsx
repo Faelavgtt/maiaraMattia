@@ -1,6 +1,6 @@
 import { Copy, Edit3, Layers3, Trash2 } from "lucide-react";
 import { AdminHelpTooltip } from "@/components/admin/AdminHelpTooltip";
-import type { GalleryProduct } from "@/lib/gallery-products";
+import { getGalleryFrameFormat, type GalleryProduct } from "@/lib/gallery-products";
 
 export function AdminGalleryProductsList({
   products,
@@ -26,22 +26,32 @@ export function AdminGalleryProductsList({
         <Layers3 className="h-5 w-5 text-[#76877e]" />
       </div>
 
-      <div className="mt-4 grid gap-3 md:grid-cols-2 2xl:grid-cols-1">
-        {products.map((product) => (
-          <article key={product.id} className="grid gap-3 rounded-xl border border-[#8b4114]/15 bg-[#fffaf5] p-3 shadow-sm transition-colors hover:bg-white sm:grid-cols-[5.5rem_1fr_auto]">
-            <div className="overflow-hidden rounded-lg bg-[#f0dfd4]" style={{ aspectRatio: product.aspectRatio }}>
-              <img src={product.src} alt={product.title} className="h-full w-full object-cover" />
-            </div>
-            <div className="min-w-0">
-              <p className="font-sans text-xs font-light uppercase tracking-[0.16em] text-[#76877e]">{product.number} - {product.category}</p>
-              <h3 className="mt-1 break-words font-sans text-base font-light leading-snug text-[#8b4114]">{product.title}</h3>
-              <p className="mt-1 font-sans text-sm font-medium text-[#8b4114]">{product.price}</p>
-              <p className="mt-1 line-clamp-2 font-sans text-xs font-light leading-5 text-[#8b4114]/65">{product.description}</p>
-              <p className="mt-1 font-sans text-[0.68rem] font-light text-[#8b4114]">
-                {product.dimensions} | {product.includedItems.length} itens
-              </p>
-            </div>
-            <div className="flex items-center gap-2 sm:flex-col">
+      <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-1">
+        {products.map((product) => {
+          const format = getGalleryFrameFormat(product.frameFormat);
+
+          return (
+            <article key={product.id} className="grid gap-3 rounded-xl border border-[#8b4114]/15 bg-[#fffaf5] p-3 shadow-sm transition-colors hover:bg-white sm:grid-cols-[5.5rem_1fr_auto]">
+              <div className="overflow-hidden rounded-lg bg-[#f0dfd4] flex items-center justify-center" style={{ aspectRatio: format.aspectRatio }}>
+                <img src={product.src} alt={product.title} className="h-full w-full object-cover" />
+              </div>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <p className="font-sans text-xs font-light uppercase tracking-[0.16em] text-[#76877e]">
+                    {product.number} - {product.category}
+                  </p>
+                  <span className="rounded-full bg-[#7d876d]/15 px-2 py-0.5 font-sans text-[10px] font-medium text-[#5f6850]">
+                    Layout: {format.label}
+                  </span>
+                </div>
+                <h3 className="mt-1 break-words font-sans text-base font-light leading-snug text-[#8b4114]">{product.title}</h3>
+                <p className="mt-1 font-sans text-sm font-medium text-[#8b4114]">{product.price}</p>
+                <p className="mt-1 line-clamp-2 font-sans text-xs font-light leading-5 text-[#8b4114]/65">{product.description}</p>
+                <p className="mt-1 font-sans text-[0.68rem] font-light text-[#8b4114]">
+                  {product.dimensions} | {product.includedItems.length} itens
+                </p>
+              </div>
+              <div className="flex items-center gap-2 sm:flex-col">
               <button type="button" onClick={() => onEditProduct(product)} className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#8b4114]/15 bg-white text-[#8b4114] transition-colors hover:bg-[#7d876d] hover:text-white" aria-label={`Editar ${product.title}`} title="Editar">
                 <Edit3 className="h-4 w-4" />
               </button>
@@ -51,9 +61,10 @@ export function AdminGalleryProductsList({
               <button type="button" onClick={() => onRemoveProduct(product.id)} className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#8b4114]/15 bg-white text-[#8b4114] transition-colors hover:bg-[#8b4114] hover:text-white" aria-label={`Remover ${product.title}`} title="Excluir">
                 <Trash2 className="h-4 w-4" />
               </button>
-            </div>
-          </article>
-        ))}
+              </div>
+            </article>
+          );
+        })}
       </div>
     </div>
   );

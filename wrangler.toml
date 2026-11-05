@@ -3,7 +3,7 @@ main = "worker/src/index.ts"
 compatibility_date = "2026-07-16"
 
 [vars]
-APP_ORIGIN = "https://maiaramattia.rafavergottii.workers.dev"
+APP_ORIGIN = "https://maiaramattia.rafavergottii.workers.dev, http://127.0.0.1:8787, http://localhost:8080, http://localhost:5173, https://maiaramattia.com.br/"
 ADMIN_OWNER_USERNAME = "admin"
 ADMIN_OWNER_EMAIL = ""
 ADMIN_OWNER_PASSWORD = ""

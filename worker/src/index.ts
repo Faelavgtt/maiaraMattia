@@ -59,18 +59,36 @@ const dayMs = hourMs * 24;
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     if (request.method === "OPTIONS") {
-      return withCors(new Response(null, { status: 204 }), env);
+      return withCors(new Response(null, { status: 204 }), env, request);
     }
 
-    const url = new URL(request.url);
-
     try {
-      const adminOriginError = rejectCrossSiteAdminMutation(request, env, url);
-      if (adminOriginError) return adminOriginError;
-
-      if (url.pathname === "/health") {
-        return json({ ok: true, storage: env.DB ? "d1" : "disabled" }, 200, env);
+      const response = await handleRequest(request, env);
+      return withCors(response, env, request);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return withCors(json({ error: error.message }, error.status, env), env, request);
       }
+
+      return withCors(json({ error: error instanceof Error ? error.message : "Unexpected error" }, 500, env), env, request);
+    }
+  },
+
+  async scheduled(_controller: ScheduledController, env: Env, _ctx: ExecutionContext): Promise<void> {
+    await deleteExpiredUnpaidOrders(env);
+    await deleteExpiredRateLimits(env);
+  },
+};
+
+async function handleRequest(request: Request, env: Env): Promise<Response> {
+  const url = new URL(request.url);
+
+  const adminOriginError = rejectCrossSiteAdminMutation(request, env, url);
+  if (adminOriginError) return adminOriginError;
+
+  if (url.pathname === "/health") {
+    return json({ ok: true, storage: env.DB ? "d1" : "disabled" }, 200, env);
+  }
 
       if (request.method === "POST" && url.pathname === "/api/orders") {
         return createOrder(request, env);
@@ -243,20 +261,7 @@ export default {
       }
 
       return json({ error: "Not found" }, 404, env);
-    } catch (error) {
-      if (error instanceof HttpError) {
-        return json({ error: error.message }, error.status, env);
-      }
-
-      return json({ error: error instanceof Error ? error.message : "Unexpected error" }, 500, env);
-    }
-  },
-
-  async scheduled(_controller: ScheduledController, env: Env, _ctx: ExecutionContext): Promise<void> {
-    await deleteExpiredUnpaidOrders(env);
-    await deleteExpiredRateLimits(env);
-  },
-};
+}
 
 const orderStatuses = ["awaiting_payment", "received", "payment_confirmed", "in_production", "awaiting_approval", "finished"] as const;
 const orderTypes = ["familinha", "maker", "galeria", "outros"] as const;
@@ -750,9 +755,8 @@ async function createGalleryProduct(request: Request, env: Env) {
   const staticImageKey = requireObjectKey(body.staticImage, "staticImage");
   const hoverImageKey = optionalObjectKey(body.hoverImage);
   const surface = optionalString(body.surface) ?? "#ead4c6";
-  const frameFormat = requireEnum(body.frameFormat, "frameFormat", ["landscape", "portrait", "square", "wide", "classic"]);
-  const width = requireNumber(body.width, "width");
-  const aspectRatio = requireString(body.aspectRatio, "aspectRatio");
+  const frameFormat = normalizeFrameFormat(body.frameFormat);
+  const { aspectRatio, width } = resolveFormatSpecs(frameFormat, body.width, body.aspectRatio);
   const offset = requireNumber(body.offset, "offset");
   const rotate = requireNumber(body.rotate, "rotate");
   const sortOrder = Number(body.sortOrder ?? Date.now());
@@ -818,9 +822,8 @@ async function updateGalleryProduct(request: Request, env: Env, id: string) {
   const staticImageKey = requireObjectKey(body.staticImage, "staticImage");
   const hoverImageKey = optionalObjectKey(body.hoverImage);
   const surface = optionalString(body.surface) ?? "#ead4c6";
-  const frameFormat = requireEnum(body.frameFormat, "frameFormat", ["landscape", "portrait", "square", "wide", "classic"]);
-  const width = requireNumber(body.width, "width");
-  const aspectRatio = requireString(body.aspectRatio, "aspectRatio");
+  const frameFormat = normalizeFrameFormat(body.frameFormat);
+  const { aspectRatio, width } = resolveFormatSpecs(frameFormat, body.width, body.aspectRatio);
   const offset = requireNumber(body.offset, "offset");
   const rotate = requireNumber(body.rotate, "rotate");
   const sortOrder = Number(body.sortOrder ?? Date.now());
@@ -913,9 +916,8 @@ async function createOtherProject(request: Request, env: Env) {
   const staticImageKey = requireObjectKey(body.staticImage, "staticImage");
   const hoverImageKey = optionalObjectKey(body.hoverImage);
   const surface = optionalString(body.surface) ?? "#ead4c6";
-  const frameFormat = requireEnum(body.frameFormat, "frameFormat", ["landscape", "portrait", "square", "wide", "classic"]);
-  const width = requireNumber(body.width, "width");
-  const aspectRatio = requireString(body.aspectRatio, "aspectRatio");
+  const frameFormat = normalizeFrameFormat(body.frameFormat);
+  const { aspectRatio, width } = resolveFormatSpecs(frameFormat, body.width, body.aspectRatio);
   const offset = requireNumber(body.offset, "offset");
   const rotate = requireNumber(body.rotate, "rotate");
   const sortOrder = Number(body.sortOrder ?? Date.now());
@@ -983,9 +985,8 @@ async function updateOtherProject(request: Request, env: Env, id: string) {
   const staticImageKey = requireObjectKey(body.staticImage, "staticImage");
   const hoverImageKey = optionalObjectKey(body.hoverImage);
   const surface = optionalString(body.surface) ?? "#ead4c6";
-  const frameFormat = requireEnum(body.frameFormat, "frameFormat", ["landscape", "portrait", "square", "wide", "classic"]);
-  const width = requireNumber(body.width, "width");
-  const aspectRatio = requireString(body.aspectRatio, "aspectRatio");
+  const frameFormat = normalizeFrameFormat(body.frameFormat);
+  const { aspectRatio, width } = resolveFormatSpecs(frameFormat, body.width, body.aspectRatio);
   const offset = requireNumber(body.offset, "offset");
   const rotate = requireNumber(body.rotate, "rotate");
   const sortOrder = Number(body.sortOrder ?? Date.now());
@@ -1588,6 +1589,33 @@ function requireNumber(value: unknown, field: string) {
   return number;
 }
 
+function normalizeFrameFormat(value: unknown): "landscape" | "portrait" | "square" | "wide" | "classic" {
+  if (typeof value !== "string") return "portrait";
+  const val = value.trim().toLowerCase();
+  if (val === "portrait" || val.includes("vert") || val === "retrato") return "portrait";
+  if (val === "landscape" || val.includes("horiz") || val === "paisagem") return "landscape";
+  if (val === "square" || val.includes("quadr") || val === "1:1" || val === "1/1") return "square";
+  if (val === "wide" || val.includes("panoram") || val.includes("panorâm")) return "wide";
+  if (val === "classic" || val.includes("classic") || val.includes("clássic")) return "classic";
+  return "portrait";
+}
+
+function resolveFormatSpecs(format: "landscape" | "portrait" | "square" | "wide" | "classic", rawWidth?: unknown, rawAspectRatio?: unknown) {
+  const specs = {
+    landscape: { aspectRatio: "16 / 9", width: 350 },
+    portrait: { aspectRatio: "4 / 5", width: 270 },
+    square: { aspectRatio: "1 / 1", width: 260 },
+    wide: { aspectRatio: "5 / 3", width: 370 },
+    classic: { aspectRatio: "5 / 4", width: 310 },
+  }[format];
+
+  return {
+    frameFormat: format,
+    aspectRatio: specs.aspectRatio,
+    width: specs.width,
+  };
+}
+
 function requireEnum<T extends string>(value: unknown, field: string, allowed: readonly T[]) {
   if (typeof value !== "string" || !allowed.includes(value as T)) {
     throw new HttpError(400, `${field} is invalid`);
@@ -1663,18 +1691,54 @@ function rejectOversizedJson(request: Request, env: Env) {
 function rejectCrossSiteAdminMutation(request: Request, env: Env, url: URL) {
   if (!url.pathname.startsWith("/api/admin/")) return null;
   if (["GET", "HEAD", "OPTIONS"].includes(request.method)) return null;
-  if (!env.APP_ORIGIN) return null;
 
-  const expectedOrigin = normalizeOrigin(env.APP_ORIGIN);
   const origin = normalizeOrigin(request.headers.get("origin"));
   const referer = normalizeOrigin(request.headers.get("referer"));
   const actualOrigin = origin ?? referer;
 
-  if (actualOrigin && expectedOrigin && actualOrigin !== expectedOrigin) {
+  if (actualOrigin && !isAllowedOrigin(actualOrigin, env, url)) {
     return json({ error: "Origem da requisição não permitida." }, 403, env);
   }
 
   return null;
+}
+
+function isAllowedOrigin(origin: string | null | undefined, env: Env, requestUrl: URL): boolean {
+  if (!origin) return true;
+
+  const normalized = normalizeOrigin(origin);
+  if (!normalized) return false;
+
+  // 1. Origem idêntica à da própria requisição (ex: acesso direto ao worker, domínio customizado, etc.)
+  if (normalized === requestUrl.origin) return true;
+
+  // 2. Ambiente de desenvolvimento local (qualquer porta em localhost ou 127.0.0.1)
+  if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(normalized)) {
+    return true;
+  }
+
+  // 3. Domínios configurados em APP_ORIGIN (suporta múltiplos separados por vírgula ou espaço)
+  if (env.APP_ORIGIN) {
+    const configuredOrigins = env.APP_ORIGIN.split(/[,;\s]+/)
+      .map((item) => normalizeOrigin(item.trim()))
+      .filter((item): item is string => Boolean(item));
+
+    if (configuredOrigins.includes(normalized)) {
+      return true;
+    }
+  }
+
+  // 4. Domínios do ecossistema Cloudflare (workers.dev ou pages.dev)
+  try {
+    const parsed = new URL(normalized);
+    if (parsed.hostname.endsWith(".workers.dev") || parsed.hostname.endsWith(".pages.dev")) {
+      return true;
+    }
+  } catch {
+    // Ignora URL inválida
+  }
+
+  return false;
 }
 
 function normalizeOrigin(value: string | null | undefined) {
@@ -2048,18 +2112,22 @@ function getCookie(request: Request, name: string) {
 }
 
 function buildAdminSessionCookie(token: string, expiresAt: Date, request: Request, env: Env) {
-  const secure = isSecureRequest(request, env) ? "; Secure" : "";
-  return `${adminSessionCookieName}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Expires=${expiresAt.toUTCString()}; Max-Age=${Math.floor(adminSessionDurationMs / 1000)}${secure}`;
+  const secure = isSecureRequest(request, env);
+  const sameSite = secure ? "None" : "Lax";
+  const secureFlag = secure ? "; Secure" : "";
+  return `${adminSessionCookieName}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=${sameSite}; Expires=${expiresAt.toUTCString()}; Max-Age=${Math.floor(adminSessionDurationMs / 1000)}${secureFlag}`;
 }
 
 function clearAdminSessionCookie(request: Request, env: Env) {
-  const secure = isSecureRequest(request, env) ? "; Secure" : "";
-  return `${adminSessionCookieName}=; Path=/; HttpOnly; SameSite=Lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0${secure}`;
+  const secure = isSecureRequest(request, env);
+  const sameSite = secure ? "None" : "Lax";
+  const secureFlag = secure ? "; Secure" : "";
+  return `${adminSessionCookieName}=; Path=/; HttpOnly; SameSite=${sameSite}; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0${secureFlag}`;
 }
 
 function isSecureRequest(request: Request, env: Env) {
   const url = new URL(request.url);
-  return url.protocol === "https:";
+  return url.protocol === "https:" || request.headers.get("x-forwarded-proto") === "https";
 }
 
 async function requireAdmin(request: Request, env: Env): Promise<AdminIdentity | Response> {
@@ -2103,13 +2171,36 @@ function json(body: unknown, status = 200, env?: Env) {
   }), env);
 }
 
-function withCors(response: Response, env?: Env) {
+function withCors(response: Response, env?: Env, request?: Request) {
   const headers = new Headers(response.headers);
-  headers.set("access-control-allow-origin", env?.APP_ORIGIN ?? "*");
-  headers.set("access-control-allow-methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS");
-  headers.set("access-control-allow-headers", "content-type,x-file-name");
-  if (env?.APP_ORIGIN) {
-    headers.set("access-control-allow-credentials", "true");
+
+  let allowOrigin: string | null = null;
+  const requestOrigin = request ? normalizeOrigin(request.headers.get("origin") ?? request.headers.get("referer")) : null;
+
+  if (request && env) {
+    const requestUrl = new URL(request.url);
+    if (requestOrigin && isAllowedOrigin(requestOrigin, env, requestUrl)) {
+      allowOrigin = requestOrigin;
+    } else if (isAllowedOrigin(requestUrl.origin, env, requestUrl)) {
+      allowOrigin = requestUrl.origin;
+    }
   }
+
+  if (!allowOrigin && env?.APP_ORIGIN) {
+    const firstOrigin = env.APP_ORIGIN.split(/[,;\s]+/)[0]?.trim();
+    allowOrigin = normalizeOrigin(firstOrigin);
+  }
+
+  if (allowOrigin) {
+    headers.set("access-control-allow-origin", allowOrigin);
+    headers.set("access-control-allow-credentials", "true");
+    headers.set("vary", "Origin");
+  } else {
+    headers.set("access-control-allow-origin", "*");
+  }
+
+  headers.set("access-control-allow-methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS");
+  headers.set("access-control-allow-headers", "content-type,x-file-name,x-area");
+
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 }

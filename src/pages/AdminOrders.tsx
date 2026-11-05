@@ -279,7 +279,7 @@ const AdminOrders = () => {
         </div>
 
         {/* Status Segmented Tabs Bar (Shopify style) */}
-        <div className="flex shrink-0 items-center gap-2 overflow-x-auto pb-1">
+        <div className="flex shrink-0 items-center gap-2 overflow-x-auto pb-1 -mx-3 px-3 sm:mx-0 sm:px-0 scroll-smooth">
           <div className="sticky left-0 z-10 flex shrink-0 items-center gap-1 rounded-xl border border-[#8b4114]/10 bg-[#fffaf5] px-3 py-2 text-xs font-medium text-[#8b4114] shadow-sm">
             Situação
             <AdminHelpTooltip label="Clique em uma situação para ver apenas os pedidos daquela etapa." />

@@ -140,14 +140,14 @@ export function otherProjectFromApi(row: OtherProjectApiRow): OtherProjectProduc
 }
 
 function normalizeOtherProject(product: OtherProjectProduct): OtherProjectProduct {
-  const frameFormat = getGalleryFrameFormat(product.frameFormat as GalleryFrameFormat);
+  const frameFormat = getGalleryFrameFormat(product.frameFormat);
 
   return {
     ...product,
     name: product.name || product.title,
     frameFormat: frameFormat.value,
     aspectRatio: frameFormat.aspectRatio,
-    width: Number.isFinite(product.width) ? product.width : frameFormat.width,
+    width: frameFormat.width,
     offset: Number.isFinite(product.offset) ? product.offset : 0,
     rotate: Number.isFinite(product.rotate) ? product.rotate : 0,
     includedItems: Array.isArray(product.includedItems) ? product.includedItems : [],
