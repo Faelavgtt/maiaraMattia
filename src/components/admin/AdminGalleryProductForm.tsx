@@ -1,7 +1,7 @@
 import type { FormEvent } from "react";
-import { ImagePlus, Save, X } from "lucide-react";
+import { Check, ImagePlus, Save, X } from "lucide-react";
 import { AdminHelpTooltip } from "@/components/admin/AdminHelpTooltip";
-import { galleryFrameFormatOptions, type GalleryFrameFormat } from "@/lib/gallery-products";
+import { galleryFrameFormatOptions, getGalleryFrameFormat, type GalleryFrameFormat } from "@/lib/gallery-products";
 import { CurrencyInput, Field, ImageSlot, inputClassName, PanelTitle, textareaClassName } from "./AdminGalleryFormControls";
 import type { ImageField, ProductForm, UpdateProductForm } from "./AdminGalleryTypes";
 
@@ -117,19 +117,45 @@ export function AdminGalleryProductForm({
         <div className="flex min-h-0 flex-col rounded-2xl border border-[#8b4114]/15 bg-[#fffaf5] p-4">
           <div className="flex items-center gap-2">
             <PanelTitle>4. Formato do card</PanelTitle>
-            <AdminHelpTooltip label="Escolha a proporção visual do card sem alterar o modelo do carrossel." />
+            <AdminHelpTooltip label="Escolha o layout visual do card (Vertical, Horizontal, Quadrado, etc.) que será respeitado na galeria e em outros projetos." />
           </div>
           <div className="mt-4 min-h-0">
-            <p className="font-sans text-[0.72rem] font-medium uppercase tracking-[0.12em] text-[#76877e]">Proporcao visual</p>
-            <div className="mt-2 grid min-h-0 grid-cols-2 gap-2 sm:grid-cols-3">
-              {galleryFrameFormatOptions.map((option) => (
-                <button key={option.value} type="button" onClick={() => onUpdateFrameFormat(option.value)} className={`flex h-[6.75rem] flex-col justify-between overflow-hidden rounded-xl border p-2.5 text-left transition-colors ${form.frameFormat === option.value ? "border-[#7d876d] bg-white shadow-sm ring-1 ring-[#7d876d]/30" : "border-[#8b4114]/15 bg-[#fffaf5] hover:bg-white"}`} aria-label={option.label}>
-                  <span className="flex h-12 w-full shrink-0 items-center justify-center">
-                    <span className="block max-h-12 max-w-24 rounded-sm border border-[#ddb8a6] bg-[#f0dfd4]" style={{ aspectRatio: option.aspectRatio, height: "100%" }} />
-                  </span>
-                  <span className="block w-full pt-1.5 font-sans text-xs font-light leading-snug text-[#8b4114]/75">{option.label}</span>
-                </button>
-              ))}
+            <p className="font-sans text-[0.72rem] font-medium uppercase tracking-[0.12em] text-[#76877e]">
+              Proporção e Layout selecionado: <strong className="text-[#8b4114]">{getGalleryFrameFormat(form.frameFormat).label}</strong>
+            </p>
+            <div className="mt-2 grid min-h-0 grid-cols-2 gap-2.5 sm:grid-cols-3">
+              {galleryFrameFormatOptions.map((option) => {
+                const isSelected = getGalleryFrameFormat(form.frameFormat).value === option.value;
+
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => onUpdateFrameFormat(option.value)}
+                    className={`flex h-[7.25rem] flex-col justify-between overflow-hidden rounded-xl p-2.5 text-left transition-all ${
+                      isSelected
+                        ? "border-2 border-[#7d876d] bg-white shadow-md ring-2 ring-[#7d876d]/40 scale-[1.02]"
+                        : "border border-[#8b4114]/15 bg-[#fffaf5] hover:bg-white hover:border-[#8b4114]/35"
+                    }`}
+                    aria-label={option.label}
+                  >
+                    <span className="flex h-12 w-full shrink-0 items-center justify-center">
+                      <span
+                        className="block max-h-12 max-w-24 rounded-sm border border-[#ddb8a6] bg-[#f0dfd4] shadow-xs"
+                        style={{ aspectRatio: option.aspectRatio, height: "100%" }}
+                      />
+                    </span>
+                    <div className="flex items-center justify-between w-full pt-1.5 border-t border-[#8b4114]/10">
+                      <span className={`font-sans text-xs ${isSelected ? "font-semibold text-[#8b4114]" : "font-light text-[#8b4114]/75"}`}>
+                        {option.label}
+                      </span>
+                      {isSelected && (
+                        <Check className="h-3.5 w-3.5 text-[#7d876d] stroke-[2.5]" />
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>

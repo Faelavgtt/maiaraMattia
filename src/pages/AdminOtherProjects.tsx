@@ -80,9 +80,8 @@ const AdminOtherProjects = () => {
     const format = getGalleryFrameFormat(frameFormat);
     setForm((current) => ({
       ...current,
-      frameFormat,
+      frameFormat: format.value,
       width: format.width,
-      dimensions: current.dimensions || format.label,
     }));
   };
 
@@ -240,7 +239,7 @@ const AdminOtherProjects = () => {
           countLabel="Produtos especiais"
         />
 
-        <div className="mt-4 grid gap-4 2xl:grid-cols-[minmax(0,1.38fr)_minmax(24rem,0.62fr)] 2xl:items-start">
+        <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(22rem,0.65fr)] xl:items-start">
           <AdminGalleryProductForm
             form={form}
             isSaving={isSaving}
@@ -283,13 +282,12 @@ function buildOtherProject({
   form,
   includedItems,
   nextIndex,
-  aspectRatio,
   existingProduct,
 }: {
   form: ProductForm;
   includedItems: string[];
   nextIndex: number;
-  aspectRatio: string;
+  aspectRatio?: string;
   existingProduct?: OtherProjectProduct;
 }): OtherProjectProduct {
   const title = form.title.trim();
@@ -297,6 +295,7 @@ function buildOtherProject({
   const originalPrice = formatBrazilianCurrencyInput(form.originalPrice);
   const hasDiscount = Boolean(discountPrice && discountPrice !== originalPrice);
   const price = hasDiscount ? discountPrice : originalPrice;
+  const format = getGalleryFrameFormat(form.frameFormat);
 
   return {
     id: existingProduct?.id ?? `outros-${Date.now()}`,
@@ -304,7 +303,7 @@ function buildOtherProject({
     name: form.name.trim(),
     title,
     category: form.category.trim(),
-    frameFormat: form.frameFormat,
+    frameFormat: format.value,
     price,
     originalPrice: hasDiscount ? originalPrice : undefined,
     dimensions: form.dimensions.trim(),
@@ -314,8 +313,8 @@ function buildOtherProject({
     src: form.staticImage,
     hoverSrc: form.hoverImage || undefined,
     surface: form.surface,
-    width: form.width,
-    aspectRatio,
+    width: format.width,
+    aspectRatio: format.aspectRatio,
     offset: form.offset,
     rotate: form.rotate,
     sortOrder: existingProduct?.sortOrder ?? Date.now(),
@@ -324,6 +323,7 @@ function buildOtherProject({
 
 function otherProjectToForm(product: OtherProjectProduct): ProductForm {
   const hasDiscount = Boolean(product.originalPrice && product.originalPrice !== product.price);
+  const format = getGalleryFrameFormat(product.frameFormat);
 
   return {
     name: product.name,
@@ -337,9 +337,9 @@ function otherProjectToForm(product: OtherProjectProduct): ProductForm {
     placeholder: product.placeholder,
     staticImage: product.src,
     hoverImage: product.hoverSrc ?? "",
-    frameFormat: product.frameFormat,
+    frameFormat: format.value,
     surface: product.surface,
-    width: product.width,
+    width: format.width,
     offset: product.offset,
     rotate: product.rotate,
   };

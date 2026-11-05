@@ -13,6 +13,7 @@ import { GalleryModal, type GalleryProject } from "./GalleryModal";
 import {
   galleryProductFromApi,
   galleryProductsUpdatedEvent,
+  getGalleryFrameFormat,
   numberGalleryProducts,
   readGalleryProducts,
   type GalleryProduct,
@@ -339,7 +340,8 @@ function GalleryFrame({
   reduceMotion: boolean;
   onSelect: () => void;
 }) {
-  const frameWidth = `min(${Math.round(project.width * 0.88)}px, 66vw)`;
+  const format = getGalleryFrameFormat(project.frameFormat);
+  const frameWidth = `min(${Math.round(format.width * 0.88)}px, 66vw)`;
   const hasDiscountPrice = Boolean(project.originalPrice && project.originalPrice !== project.price);
 
   return (
@@ -386,7 +388,7 @@ function GalleryFrame({
         <div
           className="relative overflow-hidden border border-[#d6bea1]"
           style={{
-            aspectRatio: project.aspectRatio,
+            aspectRatio: format.aspectRatio,
             backgroundColor: project.surface,
           }}
         >

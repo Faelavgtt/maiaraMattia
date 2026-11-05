@@ -95,14 +95,14 @@ export function AdminOrdersKanban({
   };
 
   return (
-    <div className="grid h-full min-h-0 grid-cols-1 gap-4 overflow-x-auto pb-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+    <div className="flex gap-4 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory scroll-smooth -mx-3 px-3 sm:mx-0 sm:px-0 xl:grid xl:grid-cols-5 xl:overflow-visible">
       {kanbanColumns.map((col) => {
         const columnOrders = orders.filter((order) => order.status === col.id);
 
         return (
           <div
             key={col.id}
-            className="flex min-h-0 min-w-[260px] flex-col rounded-2xl border border-[#8b4114]/10 bg-[#fbf7f3] p-3 shadow-2xs"
+            className="flex min-h-0 w-[84vw] max-w-[320px] shrink-0 snap-center flex-col rounded-2xl border border-[#8b4114]/10 bg-[#fbf7f3] p-3 shadow-2xs sm:w-[310px] xl:w-auto xl:max-w-none xl:shrink"
           >
             {/* Column Header */}
             <div className={`flex items-center justify-between border-b pb-2.5 ${col.headerBorder}`}>

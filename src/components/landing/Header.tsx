@@ -68,12 +68,12 @@ export function Header() {
       }`}
       style={{ backgroundColor: headerBackgroundColor }}
     >
-      <nav className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-5">
+      <nav className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-6 lg:px-8">
         <a
           href="#inicio"
           onClick={closeMobileMenu}
           aria-label="Maiara Mattia - início"
-          className="flex items-center gap-3 transition-colors duration-500"
+          className="flex shrink-0 items-center gap-3 transition-colors duration-500"
           style={{ color: headerAccentColor }}
         >
           <span
@@ -94,22 +94,22 @@ export function Header() {
 
         {/* Desktop Navigation Links */}
         <div
-          className="hidden items-center gap-7 font-sans text-sm font-normal transition-colors duration-500 md:flex"
+          className="hidden items-center gap-5 xl:gap-8 font-sans text-sm font-normal transition-colors duration-500 lg:flex"
           style={{ color: navTextColor }}
         >
-          <a href="#familinha" className="transition-opacity hover:opacity-80">Personalizados</a>
-          <a href="#outros-projetos" className="transition-opacity hover:opacity-80">Produtos</a>
-          <a href="#maker" className="transition-opacity hover:opacity-80">Pequeno Artista</a>
-          <a href="#feedbacks" className="transition-opacity hover:opacity-80">Clientes</a>
-          <a href="#pedido" className="transition-opacity hover:opacity-80">Contato</a>
+          <a href="#familinha" className="whitespace-nowrap transition-opacity hover:opacity-80">Personalizados</a>
+          <a href="#outros-projetos" className="whitespace-nowrap transition-opacity hover:opacity-80">Produtos</a>
+          <a href="#maker" className="whitespace-nowrap transition-opacity hover:opacity-80">Pequeno Artista</a>
+          <a href="#feedbacks" className="whitespace-nowrap transition-opacity hover:opacity-80">Clientes</a>
+          <a href="#pedido" className="whitespace-nowrap transition-opacity hover:opacity-80">Contato</a>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2.5 sm:gap-3">
           <a
             href="#pedido"
-            className="inline-flex h-9 items-center gap-1.5 rounded-full bg-[#7d876d] px-3.5 font-sans text-xs font-medium text-white shadow-[0_10px_24px_rgba(0,0,0,0.12)] transition-transform hover:scale-105 active:scale-95 sm:h-10 sm:px-4 sm:text-sm"
+            className="inline-flex h-9 items-center gap-1.5 rounded-full bg-[#7d876d] px-3.5 font-sans text-xs font-medium text-white shadow-[0_10px_24px_rgba(0,0,0,0.12)] transition-transform hover:scale-105 active:scale-95 sm:h-10 sm:px-4 sm:text-sm whitespace-nowrap"
           >
-            <MessageCircle className="h-4 w-4" />
+            <MessageCircle className="h-4 w-4 shrink-0" />
             <span>Encomendar</span>
           </a>
 
@@ -119,7 +119,7 @@ export function Header() {
             onClick={() => setIsMobileMenuOpen((prev) => !prev)}
             aria-label={isMobileMenuOpen ? "Fechar menu de navegação" : "Abrir menu de navegação"}
             aria-expanded={isMobileMenuOpen}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/35 bg-white/20 text-white backdrop-blur-xs transition-colors hover:bg-white/30 md:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/35 bg-white/20 text-white backdrop-blur-xs transition-colors hover:bg-white/30 lg:hidden"
           >
             {isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
@@ -134,7 +134,7 @@ export function Header() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.28, ease: "easeInOut" }}
-            className="overflow-hidden border-t border-white/20 bg-[#d19c88]/95 px-5 py-4 shadow-xl backdrop-blur-md md:hidden"
+            className="overflow-hidden border-t border-white/20 bg-[#d19c88]/95 px-5 py-4 shadow-xl backdrop-blur-md lg:hidden"
           >
             <div className="flex flex-col gap-1 font-sans text-sm font-normal text-white">
               <a

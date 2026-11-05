@@ -218,7 +218,7 @@ export function AdminOrdersTable({
 
                 {/* Right: Progress Pill, Status Selector & Actions */}
                 <div
-                  className="flex flex-wrap items-center justify-between gap-3 border-t border-[#8b4114]/10 pt-3 lg:border-0 lg:pt-0 lg:justify-end"
+                  className="flex flex-wrap items-center gap-2 border-t border-[#8b4114]/10 pt-3 sm:justify-between lg:border-0 lg:pt-0 lg:justify-end"
                   onClick={(e) => e.stopPropagation()}
                 >
                   {/* Status Badge */}
@@ -231,7 +231,7 @@ export function AdminOrdersTable({
                       onValueChange={(nextStatus) => onStatusChange(order.code, nextStatus as AdminOrderStatus)}
                       disabled={isUpdatingStatus}
                     >
-                      <SelectTrigger className="h-9 min-w-36 rounded-xl border-[#8b4114]/15 bg-white px-2.5 font-sans text-xs font-medium text-[#8b4114] shadow-xs">
+                      <SelectTrigger className="h-9 min-w-32 flex-1 sm:flex-initial sm:w-auto rounded-xl border-[#8b4114]/15 bg-white px-2.5 font-sans text-xs font-medium text-[#8b4114] shadow-xs">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="z-[80] rounded-xl border-[#8b4114]/15 bg-white p-1 shadow-xl">

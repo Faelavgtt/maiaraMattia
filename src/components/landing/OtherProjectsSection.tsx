@@ -12,6 +12,7 @@ import {
 import { GalleryModal, type GalleryProject } from "./GalleryModal";
 import { listOtherProjects } from "@/lib/api";
 import { useCart } from "@/lib/cart";
+import { getGalleryFrameFormat } from "@/lib/gallery-products";
 import {
   otherProjectFromApi,
   otherProjectsUpdatedEvent,
@@ -321,6 +322,7 @@ function StickerProductCard({
 }) {
   const tapeColors = ["#ead4c6", "#e4e7d9", "#f0dfd4", "#d6bea1"];
   const tapeColor = tapeColors[index % tapeColors.length];
+  const format = getGalleryFrameFormat(project.frameFormat);
 
   return (
     <motion.article
@@ -341,7 +343,7 @@ function StickerProductCard({
         }
       }}
       style={{
-        width: `min(${Math.round(project.width * 0.84)}px, 68vw)`,
+        width: `min(${Math.round(format.width * 0.84)}px, 68vw)`,
         marginTop: index % 2 === 0 ? 0 : 16,
         rotate: `${project.rotate}deg`,
       }}
@@ -360,7 +362,13 @@ function StickerProductCard({
         className="relative overflow-hidden rounded-[0.45rem] border border-[#8b4114]/8 bg-[#fffaf5] p-2.5 shadow-[0_10px_20px_rgba(54,67,64,0.13)] transition-shadow duration-300 before:absolute before:inset-0 before:bg-[radial-gradient(#8b4114_0.7px,transparent_0.7px)] before:[background-size:18px_18px] before:opacity-[0.025] group-hover:shadow-[0_14px_24px_rgba(54,67,64,0.17)] sm:p-3"
       >
         <div className="relative z-20 rounded-[0.35rem] bg-[#fffaf5] p-1.5 shadow-[0_6px_12px_rgba(54,67,64,0.10)]">
-          <div className="relative aspect-[5/4] overflow-hidden rounded-[0.25rem]" style={{ backgroundColor: project.surface }}>
+          <div
+            className="relative overflow-hidden rounded-[0.25rem]"
+            style={{
+              aspectRatio: format.aspectRatio,
+              backgroundColor: project.surface,
+            }}
+          >
             <img
               src={project.src}
               alt={project.title}
