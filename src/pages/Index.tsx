@@ -171,7 +171,8 @@ const Index = () => {
       <FamilinhaSection />
       <GallerySection />
       <OtherProjectsSection />
-      <ServicesSection />
+      {/* Seção de serviços temporariamente ocultada a pedido da cliente:
+      <ServicesSection /> */}
       <MakerSection
         backgroundColor={backgroundColor}
         outlineColor={outlineColor}
